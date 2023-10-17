@@ -99,16 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 <body>
     <?php include "welcome_page.php"?>
     <div class="login-form">
-        <div class="title bg-primary text-white">
-            <img src="logobb.PNG" class="rounded mx-auto" alt="Cinque Terre">
-            <br>
-            LOGIN
-        </div>
-
         <div class="content">
-
             <?=isset($msg) ? '<div class="alert alert-danger">'.$msg.'</div>' : ''?>
-
             <form method="POST" action="login.php">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label"><b>Username</b></label>
@@ -123,8 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 </div>
 
                 <div class="d-grid gap-2">
-                    <button class="btn btn-dark" name="login">Login</button>
-                    <p>Don't have account? Sign up <a href="registeruser.php">here</a></p>
+                    <button class="btn btn-dark" name="login"><a href="cpl_page.php">Login</a></button>
                 </div>
             </form>
         </div>
