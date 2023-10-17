@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 </head>
 
 <body>
-    <?php include "welcome_page.php"?>
+    <?php include "navbar/navbar_before_login.php";?>
     <div class="login-form">
         <div class="content">
             <?=isset($msg) ? '<div class="alert alert-danger">'.$msg.'</div>' : ''?>
