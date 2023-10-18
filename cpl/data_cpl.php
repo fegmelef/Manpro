@@ -11,6 +11,21 @@
     </head>
     <body>
         <!-- navbar -->
-        <?php include "navbar/navbar_after_login.php";?>
+        <?php include "../navbar/navbar_after_login.php";?>
+        <br>
+        <br>
+        <br>
+
+        <!-- bread crumbs -->
+        <div class="container">
+            <div class="row">
+            <ul id="breadcrumb" class="breadcrumb">
+                <li class="breadcrumb-item">Home</li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- isi -->
+        
     </body>
 </html>

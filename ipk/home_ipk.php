@@ -11,6 +11,6 @@
     </head>
     <body>
         <!-- navbar -->
-        <?php include "navbar/navbar_after_login.php";?>
+        <?php include "../navbar/navbar_after_login.php";?>
     </body>
 </html>

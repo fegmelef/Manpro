@@ -17,12 +17,12 @@
                 <div class="navbar-header">
                     <div class="column"> 
                     <a class="navbar-brand" href="#">
-                    <img src="assets/pcu_black.png" alt="Logo" width="100" height="100" class="logo-img">
+                    <img src="../assets/pcu_black.png" alt="Logo" width="100" height="100" class="logo-img">
                     </a>
                     </div>
                     <div class="column">
                     <a class="navbar-brand" href="#">
-                    <img src="assets/pcu_blue.png" alt="Logo" width="100" height="100" class="logo-img">
+                    <img src="../assets/pcu_blue.png" alt="Logo" width="100" height="100" class="logo-img">
                     </a>
                     </div>
                 </div>

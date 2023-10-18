@@ -14,7 +14,7 @@
     <body>
         <!-- navbar -->
        
-        <?php include "navbar/navbar_after_login.php";?>
+        <?php include "../navbar/navbar_after_login.php";?>
         <br>
         <br>
         <br>
@@ -73,7 +73,7 @@
             <br>
             <div class="row">
                 <div class="col-md-12 text-center"> <!-- Center the button within the column -->
-                    <button type="button" class="btn btn-primary"><a href="data.php" style="text-decoration: none;">Generate</a></button>
+                    <button type="button" class="btn"><a href="cpl/data_cpl.php" style="text-decoration: none;">Generate</a></button>
                 </div>
             </div>
         </div>
