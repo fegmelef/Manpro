@@ -26,7 +26,7 @@
         <!-- isi -->
         <div class="container">
             <div class="row">
-                <div class="col-md-4">Periode</div>
+                <div class="col-md-4" style="font-size:30px;">Periode</div>
                 <div class="col-md-2">:</div>
                 <div class="col-md-6">
                     <select name="periode" id="periode" class="form-control">
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">Tahun</div>
+                <div class="col-md-4" style="font-size:30px;">Tahun</div>
                 <div class="col-md-2">:</div>
                 <div class="col-md-6">
                     <select name="tahun" id="tahun" class="form-control">
@@ -52,8 +52,8 @@
                     </select>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4">Angkatan</div>
+            <div class="row" style="margin-bottom:50px;">
+                <div class="col-md-4" style="font-size:30px;">Angkatan</div>
                 <div class="col-md-2">:</div>
                 <div class="col-md-6">
                     <select name="angkatan" id="angkatan" class="form-control">
@@ -70,7 +70,7 @@
             <br>
             <div class="row">
                 <div class="col-md-12 text-center"> <!-- Center the button within the column -->
-                    <button type="button" class="btn"><a href="data_cpl.php" style="text-decoration: none;">Generate</a></button>
+                    <button type="button" class="btn btn-lg"><a href="data_cpl.php" style="text-decoration: none;">Generate</a></button>
                 </div>
             </div>
         </div>
