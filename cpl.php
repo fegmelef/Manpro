@@ -35,7 +35,7 @@
                 <div class="col-md-2">:</div>
                 <div class="col-md-6">
                     <select name="periode" id="periode" class="form-control">
-                        <option value="">Pilih periode</option>
+                        <option value="none">Pilih periode</option>
                         <option value="all">All</option>
                         <option value="gasal">Gasal</option>
                         <option value="genap">Genap</option>
@@ -46,7 +46,8 @@
                 <div class="col-md-6">Tahun:</div>
                 <div class="col-md-6">
                     <select name="tahun" id="tahun" class="form-control">
-                        <option value="all">Pilih tahun</option>
+                        <option value="none">Pilih tahun</option>
+                        <option value="all">All</option>
                         <option value="2019">2019</option>
                         <option value="2020">2020</option>
                         <option value="2021">2021</option>
@@ -59,13 +60,20 @@
                 <div class="col-md-6">Angkatan:</div>
                 <div class="col-md-6">
                     <select name="angkatan" id="angkatan" class="form-control">
-                        <option value="all">Pilih angkatan</option>
+                        <option value="none">Pilih angkatan</option>
+                        <option value="all">All</option>
                         <option value="2019">2019</option>
                         <option value="2020">2020</option>
                         <option value="2021">2021</option>
                         <option value="2022">2022</option>
                         <option value="2023">2023</option>                    
                     </select>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12 text-center"> <!-- Center the button within the column -->
+                    <button type="button" class="btn btn-primary"><a href="data.php" style="text-decoration: none;">Generate</a></button>
                 </div>
             </div>
         </div>
