@@ -4,41 +4,62 @@
         <title>Welcome Page</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
         <link rel="stylesheet" type="text/css" href="css.css">
     </head>
     <body>
         <!-- navbar -->
+       
         <?php include "navbar/navbar_after_login.php";?>
+        <br>
+        <br>
+        <br>
+
         <!-- bread crumbs -->
         <!-- isi -->
-        <div class="container overflow-hidden text-center">
-            <div class="row gy-5">
-                <div class="col-6">Periode:</div>
-                <div class="col-6">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Select an option
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">All</a></li>
-                            <li><a class="dropdown-item" href="#">Gasal</a></li>
-                            <li><a class="dropdown-item" href="#">Genap</a></li>
-                        </ul>
-                    </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">Periode</div>
+                <div class="col-md-2">:</div>
+                <div class="col-md-6">
+                    <select name="periode" id="periode" class="form-control">
+                        <option value="">Pilih periode</option>
+                        <option value="all">All</option>
+                        <option value="gasal">Gasal</option>
+                        <option value="genap">Genap</option>
+                    </select>
                 </div>
-            <!-- </div> -->
-            <!-- <div class="row gy-5"> -->
-                <div class="col-6">Tahun:</div>
-                <div class="col-6"></div>
-            <!-- </div> -->
-            <!-- <div class="row gy-5"> -->
-                <div class="col-6">Angkatan:</div>
-                <div class="col-6"></div>
-            <!-- </div> -->
-</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Tahun:</div>
+                <div class="col-md-6">
+                    <select name="tahun" id="tahun" class="form-control">
+                        <option value="all">Pilih tahun</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>                    
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Angkatan:</div>
+                <div class="col-md-6">
+                    <select name="angkatan" id="angkatan" class="form-control">
+                        <option value="all">Pilih angkatan</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>                    
+                    </select>
+                </div>
+            </div>
         </div>
     </body>
 </html>

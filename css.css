@@ -37,3 +37,7 @@
     font-weight: bold;
     text-decoration: underline;
 }
+
+.row{
+    margin: 30px;
+}
