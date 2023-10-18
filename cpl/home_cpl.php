@@ -17,13 +17,11 @@
         <?php include "../navbar/navbar_after_login.php";?>
 
         <!-- bread crumbs -->
-        <div class="container">
             <div class="row">
             <ul id="breadcrumb" class="breadcrumb">
                 <li class="breadcrumb-item active">Home</li>
             </ul>
             </div>
-        </div>
 
         <!-- isi -->
         <div class="container">
@@ -40,7 +38,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">Tahun:</div>
+                <div class="col-md-4">Tahun</div>
+                <div class="col-md-2">:</div>
                 <div class="col-md-6">
                     <select name="tahun" id="tahun" class="form-control">
                         <option value="none">Pilih tahun</option>
@@ -54,7 +53,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">Angkatan:</div>
+                <div class="col-md-4">Angkatan</div>
+                <div class="col-md-2">:</div>
                 <div class="col-md-6">
                     <select name="angkatan" id="angkatan" class="form-control">
                         <option value="none">Pilih angkatan</option>

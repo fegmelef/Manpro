@@ -15,7 +15,6 @@
         <!-- navbar -->
             <?php include "../navbar/navbar_after_login.php";?>
         <!-- bread crumbs -->
-        <div class="container">
             <div class="row">
             <ul id="breadcrumb" class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
@@ -23,7 +22,6 @@
                 <li class="breadcrumb-item active">Detail data</li>               
             </ul>
             </div>
-        </div>
         <!-- isi -->
         <div class="container">
             <div class="row g-2" style="">

@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 </div>
 
                 <div class="d-grid gap-2">
-                    <button class="btn" name="login"><a href="cpl/cpl_page.php">Login</a></button>
+                    <button class="btn" name="login"><a href="cpl/home_cpl.php">Login</a></button>
                 </div>
             </form>
         </div>
