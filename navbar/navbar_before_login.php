@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="../css.css">
+        <link rel="stylesheet" type="text/css" href="css.css">
     </head>
 
     <body>
@@ -17,12 +17,12 @@
                 <div class="navbar-header">
                     <div class="column"> 
                     <a class="navbar-brand" href="#">
-                    <img src="../assets/pcu_black.png" alt="Logo" width="100" height="100" class="logo-img">
+                    <img src="assets/pcu_black.png" alt="Logo" width="100" height="100" class="logo-img">
                     </a>
                     </div>
                     <div class="column">
                     <a class="navbar-brand" href="#">
-                    <img src="../assets/pcu_blue.png" alt="Logo" width="100" height="100" class="logo-img">
+                    <img src="assets/pcu_blue.png" alt="Logo" width="100" height="100" class="logo-img">
                     </a>
                     </div>
                 </div>

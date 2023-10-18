@@ -37,60 +37,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         .login-form {
             background-color: white;
             max-width: 700px;
-            border: 5px solid red;
-            border-radius: 8px;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 100%;
-        }
-
-        .login-form .title {
-            padding: 15px 10px;
-            text-align: center;
-            text-shadow: 2px 2px 5px red;
-            font-size: 40px;
-            image-resolution: 20px 20px;
-
-        }
-
-        img {
-            width: 100px;
-            height: 100px;
-        }
-
-
-        .login-form .content {
-            padding: 25px;
-        }
-
-        body {
-            background-color: pink;
+            border: none;
         }
 
         a:link {
-            color: green;
-            background-color: transparent;
+            color: midnight blue;
             text-decoration: none;
         }
-
-        a:visited {
-            color: pink;
-            background-color: transparent;
-            text-decoration: none;
-        }
-
-        a:hover {
-            color: red;
-            background-color: transparent;
-            text-decoration: underline;
-        }
-
-        a:active {
-            color: yellow;
-            background-color: transparent;
-            text-decoration: underline;
+        .mb-3{
+            width: 80%;   
+            margin: 0 auto;     
         }
     </style>
 
@@ -115,11 +76,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 </div>
 
                 <div class="d-grid gap-2">
-                    <button class="btn btn-dark" name="login"><a href="cpl_page.php">Login</a></button>
+                    <button class="btn" name="login"><a href="cpl/cpl_page.php">Login</a></button>
                 </div>
             </form>
         </div>
-
     </div>
     <?php
         if (isset($_GET['login'])){
