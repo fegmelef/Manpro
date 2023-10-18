@@ -20,7 +20,8 @@
         <div class="container">
             <div class="row">
             <ul id="breadcrumb" class="breadcrumb">
-                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
+                <li class="breadcrumb-item active">Data</li>
             </ul>
             </div>
         </div>

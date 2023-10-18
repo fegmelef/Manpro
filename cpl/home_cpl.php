@@ -23,7 +23,7 @@
         <div class="container">
             <div class="row">
             <ul id="breadcrumb" class="breadcrumb">
-                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item active">Home</li>
             </ul>
             </div>
         </div>
@@ -73,7 +73,7 @@
             <br>
             <div class="row">
                 <div class="col-md-12 text-center"> <!-- Center the button within the column -->
-                    <button type="button" class="btn"><a href="cpl/data_cpl.php" style="text-decoration: none;">Generate</a></button>
+                    <button type="button" class="btn"><a href="data_cpl.php" style="text-decoration: none;">Generate</a></button>
                 </div>
             </div>
         </div>
