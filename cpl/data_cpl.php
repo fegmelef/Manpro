@@ -17,8 +17,10 @@
         <!-- bread crumbs -->
         <div class="row">
             <div class="col-md-9">
-                <ul id="breadcrumb" class="breadcrumb">                        <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
-                    <li class="breadcrumb-item active">Data</li>                    </ul>
+                <ul id="breadcrumb" class="breadcrumb">                        
+                    <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
+                    <li class="breadcrumb-item active">Data</li>                    
+                </ul>
             </div>
             <div class="col-md-3">
                 <!-- <form class="example" action="action_page.php"> -->
@@ -40,7 +42,8 @@
                     <option value="Data List">Data List</option>
                     <option value="Distribusi Data">Distribusi Data</option>
                     <option value="Jumlah">Jumlah</option>
-                    <option value="Rata-rata">Rata-rata</option>                                  </select>
+                    <option value="Rata-rata">Rata-rata</option>                                  
+                </select>
                 </div>    
             </div>
             
