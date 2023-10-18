@@ -17,9 +17,19 @@
         <?php include "navbar/navbar_after_login.php";?>
         <br>
         <br>
+<<<<<<< Updated upstream
         <br>
 
+=======
+>>>>>>> Stashed changes
         <!-- bread crumbs -->
+        <div class="container">
+            <div class="row">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item active">Home</a></li>
+            </ul>
+            </div>
+        </div>
         <!-- isi -->
         <div class="container">
             <div class="row">

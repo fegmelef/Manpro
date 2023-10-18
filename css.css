@@ -38,6 +38,15 @@
     text-decoration: underline;
 }
 
+<<<<<<< Updated upstream
 .row{
     margin: 30px;
 }
+=======
+.breadcrumbs{
+    margin-top: 20px;
+    margin-left: 20px;
+    color: midnightblue;
+    font-weight: bold;
+}
+>>>>>>> Stashed changes
