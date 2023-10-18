@@ -13,7 +13,33 @@
     </head>
     <body>
         <!-- navbar -->
-       
-        <?php include "../navbar/navbar_after_login.php";?>
-</body>
+            <?php include "../navbar/navbar_after_login.php";?>
+        <!-- bread crumbs -->
+        <div class="container">
+            <div class="row">
+            <ul id="breadcrumb" class="breadcrumb">
+                <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
+                <li class="breadcrumb-item active"><a href="data_cpl.php">Data</a></li>
+                <li class="breadcrumb-item active">Detail data</li>               
+            </ul>
+            </div>
+        </div>
+        <!-- isi -->
+        <div class="container">
+            <div class="row g-2" style="">
+                <div class="col-md-6">
+                    <div class="p-3">Nama:</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3">Program Studi:</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3">NRP:</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3">Periode/Tahun:</div>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

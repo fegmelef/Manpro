@@ -11,7 +11,7 @@
     </head>
 
     <body>
-        <div class="row">
+        <div class="row1">
             <nav class="navbar navbar-expand-lg navbar fixed-top">
                 <div class="container-fluid">
                 <div class="navbar-header">

@@ -13,9 +13,6 @@
     <body>
         <!-- navbar -->
         <?php include "../navbar/navbar_after_login.php";?>
-        <br>
-        <br>
-        <br>
 
         <!-- bread crumbs -->
         <div class="row">
