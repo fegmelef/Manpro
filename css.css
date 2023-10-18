@@ -16,7 +16,7 @@
   
 .logo-img {
     display: block; /* Menghilangkan margin bawah pada gambar */
-    margin-left: 300px;
+    margin-left: 20px;
 }
 
 #nav{
@@ -36,10 +36,6 @@
     color: midnightblue;
     font-weight: bold;
     text-decoration: underline;
-}
-
-.row{
-    margin: 30px;
 }
 
 #breadcrumb{

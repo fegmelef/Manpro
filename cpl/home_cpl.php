@@ -9,7 +9,7 @@
         <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
-        <link rel="stylesheet" type="text/css" href="css.css">
+        <link rel="stylesheet" type="text/css" href="../css.css">
     </head>
     <body>
         <!-- navbar -->
@@ -73,7 +73,7 @@
             <br>
             <div class="row">
                 <div class="col-md-12 text-center"> <!-- Center the button within the column -->
-                    <button type="button" class="btn"><a href="cpl/data_cpl.php" style="text-decoration: none;">Generate</a></button>
+                    <button type="button" class="btn"><a href="data_cpl.php" style="text-decoration: none;">Generate</a></button>
                 </div>
             </div>
         </div>
