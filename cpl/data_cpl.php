@@ -1,3 +1,20 @@
+<?php
+include ("../api/connect.php");
+
+if (isset($_GET["angkatan"])) {
+    $angkatan = $_GET['angkatan'];
+}
+
+if (isset($_GET["tahun"])) {
+    $tahun = $_GET['tahun'];
+}
+
+if (isset($_GET["periode"])) {
+    $periode = $_GET['periode'];
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -34,7 +51,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-9">
-                    <p class="semester">Semester ... Angkatan ...</p>
+                    <p class="semester">Semester: <?php echo $periode; ?><br>Angkatan: <?php echo $angkatan; ?></p>
                 </div>
                 <div class="col-md-3">
                 <select name="filtering" id="filtering" class="form-control1">

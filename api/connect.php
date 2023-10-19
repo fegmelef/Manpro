@@ -15,6 +15,8 @@ $options = [
 
 try {
     $conn = new PDO($dsn, $user, $pass, $options);
+    $con = new mysqli($host, $user, $pass, $db);
+
 } catch (\PDOException $e) {
     echo "Error Connect to Database Msg: ".$e->getMessage();
 }
