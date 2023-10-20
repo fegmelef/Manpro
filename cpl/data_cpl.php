@@ -74,8 +74,9 @@ if (isset($_GET["periode"])) {
                         </thead>
                         <tbody>
                         <?php
-                            $query = $conn->prepare("SELECT * FROM mhsw");
-                            $query->execute();
+                            $query = $conn->prepare("SELECT * FROM mhsw WHERE tahun = ?");
+                            $twodigit = $angkatan % 100;
+                            $query->execute([$twodigit]);
                             $rowNum = 1;
                             while($row = $query->fetch()) {
                                 echo '<tr>
