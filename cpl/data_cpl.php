@@ -47,6 +47,32 @@ if (isset($_GET["periode"])) {
         </div>
     </div>
 
+    <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
+    <div class="col-md-3">
+    <form action="" method="post">
+        <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+            <option value="Data List">Data List</option>
+            <option value="Distribusi Data">Distribusi Data</option>
+            <option value="Jumlah">Jumlah</option>
+            <option value="Rata-rata">Rata-rata</option>
+            <option value="Reporting">Reporting</option>
+        </select>
+        <input type="submit" value="Kirim">
+    </form>
+    </div>
+    <?php
+        $kode_cpl = 'TF-01';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Mengambil nilai dropdown yang dipilih
+            $selectedValue = $_POST['filtering'];
+
+            // Membuat pernyataan if berdasarkan nilai dropdown
+            if ($selectedValue == 'Reporting') {
+                header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode");
+                exit;
+            } 
+        }   
+    ?>
 
     <!-- isi -->
     <div class="container">
@@ -56,7 +82,6 @@ if (isset($_GET["periode"])) {
                     <?php echo $periode; ?><br>Angkatan:
                     <?php echo $angkatan; ?><br>Tahun:
                     <?php echo $tahun; ?>
-
                 </p>
             </div>
             <!-- <div class="col-md-3">
@@ -67,21 +92,12 @@ if (isset($_GET["periode"])) {
                     <option value="Rata-rata">Rata-rata</option>
                     <option value="Reporting">Reporting</option>
                 </select>
-            </div>
-        </div> -->
+            </div> -->
+        </div>
 
 
-    <div class="col-md-3">
-        <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
-            <option value="Data List">Data List</option>
-            <option value="Distribusi Data">Distribusi Data</option>
-            <option value="Jumlah">Jumlah</option>
-            <option value="Rata-rata">Rata-rata</option>
-            <option value="Reporting">Reporting</option>
-        </select>
-    </div>
-
-    <script type="text/javascript">
+    
+    <!-- <script type="text/javascript">
         function redirectPage() {
             var selectedOption = document.getElementById("filtering").value;
             var redirectUrl;
@@ -111,7 +127,7 @@ if (isset($_GET["periode"])) {
                 window.location.href = redirectUrl;
             }
         }
-    </script>
+    </script> -->
 
         <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
         <div class="row">
@@ -223,6 +239,21 @@ if (isset($_GET["periode"])) {
                     </table> 
                 </div>
             </div>                       -->
+        <?php
+            // // Variabel yang ingin Anda kirim
+            // $variabel = $tahun;
+
+            // // URL tujuan yang menerima variabel
+            // $tujuan = "reporting.php";
+
+            // // Membuat URL dengan query string yang menyertakan variabel
+            // $url = $tujuan . "?variabel=" . urlencode($variabel);
+
+            // // Melakukan pengalihan ke halaman tujuan
+            // header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode");
+            // exit; // Pastikan untuk keluar dari skrip saat melakukan redirect
+        ?>
+
     </div>
 </body>
 

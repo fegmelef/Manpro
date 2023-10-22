@@ -1,17 +1,19 @@
 <?php
 include("../api/connect.php");
+// include("../api/get_data.php");
 
-// if (isset($_GET["angkatan"])) {
-//     $angkatan = $_GET['angkatan'];
-// }
+if (isset($_GET["angkatan"])) {
+    $angkatan = $_GET['angkatan'];
+}
 
-// if (isset($_GET["tahun"])) {
-//     $tahun = $_GET['tahun'];
-// }
+if (isset($_GET["tahun"])) {
+    $tahun = $_GET['tahun'];
+}
 
-// if (isset($_GET["periode"])) {
-//     $periode = $_GET['periode'];
-// }
+if (isset($_GET["periode"])) {
+    $periode = $_GET['periode'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -47,16 +49,19 @@ include("../api/connect.php");
 
             
         <!-- isi -->
-        <!-- <div class="container">
-        <div class="row">
-            <div class="col-md-9">
-                <p class="semester">Semester:
-                    <?php echo $periode; ?><br>Angkatan:
-                    <?php echo $angkatan; ?><br>Tahun:
-                    <?php echo $tahun; ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <p class="semester">Semester:
+                        <?php echo $periode; ?><br>Angkatan:
+                        <?php echo $angkatan; ?><br>Tahun:
+                        <?php echo $tahun; ?>
 
-                </p>
-            </div> -->
+                    </p>
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
@@ -124,7 +129,7 @@ include("../api/connect.php");
                         </thead>
                         <tbody>
                         <?php
-                            $kode_cpl;
+                            $kode_cpl = 'TF-01' ;
                             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 // Mengambil nilai dropdown yang dipilih
                                 $selectedValue = $_POST['filtering-CPL'];
@@ -153,18 +158,40 @@ include("../api/connect.php");
                                 } 
                             }   
 
-                            $query = $conn->prepare("SELECT kelas_nilaicpmk.*, ikcpl.id_ikcpl, mhsw.tahun, mhsw.nama, ikcpl.id_cpl 
-                            FROM kelas_nilaicpmk 
+                            // $query = $conn->prepare("SELECT kelas_nilaicpmk.*, ikcpl.id_ikcpl, mhsw.tahun, mhsw.nama, ikcpl.id_cpl 
+                            // FROM kelas_nilaicpmk 
+                            // JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
+                            // JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl 
+                            // JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash 
+                            // WHERE ikcpl.id_cpl = '$kode_cpl' AND kelas_nilaicpmk.nilai < 
+                            //     (SELECT AVG(nilai) 
+                            //      FROM kelas_nilaicpmk 
+                            //      JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
+                            //      JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl
+                            //      WHERE ikcpl.id_cpl = '$kode_cpl' 
+                            //      GROUP BY ikcpl.id_cpl )");
+
+                            $query = $conn->prepare("SELECT kelas_nilaicpmk.*, ikcpl.id_ikcpl, mhsw.tahun, mhsw.nama
+                            FROM kelas_nilaicpmk
                             JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
                             JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl 
-                            JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash 
-                            WHERE ikcpl.id_cpl = '$kode_cpl' AND kelas_nilaicpmk.nilai < 
-                                (SELECT AVG(nilai) 
-                                 FROM kelas_nilaicpmk 
-                                 JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
-                                 JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl
-                                 WHERE ikcpl.id_cpl = '$kode_cpl' 
-                                 GROUP BY ikcpl.id_cpl )");
+                            JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
+                            WHERE ikcpl.id_cpl = '$kode_cpl' 
+                            AND kelas_nilaicpmk.nilai < (
+                                SELECT AVG(nilai) 
+                                FROM kelas_nilaicpmk 
+                                JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
+                                JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl 
+                                JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
+                                JOIN periode ON kelas.id_periode = periode.id_periode
+                                JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
+                                WHERE ikcpl.id_cpl = $kode_cpl 
+                                AND periode.tahun = '$tahun'
+                                AND periode.semester = $periode
+                                AND mhsw.tahun = $angkatan
+                                GROUP BY ikcpl.id_cpl
+                            )
+                            AND mhsw.tahun = $angkatan");
 
                             $query->execute();
                             $rowNum = 1; 
