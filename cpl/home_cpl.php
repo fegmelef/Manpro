@@ -42,8 +42,8 @@ include "../api/connect.php";
                 <div class="col-md-6">
                     <select name="periode" id="periode" class="form-control" required>
                         <option value="All">All</option>
-                        <option value="Gasal">Gasal</option>
-                        <option value="Genap">Genap</option>
+                        <option value="1">Gasal</option>
+                        <option value="2">Genap</option>
 
 
                     </select>
@@ -56,11 +56,13 @@ include "../api/connect.php";
                     <select name="tahun" id="tahun" class="form-control" required>
                         <!-- <option value="none">Pilih tahun</option> -->
                         <option value="All">All</option>
+                        <!-- <option value="21">2021</option> -->
                         <?php
                         $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `periode`");
                         while ($row = mysqli_fetch_array($query)) {
-                            echo "<option value='all'>".$row['tahun']."</option>";
+                            echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
                         }
+                        
                         ?>
                     </select>
                 </div>
@@ -72,11 +74,17 @@ include "../api/connect.php";
                     <select name="angkatan" id="angkatan" class="form-control" required>
                         <!-- <option disabled>Pilih angkatan</option> -->
                         <option value="All">All</option>
-                        <option value="2019">2019</option>
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
+                        <?php
+                        $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `mhsw` ORDER BY tahun");
+                        while ($row = mysqli_fetch_array($query)) {
+                            echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
+                        }
+                        ?>
+                        <!-- <option value="19">2019</option>
+                        <option value="20">2020</option>
+                        <option value="21">2021</option>
+                        <option value="22">2022</option>
+                        <option value="23">2023</option> -->
                     </select>
                 </div>
             </div>
@@ -92,4 +100,3 @@ include "../api/connect.php";
 </body>
 
 </html>
-
