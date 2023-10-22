@@ -158,12 +158,12 @@ include("../api/connect.php");
                             JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
                             JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl 
                             JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash 
-                            WHERE ikcpl.id_cpl = 'TF-01' AND kelas_nilaicpmk.nilai < 
+                            WHERE ikcpl.id_cpl = '$kode_cpl' AND kelas_nilaicpmk.nilai < 
                                 (SELECT AVG(nilai) 
                                  FROM kelas_nilaicpmk 
                                  JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
                                  JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl
-                                 WHERE ikcpl.id_cpl = 'TF-01' 
+                                 WHERE ikcpl.id_cpl = '$kode_cpl' 
                                  GROUP BY ikcpl.id_cpl )");
 
                             $query->execute();
@@ -179,47 +179,6 @@ include("../api/connect.php");
                             </tr>';
                             $rowNum++; 
                             }
-
-                            // try {
-                            //     $query = $conn->prepare("SELECT kelas_nilaicpmk.* 
-                            //                             FROM kelas_nilaicpmk 
-                            //                             JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
-                            //                             JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl 
-                            //                             WHERE ikcpl.id_cpl = 'TF-01' AND kelas_nilaicpmk.nilai < 
-                            //                                     (SELECT AVG(nilai) FROM kelas_nilaicpmk 
-                            //                                     JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
-                            //                                     JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl
-                            //                                      WHERE ikcpl.id_cpl = 'TF-01'
-                            //                                      GROUP BY ikcpl.id_cpl) AND kelas_nilaicpmk.nilai > 0");
-                            //     $query->execute();
-                            //     $rowNum = 1; 
-                            //     while($row = $query->fetch()) {
-                            //         echo '<tr>
-                            //         <th scope="row">'.$rowNum.'</th>
-                            //         <td>'.$row['nrp_hash'].'</td>
-                            //         <td>'.$row['nilai'].'</td>
-                            //     </tr>';
-                            //     $rowNum++;
-                            //     }
-                            // } catch (PDOException $e) {
-                            //     echo "Error: " . $e->getMessage();
-                            // }
-
-                            // try {
-                            //     $query = $conn->prepare("SELECT * FROM kelas_nilaicpmk");
-                            //     $query->execute();
-                            //     $rowNum = 1; 
-                            //     while($row = $query->fetch()) {
-                            //         echo '<tr>
-                            //         <th scope="row">'.$rowNum.'</th>
-                            //         <td>'.$row['nrp_hash'].'</td>
-                            //         <td>'.$row['nilai'].'</td>
-                            //     </tr>';
-                            //     $rowNum++;
-                            //     }
-                            // } catch (PDOException $e) {
-                            //     echo "Error: " . $e->getMessage();
-                            // }
                         ?>
                         
                         </tbody>
