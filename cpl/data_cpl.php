@@ -83,24 +83,49 @@ if (isset($_GET["periode"])) {
                     </thead>
                     <tbody>
                         <?php
-                        $query = $conn->prepare("SELECT ikcpl.id_cpl, periode.tahun, mhsw.tahun AS angkatan, periode.semester, AVG(nilai) AS rata_nilai
-            FROM periode, kelas, mhsw, kelas_nilaicpmk, kelas_cpmk, ikcpl
-            WHERE mhsw.nrp_hash = kelas_nilaicpmk.nrp_hash
-            AND periode.id_periode = kelas.id_periode
-            AND kelas.id_kelas = kelas_cpmk.id_kelas
-            AND kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk
-            AND ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl
-            AND periode.semester = :periode
-            AND mhsw.tahun = :angkatan
-            AND periode.tahun = :tahun
-            GROUP BY ikcpl.id_cpl, mhsw.tahun, periode.semester");
-
+                        $sql = "SELECT ikcpl.id_cpl, periode.tahun, mhsw.tahun AS angkatan, periode.semester, AVG(nilai) AS rata_nilai
+                        FROM periode, kelas, mhsw, kelas_nilaicpmk, kelas_cpmk, ikcpl
+                        WHERE mhsw.nrp_hash = kelas_nilaicpmk.nrp_hash
+                        AND periode.id_periode = kelas.id_periode
+                        AND kelas.id_kelas = kelas_cpmk.id_kelas
+                        AND kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk
+                        AND ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl";
+                    
+                    if ($periode !== "All") {
+                        $sql .= " AND periode.semester = :periode";
+                    }
+                    
+                    if ($angkatan !== "All") {
+                        $sql .= " AND mhsw.tahun = :angkatan";
+                    }
+                    
+                    if ($tahun !== "All") {
+                        $sql .= " AND periode.tahun = :tahun";
+                    }
+                    
+                    $sql .= " GROUP BY ikcpl.id_cpl, periode.tahun, mhsw.tahun, periode.semester";
+                    $sql .= " ORDER BY mhsw.tahun ASC, ikcpl.id_cpl ASC";
+                    
+                    $query = $conn->prepare($sql);
+                    
+                    if ($periode !== "All") {
                         $query->bindParam(':periode', $periode, PDO::PARAM_STR);
+                    }
+                    
+                    if ($angkatan !== "All") {
                         $query->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                    }
+                    
+                    if ($tahun !== "All") {
                         $query->bindParam(':tahun', $tahun, PDO::PARAM_STR);
-
-                        $query->execute();
-                        $result = $query->fetchAll();
+                    }
+                    
+                    $query->execute();
+                    $result = $query->fetchAll();
+                    
+                    
+                    $query->execute();
+                    $result = $query->fetchAll();
 
                         if ($result) {
                             foreach ($result as $row) {
