@@ -65,6 +65,7 @@ include("../api/connect.php");
                     <option value="Distribusi Data">Distribusi Data</option>
                     <option value="Jumlah">Jumlah</option>
                     <option value="Rata-rata">Rata-rata</option>                                  
+                    <option value="Reporting">Reporting</option>                                  
                 </select>
                 </div>    
             </div>
