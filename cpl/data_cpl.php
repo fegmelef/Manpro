@@ -59,15 +59,59 @@ if (isset($_GET["periode"])) {
 
                 </p>
             </div>
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
                 <select name="filtering" id="filtering" class="form-control1">
                     <option value="Data List">Data List</option>
                     <option value="Distribusi Data">Distribusi Data</option>
                     <option value="Jumlah">Jumlah</option>
                     <option value="Rata-rata">Rata-rata</option>
+                    <option value="Reporting">Reporting</option>
                 </select>
             </div>
-        </div>
+        </div> -->
+
+
+    <div class="col-md-3">
+        <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+            <option value="Data List">Data List</option>
+            <option value="Distribusi Data">Distribusi Data</option>
+            <option value="Jumlah">Jumlah</option>
+            <option value="Rata-rata">Rata-rata</option>
+            <option value="Reporting">Reporting</option>
+        </select>
+    </div>
+
+    <script type="text/javascript">
+        function redirectPage() {
+            var selectedOption = document.getElementById("filtering").value;
+            var redirectUrl;
+
+            switch (selectedOption) {
+                // case "Data List":
+                //     redirectUrl = "data_list.php";
+                //     break;
+                // case "Distribusi Data":
+                //     redirectUrl = "distribusi_data.php";
+                //     break;
+                // case "Jumlah":
+                //     redirectUrl = "jumlah.php";
+                //     break;
+                // case "Rata-rata":
+                //     redirectUrl = "rata_rata.php";
+                //     break;
+                case "Reporting":
+                    redirectUrl = "reporting.php";
+                    break;
+                default:
+                    // Default URL or error handling
+                    break;
+            }
+
+            if (redirectUrl) {
+                window.location.href = redirectUrl;
+            }
+        }
+    </script>
 
         <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
         <div class="row">
