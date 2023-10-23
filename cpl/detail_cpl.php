@@ -1,3 +1,11 @@
+<?php
+include("../api/connect.php");
+
+if (isset($_POST["nrp"])) {
+    $nrp = $_POST['nrp'];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -32,7 +40,7 @@
                     <div class="p-3">Program Studi:</div>
                 </div>
                 <div class="col-md-6">
-                    <div class="p-3">NRP:</div>
+                    <div class="p-3">NRP: <?php echo $nrp; ?> </div>
                 </div>
                 <div class="col-md-6">
                     <div class="p-3">Periode/Tahun:</div>

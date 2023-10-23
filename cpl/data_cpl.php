@@ -107,9 +107,10 @@ if (isset($_GET["periode"])) {
                     <table class="table">
                         <tr>
                             <th scope="col">No</th>
-                            <th scope="col">Nama</th>
+                            <!-- <th scope="col">Nama</th> -->
                             <th scope="col">NRP</th>
                             <th scope="col">Tahun</th>
+                            <th scope="col"> </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -131,12 +132,16 @@ if (isset($_GET["periode"])) {
                             while($row = $query->fetch()) {
                                 echo '<tr>
                                 <th scope="row">'.$rowNum.'</th>
-                                <td>'.$row['nama'].'</td>
                                 <td>'.$row['nrp_hash'].'</td>
                                 <td>'.$row['tahun'].'</td>
+                                <td><form method="post" action="detail_cpl.php">
+                                <input type="hidden" name="nrp" value="' . $row['nrp_hash'] . '">
+                                <button type="submit" name="detail" class="btn btn-dark">Detail</button>
+                            </form></td>
                             </tr>';
                             $rowNum++;
                             }
+        
                         ?>
                         </tbody>
                     </table>
