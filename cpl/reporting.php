@@ -47,7 +47,35 @@ if (isset($_GET["periode"])) {
             </div>
         </div>
 
-            
+        <div class="col-md-3">
+        <form action="" method="post">
+            <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+                <option value="Data List">Data List</option>
+                <option value="Distribusi Data">Distribusi Data</option>
+                <option value="Jumlah">Jumlah</option>
+                <option value="Rata-rata">Rata-rata</option>
+                <option value="Reporting">Reporting</option>
+            </select>
+            <input type="submit" value="Kirim">
+        </form>
+        </div>
+        <?php
+            $kode_cpl = 'TF-01';
+            if (isset($_POST['filtering'])) {
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    // Mengambil nilai dropdown yang dipilih
+                    $selectedValue = $_POST['filtering'];
+    
+                    // Membuat pernyataan if berdasarkan nilai dropdown
+                    if ($selectedValue == 'Data List') {
+                        header("location: ../cpl/data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode");
+                        exit;
+                    } 
+                }   
+            }
+           
+        ?>
+
         <!-- isi -->
         <div class="container">
             <div class="row">
@@ -61,7 +89,7 @@ if (isset($_GET["periode"])) {
                 </div>
             </div>
         </div>
-
+<!-- 
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
@@ -73,7 +101,7 @@ if (isset($_GET["periode"])) {
                     <option value="Reporting">Reporting</option>                                  
                 </select>
                 </div>    
-            </div>
+            </div> -->
 
             <!-- <div class="container">
             <div class="row">
