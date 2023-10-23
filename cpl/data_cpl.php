@@ -114,9 +114,19 @@ if (isset($_GET["periode"])) {
                         </thead>
                         <tbody>
                         <?php
-                            $query = $conn->prepare("SELECT * FROM mhsw WHERE tahun = ?");
-                            $twodigit = $angkatan % 100;
-                            $query->execute([$twodigit]);
+                            // $query = $conn->prepare("SELECT * FROM mhsw WHERE mhsw.tahun = $angkatan ");
+                            $sql = "SELECT * FROM mhsw";
+
+                            if ($angkatan !== 'All'){
+                                $sql .= " WHERE mhsw.tahun = '$angkatan'";
+                            }
+
+                            $query = $conn->prepare($sql);
+
+                            // $twodigit = $angkatan % 100;
+                            // $query->execute([$twodigit]);
+                            
+                            $query->execute();
                             $rowNum = 1;
                             while($row = $query->fetch()) {
                                 echo '<tr>
