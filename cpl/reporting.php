@@ -81,6 +81,10 @@ if (isset($_GET["val"])) {
                         header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
+                    else if ($selectedValue == 'Distribusi Data') {
+                        header("location: ../cpl/distribusi.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        exit;
+                    } 
                 }   
             }
            

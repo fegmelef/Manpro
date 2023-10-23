@@ -55,7 +55,7 @@ if (isset($_GET["val"])) {
         <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
             <option value="selected value"><?php echo $val; ?></option>
             <option value="Data List">Data List</option>
-            <option value="Distribusi Data">Distribusi Data</option>
+            <option value="Distribusi Data">Rata-rata</option>
             <option value="Jumlah">Jumlah</option>
             <option value="Reporting">Reporting</option>
         </select>
@@ -99,85 +99,57 @@ if (isset($_GET["val"])) {
             </p>
         </div>
     </div>
-
-
-
-    <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
-<div class="row">
-            <div class="col-md-12">
-                <table class="table">
-                    <tr>
-                        <th scope="col">CPL</th>
-                        <th scope="col">Tahun</th>
-                        <th scope="col">Angkatan</th>
-                        <th scope="col">Semester</th>
-                        <th scope="col">Rata-rata Nilai</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $sql = "SELECT ikcpl.id_cpl, periode.tahun, mhsw.tahun AS angkatan, periode.semester, AVG(nilai) AS rata_nilai
-                        FROM periode, kelas, mhsw, kelas_nilaicpmk, kelas_cpmk, ikcpl
-                        WHERE mhsw.nrp_hash = kelas_nilaicpmk.nrp_hash
-                        AND periode.id_periode = kelas.id_periode
-                        AND kelas.id_kelas = kelas_cpmk.id_kelas
-                        AND kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk
-                        AND ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl";
-                    
-                    if ($periode !== "All") {
-                        $sql .= " AND periode.semester = :periode";
-                    }
-                    
-                    if ($angkatan !== "All") {
-                        $sql .= " AND mhsw.tahun = :angkatan";
-                    }
-                    
-                    if ($tahun !== "All") {
-                        $sql .= " AND periode.tahun = :tahun";
-                    }
-                    
-                    $sql .= " GROUP BY ikcpl.id_cpl, periode.tahun, mhsw.tahun, periode.semester";
-                    $sql .= " ORDER BY mhsw.tahun ASC, ikcpl.id_cpl ASC";
-                    
-                    $query = $conn->prepare($sql);
-                    
-                    if ($periode !== "All") {
-                        $query->bindParam(':periode', $periode, PDO::PARAM_STR);
-                    }
-                    
-                    if ($angkatan !== "All") {
-                        $query->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
-                    }
-                    
-                    if ($tahun !== "All") {
-                        $query->bindParam(':tahun', $tahun, PDO::PARAM_STR);
-                    }
-                    
-                    $query->execute();
-                    $result = $query->fetchAll();
-                    
-                    
-                    $query->execute();
-                    $result = $query->fetchAll();
-
-                        if ($result) {
-                            foreach ($result as $row) {
-                                echo '<tr>
-                    <td>' . $row['id_cpl'] . '</td>
-                    <td>' . $row['tahun'] . '</td>
-                    <td>' . $row['angkatan'] . '</td>
-                    <td>' . $row['semester'] . '</td>
-                    <td>' . $row['rata_nilai'] . '</td>
-                </tr>';
-                            }
-                        } else {
-                            echo "Tidak ada data yang ditemukan.";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-                    </div>
-</body>
-</html>
+    
+    <div class="col-md-12">
+    <table border="1" style="width:100%;">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Kode MK</th>
+                <th>Nama MK</th>
+                <th>CPL 1</th>
+                <th>CPL 2</th>
+                <th>CPL 3</th>
+                <th>CPL 4</th>
+                <th>CPL 5</th>
+                <th>CPL 6</th>
+                <th>CPL 7</th>
+                <th>CPL 8</th>
+                <th>CPL 9</th>
+                <th>CPL 10</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Row 1</th>
+                <td>TF</td>
+                <td>Struktur Data</td>
+                <td>Data 1,1</td>
+                <td>Data 1,2</td>
+                <td>Data 1,3</td>
+                <td>Data 1,4</td>
+                <td>Data 1,5</td>
+                <td>Data 1,6</td>
+                <td>Data 1,7</td>
+                <td>Data 1,8</td>
+                <td>Data 1,9</td>
+                <td>Data 1,10</td>
+            </tr>
+            <tr>
+                <th>Row 2</th>
+                <td>Data 2,1</td>
+                <td>Data 2,2</td>
+                <td>Data 2,3</td>
+            </tr>
+            <tr>
+                <th>Row 3</th>
+                <td>Data 3,1</td>
+                <td>Data 3,2</td>
+                <td>Data 3,3</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+    </body>
+    </html>
