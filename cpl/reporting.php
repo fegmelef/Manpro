@@ -171,7 +171,7 @@ if (isset($_GET["periode"])) {
                             //      WHERE ikcpl.id_cpl = '$kode_cpl' 
                             //      GROUP BY ikcpl.id_cpl )");
 
-                            $query = $conn->prepare("SELECT kelas_nilaicpmk.*, ikcpl.id_ikcpl, mhsw.tahun, mhsw.nama
+                            $query = $conn->prepare("SELECT kelas_nilaicpmk.*, ikcpl.id_cpl, mhsw.tahun, mhsw.nama
                             FROM kelas_nilaicpmk
                             JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
                             JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl 
@@ -185,7 +185,7 @@ if (isset($_GET["periode"])) {
                                 JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
                                 JOIN periode ON kelas.id_periode = periode.id_periode
                                 JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
-                                WHERE ikcpl.id_cpl = $kode_cpl 
+                                WHERE ikcpl.id_cpl = '$kode_cpl' 
                                 AND periode.tahun = '$tahun'
                                 AND periode.semester = $periode
                                 AND mhsw.tahun = $angkatan
