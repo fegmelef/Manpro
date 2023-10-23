@@ -13,7 +13,9 @@ if (isset($_GET["tahun"])) {
 if (isset($_GET["periode"])) {
     $periode = $_GET['periode'];
 }
-
+if (isset($_GET["val"])) {
+    $val = $_GET['val'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -50,11 +52,11 @@ if (isset($_GET["periode"])) {
         <div class="col-md-3">
         <form action="" method="post">
             <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+                <option value="selected value"><?php echo $val; ?></option>
                 <option value="Data List">Data List</option>
                 <option value="Distribusi Data">Distribusi Data</option>
                 <option value="Jumlah">Jumlah</option>
                 <option value="Rata-rata">Rata-rata</option>
-                <option value="Reporting">Reporting</option>
             </select>
             <input type="submit" value="Kirim">
         </form>
@@ -67,8 +69,16 @@ if (isset($_GET["periode"])) {
                     $selectedValue = $_POST['filtering'];
     
                     // Membuat pernyataan if berdasarkan nilai dropdown
-                    if ($selectedValue == 'Data List') {
-                        header("location: ../cpl/data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode");
+                    if ($selectedValue == 'Reporting') {
+                        header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        exit;
+                    } 
+                    else if ($selectedValue == 'Data List') {
+                        header("location: ../cpl/data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        exit;
+                    } 
+                    else if ($selectedValue == 'Rata-rata') {
+                        header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
                 }   
@@ -141,7 +151,7 @@ if (isset($_GET["periode"])) {
                     </form>
                 </div>
             </div>
-        </div>
+        
             
             <div class="row">
                 <div class="col-md-12">
@@ -275,5 +285,6 @@ if (isset($_GET["periode"])) {
                 </div>
             </div>               
         </div>
+                        </div>
     </body>
 </html>

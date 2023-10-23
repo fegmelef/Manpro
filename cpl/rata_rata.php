@@ -12,6 +12,10 @@ if (isset($_GET["tahun"])) {
 if (isset($_GET["periode"])) {
     $periode = $_GET['periode'];
 }
+if (isset($_GET["val"])) {
+    $val = $_GET['val'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +31,58 @@ if (isset($_GET["periode"])) {
     <link rel="stylesheet" type="text/css" href="../css.css">
 </head>
 <body>
+    <!-- navbar -->
+    <?php include "../navbar/navbar_after_login.php"; ?>
+
+    <!-- bread crumbs -->
+    <div class="row">
+        <div class="col-md-9">
+            <ul id="breadcrumb" class="breadcrumb">
+                <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
+                <li class="breadcrumb-item active">Data</li>
+            </ul>
+        </div>
+        <div class="col-md-3">
+            <input type="text" placeholder="Search" name="search" class="search">
+            <button type="submit" class="search"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
+    <div class="col-md-3">
+    <form action="" method="post">
+        <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+            <option value="selected value"><?php echo $val; ?></option>
+            <option value="Data List">Data List</option>
+            <option value="Distribusi Data">Distribusi Data</option>
+            <option value="Jumlah">Jumlah</option>
+            <option value="Reporting">Reporting</option>
+        </select>
+        <input type="submit" value="Kirim">
+    </form>
+    </div>
+    <?php
+        $kode_cpl = 'TF-01';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Mengambil nilai dropdown yang dipilih
+            $selectedValue = $_POST['filtering'];
+
+            // Membuat pernyataan if berdasarkan nilai dropdown
+            if ($selectedValue == 'Reporting') {
+                header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                exit;
+            } 
+            else if ($selectedValue == 'Data List') {
+                header("location: ../cpl/data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                exit;
+            } 
+            else if ($selectedValue == 'Rata-rata') {
+                header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                exit;
+            } 
+        }   
+    ?>
 
 <div class="container">
     <div class="row">
@@ -39,7 +95,7 @@ if (isset($_GET["periode"])) {
             </p>
         </div>
     </div>
-</div>
+
 
 
     <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
@@ -118,6 +174,6 @@ if (isset($_GET["periode"])) {
                 </table>
             </div>
         </div>
-
+                    </div>
 </body>
 </html>
