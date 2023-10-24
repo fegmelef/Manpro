@@ -120,7 +120,7 @@ if (isset($_GET["val"])) {
                         <?php
                             
                             $sql = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai_CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, kelas_nilaicpmk.nilai, mk.mk, mhsw.nrp_hash, periode.tahun,
-                                                mhsw.tahun AS 'angkatan', periode.semester
+                                        mhsw.tahun AS 'angkatan', periode.semester
                                     FROM kelas_cpmk
                                     JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
                                     JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
@@ -130,60 +130,35 @@ if (isset($_GET["val"])) {
                                     JOIN periode ON kelas.id_periode = periode.id_periode  
                                     JOIN cpl ON ikcpl.id_cpl = cpl.id_cpl
                                     GROUP BY mk.mk, kelas_nilaicpmk.nrp_hash
-                                    ORDER BY `mhsw`.`nrp_hash` ASC";
+                                    HAVING nilai_CPL < 55.5";
+                            
+                            if ($angkatan !== 'All'){
+                                $sql .= " AND angkatan = $angkatan";
+                            } if ($periode !== 'All'){
+                                $sql .= " AND semester = $periode";
+                            } if ($tahun !== 'All'){
+                                $sql .= " AND tahun = '$tahun'";
+                            } 
+                                   
                     
+                            $sql .= ' ORDER BY `mhsw`.`nrp_hash` ASC';
 
                             $query = $conn->prepare($sql);
                             $query->execute();
                             $rowNum = 1;
                             while($row = $query->fetch()) {
-                                if ($angkatan !== 'All'){
-                                    if ($row['angkatan']!==$angkatan){
-                                        if ($row['tahun']!== 'All'){
-                                            if ($row['tahun']== $tahun){
-                                                if ($row['semester']!== 'All'){
-                                                    if ($row['semester'] == $periode){
-                                                        echo '<tr>
-                                                        <th scope="row">'.$rowNum.'</th> 
-                                                        <td>'.$row['nilai_CPL'].'</td>
-                                                        <td>'.$row['id_ikcpl'].'</td>
-                                                        <td>'.$row['id_cpl'].'</td>
-                                                        <td>'.$row['nilai'].'</td>
-                                                        <td>'.$row['mk'].'</td>
-                                                        <td>'.$row['nrp_hash'].'</td>
-                                                        <td>'.$row['tahun'].'</td>
-                                                        <td>'.$row['angkatan'].'</td>
-                                                    </tr>';
-                                                    }
-                                                }
-                                                echo '<tr>
-                                                <th scope="row">'.$rowNum.'</th> 
-                                                <td>'.$row['nilai_CPL'].'</td>
-                                                <td>'.$row['id_ikcpl'].'</td>
-                                                <td>'.$row['id_cpl'].'</td>
-                                                <td>'.$row['nilai'].'</td>
-                                                <td>'.$row['mk'].'</td>
-                                                <td>'.$row['nrp_hash'].'</td>
-                                                <td>'.$row['tahun'].'</td>
-                                                <td>'.$row['angkatan'].'</td>
-                                            </tr>';
-                                            }
-                                        }
-                                        echo '<tr>
-                                        <th scope="row">'.$rowNum.'</th> 
-                                        <td>'.$row['nilai_CPL'].'</td>
-                                        <td>'.$row['id_ikcpl'].'</td>
-                                        <td>'.$row['id_cpl'].'</td>
-                                        <td>'.$row['nilai'].'</td>
-                                        <td>'.$row['mk'].'</td>
-                                        <td>'.$row['nrp_hash'].'</td>
-                                        <td>'.$row['tahun'].'</td>
-                                        <td>'.$row['angkatan'].'</td>
-                                    </tr>';
-                                    $rowNum++;
-                                    }
-                                }
-                                
+                                echo '<tr>
+                                    <th scope="row">'.$rowNum.'</th> 
+                                    <td>'.$row['nilai_CPL'].'</td>
+                                    <td>'.$row['id_ikcpl'].'</td>
+                                    <td>'.$row['id_cpl'].'</td>
+                                    <td>'.$row['nilai'].'</td>
+                                    <td>'.$row['mk'].'</td>
+                                    <td>'.$row['nrp_hash'].'</td>
+                                    <td>'.$row['tahun'].'</td>
+                                    <td>'.$row['angkatan'].'</td>
+                                </tr>';
+                                $rowNum++; 
                             }
         
                         ?>
