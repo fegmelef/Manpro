@@ -79,6 +79,10 @@ if (isset($_GET["periode"])) {
                 header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
             } 
+            else if ($selectedValue == 'Jumlah') {
+                header("location: ../cpl/jumlah.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                exit;
+            } 
         }   
     ?>
 
