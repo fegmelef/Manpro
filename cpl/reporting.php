@@ -16,6 +16,7 @@ if (isset($_GET["periode"])) {
 if (isset($_GET["val"])) {
     $val = $_GET['val'];
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -57,35 +58,36 @@ if (isset($_GET["val"])) {
                 <option value="Distribusi Data">Distribusi Data</option>
                 <option value="Jumlah">Jumlah</option>
                 <option value="Rata-rata">Rata-rata</option>
+                <option value="Reporting">Reporting</option>
             </select>
             <input type="submit" value="Kirim">
         </form>
         </div>
         <?php
             $kode_cpl = 'TF-01';
+            
             if (isset($_POST['filtering'])) {
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Mengambil nilai dropdown yang dipilih
                     $selectedValue = $_POST['filtering'];
     
                     // Membuat pernyataan if berdasarkan nilai dropdown
-                    if ($selectedValue == 'Reporting') {
-                        header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                    if ($selectedValue == 'Data List') {
+                        header("location: ../cpl/data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode");
                         exit;
-                    } 
-                    else if ($selectedValue == 'Data List') {
-                        header("location: ../cpl/data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                        exit;
-                    } 
+                    }  
                     else if ($selectedValue == 'Rata-rata') {
                         header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
-                    else if ($selectedValue == 'Distribusi Data') {
+                     else if ($selectedValue == 'Jumlah') {
+                        header("location: ../cpl/jumlah.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        exit;
+                    } 
+                }    else if ($selectedValue == 'Distribusi Data') {
                         header("location: ../cpl/distribusi.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
-                }   
             }
            
         ?>
@@ -155,7 +157,7 @@ if (isset($_GET["val"])) {
                     </form>
                 </div>
             </div>
-        
+        </div>
             
             <div class="row">
                 <div class="col-md-12">
@@ -289,6 +291,5 @@ if (isset($_GET["val"])) {
                 </div>
             </div>               
         </div>
-                        </div>
     </body>
 </html>
