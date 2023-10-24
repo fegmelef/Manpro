@@ -110,27 +110,61 @@ if (isset($_GET["val"])) {
                 GROUP BY cpl.id_cpl, mk.mk, ikcpl.id_ikcpl
                 ORDER BY `mhsw`.`nrp_hash` ASC";
 
+                $query3 = "SELECT mk.mk
+                FROM mk
+                JOIN kelas AS k ON k.id_mk=mk.id_mk 
+                JOIN kelas_cpmk AS kc ON kc.id_kelas=k.id_kelas
+                JOIN kelas_nilaicpmk AS kn ON kn.id_cpmk=kc.id_cpmk
+                WHERE kn.nrp_hash = ?
+                GROUP BY mk.mk";
+
                 #prepare
                 $query = $conn->prepare($query);
                 $query2 = $conn->prepare($query2);
+                $query3 = $conn->prepare($query3);
 
                 #exec
                 $query->execute([$nrp]);
+                $query3->execute([$nrp]);
+
+                $jum_mk = 0; 
+                while($row = $query3->fetch()) {
+                    $jum_mk = $jum_mk + 1;
+                }
                 
                 $rowNum = 1;
                 while($row = $query->fetch()) {
                     echo '<tr>
-                    <th>'.$rowNum.'</th><td>'.$row['id_mk'].'</td>
-                    <td>'.$row['mk'].'</td>'
-                    for 
-                    '<td>'.$row['nilai CPL'].'</td>';
-                $rowNum++;
-                }
-
-                for (i=0;i<10;i++) {
-                    $id_cpl = 'TF-0' 
-                    $query2->execute([$nrp],[])
-                }
+                    <th>'.$rowNum.'</th><td>'.$row['id_mk'].'</td>';
+                    
+                    for ($j=1;$j<=$jum_mk;$j++) {
+                        echo '<td>'.$row['mk'].'</td>';
+                        for ($i=1;$i<=10;$i++) {
+                            if ($i==10) {
+                                $id_cpl = 'TF-'.$i;
+                            }
+                            else {
+                                $id_cpl = 'TF-0'.$i;
+                            }
+                            $query2->execute([$nrp, $id_cpl]);
+                            if ($query2->rowCount()==0) {
+                                echo '<td>0</td>';
+                            }
+                            else {
+                                while($row1 = $query2->fetch()) {
+                                    echo '<td>'.$row1['nilai CPL'].'</td>';
+                                }
+                            }
+                            // $nilai = 0;
+                            // if ($query2->rowCount()>1) {
+                            //     while($row = $query->fetch()) {
+                            //         $nilai = $nilai + $row['nilai CPL'];
+                            //     }
+                            // }
+                            }
+                        }
+                        $rowNum++;
+                    }
                 
             ?>
         </tbody>
