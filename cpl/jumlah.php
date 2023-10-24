@@ -105,10 +105,10 @@ if (isset($_GET["val"])) {
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Nilai CPL</th>
-                            <th scope="col">id ikcpl</th>
-                            <th scope="col">id CPL</th>
-                            <th scope="col">nilai</th>
-                            <th scope="col">mk</th>
+                            <th scope="col">Persentase</th>
+                            <th scope="col">ID ikcpl</th>
+                            <th scope="col">ID CPL</th>
+                            <th scope="col">Mata Kuliah</th>
                             <!-- <th scope="col">Nama</th> -->
                             <th scope="col">NRPhash</th>
                             <th scope="col">Tahun</th>
@@ -119,18 +119,16 @@ if (isset($_GET["val"])) {
                         <tbody>
                         <?php
                             
-                            $sql = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai_CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, kelas_nilaicpmk.nilai, mk.mk, mhsw.nrp_hash, periode.tahun,
-                                        mhsw.tahun AS 'angkatan', periode.semester
-                                    FROM kelas_cpmk
-                                    JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
-                                    JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
-                                    JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
-                                    JOIN mk ON kelas.id_mk = mk.id_mk
-                                    JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
-                                    JOIN periode ON kelas.id_periode = periode.id_periode  
-                                    JOIN cpl ON ikcpl.id_cpl = cpl.id_cpl
-                                    GROUP BY mk.mk, kelas_nilaicpmk.nrp_hash
-                                    HAVING nilai_CPL < 55.5";
+                            $sql = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, mk.mk, mhsw.nrp_hash, periode.tahun, mhsw.tahun AS 'angkatan'
+                            FROM kelas_cpmk
+                            JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
+                            JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
+                            JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
+                            JOIN mk ON kelas.id_mk = mk.id_mk
+                            JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
+                            JOIN periode ON kelas.id_periode = periode.id_periode  
+                            JOIN cpl ON ikcpl.id_cpl = cpl.id_cpl
+                            GROUP BY mk.mk, kelas_nilaicpmk.nrp_hash";
                             
                             if ($angkatan !== 'All'){
                                 $sql .= " AND angkatan = $angkatan";
@@ -149,10 +147,10 @@ if (isset($_GET["val"])) {
                             while($row = $query->fetch()) {
                                 echo '<tr>
                                     <th scope="row">'.$rowNum.'</th> 
-                                    <td>'.$row['nilai_CPL'].'</td>
+                                    <td>'.$row['nilai CPL'].'</td>
+                                    <td>'.$row['persentase'].'</td>
                                     <td>'.$row['id_ikcpl'].'</td>
                                     <td>'.$row['id_cpl'].'</td>
-                                    <td>'.$row['nilai'].'</td>
                                     <td>'.$row['mk'].'</td>
                                     <td>'.$row['nrp_hash'].'</td>
                                     <td>'.$row['tahun'].'</td>
