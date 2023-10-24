@@ -138,7 +138,37 @@ if (isset($_GET["val"])) {
                             $rowNum = 1;
                             while($row = $query->fetch()) {
                                 if ($angkatan !== 'All'){
-                                    if ($row['angkatan']==$angkatan){
+                                    if ($row['angkatan']!==$angkatan){
+                                        if ($row['tahun']!== 'All'){
+                                            if ($row['tahun']== $tahun){
+                                                if ($row['semester']!== 'All'){
+                                                    if ($row['semester'] == $periode){
+                                                        echo '<tr>
+                                                        <th scope="row">'.$rowNum.'</th> 
+                                                        <td>'.$row['nilai_CPL'].'</td>
+                                                        <td>'.$row['id_ikcpl'].'</td>
+                                                        <td>'.$row['id_cpl'].'</td>
+                                                        <td>'.$row['nilai'].'</td>
+                                                        <td>'.$row['mk'].'</td>
+                                                        <td>'.$row['nrp_hash'].'</td>
+                                                        <td>'.$row['tahun'].'</td>
+                                                        <td>'.$row['angkatan'].'</td>
+                                                    </tr>';
+                                                    }
+                                                }
+                                                echo '<tr>
+                                                <th scope="row">'.$rowNum.'</th> 
+                                                <td>'.$row['nilai_CPL'].'</td>
+                                                <td>'.$row['id_ikcpl'].'</td>
+                                                <td>'.$row['id_cpl'].'</td>
+                                                <td>'.$row['nilai'].'</td>
+                                                <td>'.$row['mk'].'</td>
+                                                <td>'.$row['nrp_hash'].'</td>
+                                                <td>'.$row['tahun'].'</td>
+                                                <td>'.$row['angkatan'].'</td>
+                                            </tr>';
+                                            }
+                                        }
                                         echo '<tr>
                                         <th scope="row">'.$rowNum.'</th> 
                                         <td>'.$row['nilai_CPL'].'</td>
