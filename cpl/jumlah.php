@@ -57,7 +57,7 @@ if (isset($_GET["val"])) {
             <option value="selected value"><?php echo $val; ?></option>
             <option value="Data List">Data List</option>
             <option value="Distribusi Data">Distribusi Data</option>
-            <option value="Jumlah">Jumlah</option>
+            <!-- <option value="Jumlah">Jumlah</option> -->
             <option value="Rata-rata">Rata-rata</option>
             <option value="Reporting">Reporting</option>
         </select>
