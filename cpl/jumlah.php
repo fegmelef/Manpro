@@ -145,17 +145,19 @@ if (isset($_GET["val"])) {
                             $query->execute();
                             $rowNum = 1;
                             while($row = $query->fetch()) {
-                                echo '<tr>
-                                    <th scope="row">'.$rowNum.'</th> 
-                                    <td>'.$row['nilai CPL'].'</td>
-                                    <td>'.$row['persentase'].'</td>
-                                    <td>'.$row['id_ikcpl'].'</td>
-                                    <td>'.$row['id_cpl'].'</td>
-                                    <td>'.$row['mk'].'</td>
-                                    <td>'.$row['nrp_hash'].'</td>
-                                    <td>'.$row['tahun'].'</td>
-                                    <td>'.$row['angkatan'].'</td>
-                                </tr>';
+                                if ($row['nilai CPL'] < 55.5) {
+                                    echo '<tr>
+                                        <th scope="row">'.$rowNum.'</th> 
+                                        <td>'.$row['nilai CPL'].'</td>
+                                        <td>'.$row['persentase'].'</td>
+                                        <td>'.$row['id_ikcpl'].'</td>
+                                        <td>'.$row['id_cpl'].'</td>
+                                        <td>'.$row['mk'].'</td>
+                                        <td>'.$row['nrp_hash'].'</td>
+                                        <td>'.$row['tahun'].'</td>
+                                        <td>'.$row['angkatan'].'</td>
+                                    </tr>';
+                                }                            
                                 $rowNum++; 
                             }
         
