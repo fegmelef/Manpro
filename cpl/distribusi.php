@@ -55,7 +55,7 @@ if (isset($_GET["val"])) {
         <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
             <option value="selected value"><?php echo $val; ?></option>
             <option value="Data List">Data List</option>
-            <option value="Distribusi Data">Rata-rata</option>
+            <option value="Rata-rata">Rata-rata</option>
             <option value="Jumlah">Jumlah</option>
             <option value="Reporting">Reporting</option>
         </select>
@@ -81,8 +81,8 @@ if (isset($_GET["val"])) {
                 header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
             } 
-            else if ($selectedValue == 'Distribusi Data') {
-                header("location: ../cpl/distribusi.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+            else if ($selectedValue == 'Jumlah') {
+                header("location: ../cpl/jumlah.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
             } 
         }   

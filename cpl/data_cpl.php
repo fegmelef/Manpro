@@ -48,63 +48,53 @@ if (isset($_GET["periode"])) {
     </div>
 
     <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
-    <div class="col-md-3">
-    <form action="" method="post">
-        <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
-            <option value="Data List">Data List</option>
-            <option value="Distribusi Data">Distribusi Data</option>
-            <option value="Jumlah">Jumlah</option>
-            <option value="Rata-rata">Rata-rata</option>
-            <option value="Reporting">Reporting</option>
-        </select>
-        <input type="submit" value="Kirim">
-    </form>
-    </div>
-    <?php
-        $kode_cpl = 'TF-01';
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Mengambil nilai dropdown yang dipilih
-            $selectedValue = $_POST['filtering'];
+    <div class="col-md-5">
+                <form action="" method="post">
+                    <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+                        <option value="Data List">Data List</option>
+                        <option value="Distribusi Data">Distribusi Data</option>
+                        <option value="Jumlah">Jumlah</option>
+                        <option value="Rata-rata">Rata-rata</option>
+                        <option value="Reporting">Reporting</option>
+                    </select>
+                    <input type="submit" value="Kirim">
+                </form>
+            </div>
+            <?php
+                $kode_cpl = 'TF-01';
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    // Mengambil nilai dropdown yang dipilih
+                    $selectedValue = $_POST['filtering'];
 
-            // Membuat pernyataan if berdasarkan nilai dropdown
-            if ($selectedValue == 'Reporting') {
-                header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                exit;
-            } 
-            else if ($selectedValue == 'Data List') {
-                header("location: ../cpl/data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                exit;
-            } 
-            else if ($selectedValue == 'Rata-rata') {
-                header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                exit;
-            } 
-            else if ($selectedValue == 'Jumlah') {
-                header("location: ../cpl/jumlah.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                exit;
-            } 
-        }   
-    ?>
-
+                    // Membuat pernyataan if berdasarkan nilai dropdown
+                    if ($selectedValue == 'Reporting') {
+                        header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        exit;
+                    } 
+                    else if ($selectedValue == 'Distribusi Data') {
+                        header("location: ../cpl/distribusi.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        exit;
+                    } 
+                    else if ($selectedValue == 'Rata-rata') {
+                        header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        exit;
+                    } 
+                    else if ($selectedValue == 'Jumlah') {
+                        header("location: ../cpl/jumlah.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        exit;
+                    } 
+                }   
+            ?>
     <!-- isi -->
     <div class="container">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-7">
                 <p class="semester">Semester:
                     <?php echo $periode; ?><br>Angkatan:
                     <?php echo $angkatan; ?><br>Tahun:
                     <?php echo $tahun; ?>
                 </p>
             </div>
-            <!-- <div class="col-md-3">
-                <select name="filtering" id="filtering" class="form-control1">
-                    <option value="Data List">Data List</option>
-                    <option value="Distribusi Data">Distribusi Data</option>
-                    <option value="Jumlah">Jumlah</option>
-                    <option value="Rata-rata">Rata-rata</option>
-                    <option value="Reporting">Reporting</option>
-                </select>
-            </div> -->
         </div>
         <div class="row">
                 <div class="col-md-12">
