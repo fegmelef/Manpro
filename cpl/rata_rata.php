@@ -77,8 +77,8 @@ if (isset($_GET["val"])) {
                 header("location: ../cpl/data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
             } 
-            else if ($selectedValue == 'Rata-rata') {
-                header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+            else if ($selectedValue == 'Jumlah') {
+                header("location: ../cpl/jumlah.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
             } 
             else if ($selectedValue == 'Distribusi Data') {
