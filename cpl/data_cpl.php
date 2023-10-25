@@ -48,18 +48,6 @@ if (isset($_GET["periode"])) {
     </div>
 
     <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
-    <div class="col-md-5">
-                <form action="" method="post">
-                    <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
-                        <option value="Data List">Data List</option>
-                        <option value="Distribusi Data">Distribusi Data</option>
-                        <option value="Jumlah">Jumlah</option>
-                        <option value="Rata-rata">Rata-rata</option>
-                        <option value="Reporting">Reporting</option>
-                    </select>
-                    <input type="submit" value="Kirim">
-                </form>
-            </div>
             <?php
                 $kode_cpl = 'TF-01';
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -95,6 +83,19 @@ if (isset($_GET["periode"])) {
                     <?php echo $tahun; ?>
                 </p>
             </div>
+
+            <div class="col-md-5">
+                <form action="" method="post">
+                    <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+                        <option value="Data List">Data List</option>
+                        <option value="Distribusi Data">Distribusi Data</option>
+                        <option value="Jumlah">Jumlah</option>
+                        <option value="Rata-rata">Rata-rata</option>
+                        <option value="Reporting">Reporting</option>
+                    </select>
+                    <input type="submit" value="Kirim">
+                </form>
+            </div>
         </div>
         <div class="row">
                 <div class="col-md-12">
@@ -128,8 +129,9 @@ if (isset($_GET["periode"])) {
                                 <th scope="row">'.$rowNum.'</th>
                                 <td>'.$row['nrp_hash'].'</td>
                                 <td>'.$row['tahun'].'</td>
-                                <td><form method="post" action="detail_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue"">
+                                <td><form method="post" action="detail_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">
                                 <input type="hidden" name="nrp" value="' . $row['nrp_hash'] . '">
+                                <input type="hidden" name="year" value="' . $row['tahun'] . '">
                                 <button type="submit" name="detail" class="btn btn-dark">Detail</button>
                             </form></td>
                             </tr>';

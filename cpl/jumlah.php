@@ -51,19 +51,6 @@ if (isset($_GET["val"])) {
     </div>
 
     <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
-    <div class="col-md-3">
-    <form action="" method="post">
-        <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
-            <option value="selected value"><?php echo $val; ?></option>
-            <option value="Data List">Data List</option>
-            <option value="Distribusi Data">Distribusi Data</option>
-            <!-- <option value="Jumlah">Jumlah</option> -->
-            <option value="Rata-rata">Rata-rata</option>
-            <option value="Reporting">Reporting</option>
-        </select>
-        <input type="submit" value="Kirim">
-    </form>
-    </div>
     <?php
         $kode_cpl = 'TF-01';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -95,22 +82,89 @@ if (isset($_GET["val"])) {
     <!-- isi -->
     <div class="container">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-7">
                 <p class="semester">Semester:
                     <?php echo $periode; ?><br>Angkatan:
                     <?php echo $angkatan; ?><br>Tahun:
                     <?php echo $tahun; ?>
                 </p>
             </div>
-
+            <div class="col-md-5">
+                <form action="" method="post">
+                    <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+                        <option value="selected value"><?php echo $val; ?></option>
+                        <option value="Data List">Data List</option>
+                        <option value="Distribusi Data">Distribusi Data</option>
+                        <!-- <option value="Jumlah">Jumlah</option> -->
+                        <option value="Rata-rata">Rata-rata</option>
+                        <option value="Reporting">Reporting</option>
+                    </select>
+                    <input type="submit" value="Kirim">
+                </form>
+            </div>
         </div>
+
+        <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Mata Kuliah</th>
+                            <th scope="col">Jumlah Mahasiswa Tidak Lulus</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            $query1 = "SELECT subquery.mk AS 'Mata Kuliah', COUNT(subquery.nrp_hash) AS 'Jumlah Mahasiswa Tidak Lulus'
+                            FROM (
+                                SELECT mk.mk, kelas_nilaicpmk.nrp_hash
+                                FROM kelas_cpmk
+                                    JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
+                                    JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
+                                    JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
+                                    JOIN mk ON kelas.id_mk = mk.id_mk
+                                    JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
+                                    JOIN periode ON kelas.id_periode = periode.id_periode  
+                                    JOIN cpl ON ikcpl.id_cpl = cpl.id_cpl
+                                    GROUP BY mk.mk, kelas_nilaicpmk.nrp_hash
+                                    HAVING SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) < 55.5
+                                ) AS subquery
+                            GROUP BY subquery.mk";
+
+                            if ($angkatan !== 'All'){
+                                $sql .= " AND angkatan = $angkatan";
+                            } if ($periode !== 'All'){
+                                $sql .= " AND semester = $periode";
+                            } if ($tahun !== 'All'){
+                                $sql .= " AND tahun = '$tahun'";
+                            } 
+
+                            $query1 = $conn->prepare($query1);
+                            $query1->execute();
+                            $rowNum = 1;
+                            while($row1 = $query1->fetch()) {
+                                    echo '<tr>
+                                        <th scope="row">'.$rowNum.'</th> 
+                                        <td>'.$row1['Mata Kuliah'].'</td>
+                                        <td>'.$row1['Jumlah Mahasiswa Tidak Lulus'].'</td>
+                                    </tr>';
+
+                                    $rowNum++; 
+                                }                            
+                            
+                                ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         <div class="row">
                 <div class="col-md-12">
                     <table class="table">
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Nilai CPL</th>
-                            <th scope="col">Persentase</th>
+                            <!-- <th scope="col">Persentase</th> -->
                             <th scope="col">ID ikcpl</th>
                             <th scope="col">ID CPL</th>
                             <th scope="col">Mata Kuliah</th>
@@ -123,7 +177,6 @@ if (isset($_GET["val"])) {
                         </thead>
                         <tbody>
                         <?php
-                            
                             $sql = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, mk.mk, mhsw.nrp_hash, periode.tahun, mhsw.tahun AS 'angkatan'
                             FROM kelas_cpmk
                             JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
@@ -133,7 +186,8 @@ if (isset($_GET["val"])) {
                             JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
                             JOIN periode ON kelas.id_periode = periode.id_periode  
                             JOIN cpl ON ikcpl.id_cpl = cpl.id_cpl
-                            GROUP BY mk.mk, kelas_nilaicpmk.nrp_hash";
+                            GROUP BY mk.mk, kelas_nilaicpmk.nrp_hash
+                            HAVING SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) < 55.5";
                             
                             if ($angkatan !== 'All'){
                                 $sql .= " AND angkatan = $angkatan";
@@ -143,18 +197,16 @@ if (isset($_GET["val"])) {
                                 $sql .= " AND tahun = '$tahun'";
                             } 
                                    
-                    
                             $sql .= ' ORDER BY `mhsw`.`nrp_hash` ASC';
 
                             $query = $conn->prepare($sql);
                             $query->execute();
+                        
                             $rowNum = 1;
-                            while($row = $query->fetch()) {
-                                if ($row['nilai CPL'] < 55.5) {
+                            while ($row = $query->fetch()) {
                                     echo '<tr>
                                         <th scope="row">'.$rowNum.'</th> 
                                         <td>'.$row['nilai CPL'].'</td>
-                                        <td>'.$row['persentase'].'</td>
                                         <td>'.$row['id_ikcpl'].'</td>
                                         <td>'.$row['id_cpl'].'</td>
                                         <td>'.$row['mk'].'</td>
@@ -162,10 +214,8 @@ if (isset($_GET["val"])) {
                                         <td>'.$row['tahun'].'</td>
                                         <td>'.$row['angkatan'].'</td>
                                     </tr>';
+                                    $rowNum++; 
                                 }                            
-                                $rowNum++; 
-                            }
-        
                         ?>
                         </tbody>
                     </table>

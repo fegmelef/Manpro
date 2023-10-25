@@ -5,6 +5,10 @@ if (isset($_POST["nrp"])) {
     $nrp = $_POST['nrp'];
 }
 
+if (isset($_POST["year"])) {
+    $year = $_POST['year'];
+}
+
 if (isset($_GET["angkatan"])) {
     $angkatan = $_GET['angkatan'];
 }
@@ -49,17 +53,17 @@ if (isset($_GET["val"])) {
         <!-- isi -->
         <div class="container">
             <div class="row g-2" style="margin-bottom:20px;">
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <div class="p-3">Nama:</div>
                 </div>
                 <div class="col-md-6">
                     <div class="p-3">Program Studi:</div>
-                </div>
+                </div> -->
                 <div class="col-md-6">
                     <div class="p-3">NRP: <?php echo $nrp; ?> </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="p-3">Periode/Tahun:</div>
+                    <div class="p-3">Angkatan: <?php echo $year; ?> </div>
                 </div>
             </div>
 
