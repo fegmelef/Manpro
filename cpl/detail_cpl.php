@@ -126,7 +126,7 @@ if (isset($_GET["val"])) {
         </div>
 
         <div class="col-md-12">
-            <table borderWidth="1" style="width:100%;">
+            <table border=1 style="width:100%;">
             <thead>
                 <tr>
                     <th>No</th>
@@ -146,7 +146,7 @@ if (isset($_GET["val"])) {
             </thead>
             <tbody>
                 <?php
-                    $query = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, kelas_nilaicpmk.nilai, mk.id_mk, mk.mk, mhsw.nrp_hash, periode.tahun
+                    $query = "SELECT ROUND(SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai),2) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, kelas_nilaicpmk.nilai, mk.id_mk, mk.mk, mhsw.nrp_hash, periode.tahun
                     FROM kelas_cpmk
                     JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
                     JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
@@ -155,24 +155,11 @@ if (isset($_GET["val"])) {
                     JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
                     JOIN periode ON kelas.id_periode = periode.id_periode  
                     JOIN cpl ON ikcpl.id_cpl = cpl.id_cpl
-                    WHERE mhsw.nrp_hash = ?
+                    WHERE mhsw.nrp_hash = ? AND mk.id_mk = ?
                     GROUP BY mk.mk, ikcpl.id_ikcpl
-                    ORDER BY `mhsw`.`nrp_hash` ASC";
+                    ORDER BY ikcpl.id_cpl ASC";
 
-                    $query2 = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL'
-                    FROM kelas_cpmk
-                    JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
-                    JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
-                    JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
-                    JOIN mk ON kelas.id_mk = mk.id_mk
-                    JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
-                    JOIN periode ON kelas.id_periode = periode.id_periode  
-                    JOIN cpl ON ikcpl.id_cpl = cpl.id_cpl
-                    WHERE mhsw.nrp_hash = ? AND cpl.id_cpl = ?
-                    GROUP BY cpl.id_cpl, mk.mk, ikcpl.id_ikcpl
-                    ORDER BY `mhsw`.`nrp_hash` ASC";
-
-                    $query3 = "SELECT mk.mk
+                    $query2 = "SELECT mk.mk, mk.id_mk
                     FROM mk
                     JOIN kelas AS k ON k.id_mk=mk.id_mk 
                     JOIN kelas_cpmk AS kc ON kc.id_kelas=k.id_kelas
@@ -183,80 +170,45 @@ if (isset($_GET["val"])) {
                     #prepare
                     $query = $conn->prepare($query);
                     $query2 = $conn->prepare($query2);
-                    $query3 = $conn->prepare($query3);
 
                     #exec
-                    $query->execute([$nrp]);
-                    $query3->execute([$nrp]);
-
-                    $jum_mk = 0; 
-                    while($row2 = $query3->fetch()) {
-                        $jum_mk = $jum_mk + 1;
-                    }
+                    $query2->execute([$nrp]);
                     
                     $rowNum = 1;
-                    while($row = $query->fetch()) {
+                    while ($row2 = $query2->fetch()) {
                         echo '<tr>
-                        <th>'.$rowNum.'</th><td>'.$row['id_mk'].'</td>';
-                        
-                        for ($j=1;$j<=$jum_mk;$j++) {
-                            echo '<td>'.$row['mk'].'</td>';
-                            for ($i=1;$i<=10;$i++) {
+                            <th>'.$rowNum.'</th><td>'.$row2['id_mk'].'</td><td>'.$row2['mk'].'</td>';
+
+                        $query->execute([$nrp,$row2['id_mk']]);
+                        $rows = $query->fetchAll();
+                        $count = count($rows);
+
+                        $start = 1;
+                        foreach ($rows as $row) {
+                            for ($i=$start;$i<=10;$i++) {
                                 if ($i==10) {
                                     $id_cpl = 'TF-'.$i;
                                 }
                                 else {
                                     $id_cpl = 'TF-0'.$i;
                                 }
-                                $query2->execute([$nrp, $id_cpl]);
-                                if ($query2->rowCount()==0) {
-                                    echo '<td>0</td>';
-                                }
-                                else {
-                                    while($row1 = $query2->fetch()) {
-                                        echo '<td>'.$row1['nilai CPL'].'</td>';
+                                if ($id_cpl==$row['id_cpl']) {
+                                    echo '<td>'.$row['nilai CPL'].'</td>';
+                                    $start = $i+1;
+                                    if ($count>1) {
+                                        $count--;
+                                        break;
                                     }
                                 }
-                                // $nilai = 0;
-                                // if ($query2->rowCount()>1) {
-                                //     while($row = $query->fetch()) {
-                                //         $nilai = $nilai + $row['nilai CPL'];
-                                //     }
-                                // }
-                                }
+                                else {
+                                    echo '<td>0</td>';
+                                }  
                             }
-                            $rowNum++;
                         }
-                
+                        $rowNum++;
+                    }
                 ?>
         </tbody>
-            <!-- <tr>
-                <th>Row 1</th>
-                <td>TF</td>
-                <td>Struktur Data</td>
-                <td>Data 1,1</td>
-                <td>Data 1,2</td>
-                <td>Data 1,3</td>
-                <td>Data 1,4</td>
-                <td>Data 1,5</td>
-                <td>Data 1,6</td>
-                <td>Data 1,7</td>
-                <td>Data 1,8</td>
-                <td>Data 1,9</td>
-                <td>Data 1,10</td>
-            </tr>
-            <tr>
-                <th>Row 2</th>
-                <td>Data 2,1</td>
-                <td>Data 2,2</td>
-                <td>Data 2,3</td>
-            </tr>
-            <tr>
-                <th>Row 3</th>
-                <td>Data 3,1</td>
-                <td>Data 3,2</td>
-                <td>Data 3,3</td>
-            </tr> -->
     </table>
     </div>
         </div>

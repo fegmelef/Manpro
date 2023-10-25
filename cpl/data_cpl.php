@@ -135,7 +135,6 @@ if (isset($_GET["periode"])) {
                             </tr>';
                             $rowNum++;
                             }
-        
                         ?>
                         </tbody>
                     </table>
