@@ -117,7 +117,7 @@ if (isset($_GET["val"])) {
                         <?php
                             $query1 = "SELECT subquery.mk AS 'Mata Kuliah', COUNT(subquery.nrp_hash) AS 'Jumlah Mahasiswa Tidak Lulus'
                             FROM (
-                                SELECT mk.mk, kelas_nilaicpmk.nrp_hash
+                                SELECT mk.mk, kelas_nilaicpmk.nrp_hash, mhsw.tahun AS 'angkatan', periode.tahun, periode.semester AS 'semester'
                                 FROM kelas_cpmk
                                     JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
                                     JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
@@ -127,18 +127,17 @@ if (isset($_GET["val"])) {
                                     JOIN periode ON kelas.id_periode = periode.id_periode  
                                     JOIN cpl ON ikcpl.id_cpl = cpl.id_cpl
                                     GROUP BY mk.mk, kelas_nilaicpmk.nrp_hash
-                                    HAVING SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) < 55.5
-                                ) AS subquery
-                            GROUP BY subquery.mk";
+                                    HAVING SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) < 55.5";
 
                             if ($angkatan !== 'All'){
-                                $sql .= " AND angkatan = $angkatan";
+                                $query1 .= " AND angkatan = $angkatan";
                             } if ($periode !== 'All'){
-                                $sql .= " AND semester = $periode";
+                                $query1 .= " AND semester = $periode";
                             } if ($tahun !== 'All'){
-                                $sql .= " AND tahun = '$tahun'";
+                                $query1 .= " AND tahun = '$tahun'";
                             } 
 
+                            $query1 .=") AS subquery GROUP BY subquery.mk";
                             $query1 = $conn->prepare($query1);
                             $query1->execute();
                             $rowNum = 1;
@@ -177,7 +176,7 @@ if (isset($_GET["val"])) {
                         </thead>
                         <tbody>
                         <?php
-                            $sql = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, mk.mk, mhsw.nrp_hash, periode.tahun, mhsw.tahun AS 'angkatan'
+                            $sql = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, mk.mk, mhsw.nrp_hash, periode.tahun, mhsw.tahun AS 'angkatan', periode.semester
                             FROM kelas_cpmk
                             JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
                             JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
