@@ -6,7 +6,7 @@ include "../api/connect.php";
 <html lang="en">
 
 <head>
-    <title>Welcome Page</title>
+    <title>Home CPL</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
