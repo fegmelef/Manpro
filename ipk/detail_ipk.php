@@ -131,11 +131,17 @@ if (isset($_GET["val"])) {
                     }
                     // echo $row['mk']."<br>";
                     // echo $nilai_huruf." ".$nilai_num."<br>";
-                    echo "<tr>
-                            <td>".$row['mk']."</td>
-                            <td>".$nilai_huruf."</td>
-                            <td>".$nilai_num."</td>
-                        </tr>"."<break";
+                    // echo "<tr>
+                    //         <td>".$row['mk']."</td>
+                    //         <td>".$nilai_huruf."</td>
+                    //         <td>".$nilai_num."</td>
+                    //     </tr>"."<break";
+
+                    echo '<tr>
+                            <td>'.$row['mk'].'</td>
+                            <td>'.$nilai_num.'</td>
+                            <td>'.$nilai_huruf.'</td>
+                        </tr>';
                 }
             
             ?>
