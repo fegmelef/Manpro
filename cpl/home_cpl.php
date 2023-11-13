@@ -34,7 +34,7 @@ include "../api/connect.php";
     </div>
 
     <!-- isi -->
-    <form action="../api/get_data.php" method="POST">
+    <form action="../api/get_data_cpl.php" method="POST">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">Periode</div>

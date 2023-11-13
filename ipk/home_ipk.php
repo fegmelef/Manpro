@@ -34,7 +34,7 @@ include "../api/connect.php";
     </div>
 
     <!-- isi -->
-    <form action="../api/get_data.php" method="POST">
+    <form action="../api/get_data_ipk.php" method="POST">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">Periode</div>
@@ -92,7 +92,7 @@ include "../api/connect.php";
             <div class="row">
                 <div class="col-md-12 text-center">
                     <!-- Center the button within the column -->
-                    <button type="submit" name="submit" class="btn">Generate</button>
+                    <button type="submit" name="generate_ipk" class="btn">Generate</button>
                 </div>
             </div>
         </div>

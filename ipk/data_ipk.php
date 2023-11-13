@@ -55,26 +55,26 @@ if (isset($_GET["periode"])) {
                     $selectedValue = $_POST['filtering'];
 
                     // Membuat pernyataan if berdasarkan nilai dropdown
-                    if ($selectedValue == 'Reporting') {
-                        header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                    if ($selectedValue == 'Jumlah') {
+                        header("location: ../ipk/jumlah_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
-                    else if ($selectedValue == 'Distribusi Data') {
-                        header("location: ../cpl/distribusi.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                    else if ($selectedValue == 'Penurunan IPS') {
+                        header("location: ../ipk/penurunan_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
                     else if ($selectedValue == 'Rata-rata IPK') {
-                        header("location: ../cpl/rata2_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        header("location: ../ipk/rata2_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
                     else if ($selectedValue == 'Rata-rata IPS') {
-                        header("location: ../cpl/rata2_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        header("location: ../ipk/rata2_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
-                    else if ($selectedValue == 'Jumlah') {
-                        header("location: ../cpl/jumlah_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                        exit;
-                    } 
+                    // else if ($selectedValue == 'Jumlah') {
+                    //     header("location: ../ipk/jumlah_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                    //     exit;
+                    // } 
                 }   
             ?>
     <!-- isi -->
@@ -92,10 +92,10 @@ if (isset($_GET["periode"])) {
                 <form action="" method="post">
                     <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
                         <option value="Data List">Data List</option>
-                        <option value="Distribusi Data">Distribusi Data</option>
                         <option value="Jumlah">Jumlah</option>
-                        <option value="Rata-rata">Rata-rata</option>
-                        <option value="Reporting">Reporting</option>
+                        <option value="Penuruan IPS">Jumlah</option>
+                        <option value="Rata-rata IPK">Rata-rata</option>
+                        <option value="Rata-rata IPS">Reporting</option>
                     </select>
                     <input type="submit" value="Kirim">
                 </form>
