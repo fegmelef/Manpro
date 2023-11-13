@@ -1,9 +1,29 @@
 <?php
 include("../api/connect.php");
 
-// if (isset($_POST["nrp"])) {
-//     $nrp = $_POST['nrp'];
-// }
+
+if (isset($_POST["nrp"])) {
+    $nrp = $_POST['nrp'];
+}
+
+if (isset($_POST["year"])) {
+    $year = $_POST['year'];
+}
+
+if (isset($_GET["angkatan"])) {
+    $angkatan = $_GET['angkatan'];
+}
+
+if (isset($_GET["tahun"])) {
+    $tahun = $_GET['tahun'];
+}
+
+if (isset($_GET["periode"])) {
+    $periode = $_GET['periode'];
+}
+if (isset($_GET["val"])) {
+    $val = $_GET['val'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,8 +68,18 @@ include("../api/connect.php");
                 </div>
             </div>
 
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mata Kuliah </th>
+                        <th>Nilai Angka </th>
+                        <th>Nilai Huruf </th>
+                    </tr>
+                </thead>
+            </table>
+
             <?php
-                $nrp='fd6846feff8f95f4b21e7113643e0d59';
+                // $nrp='$nrp';
                 
                 $query = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, kelas_nilaicpmk.nilai, mk.mk, mhsw.nrp_hash, periode.tahun
                 FROM kelas_cpmk
@@ -99,7 +129,13 @@ include("../api/connect.php");
                         $nilai_huruf = 'E';
                         $nilai_num = 0;
                     }
-                    echo $nilai_huruf." ".$nilai_num."<br>";
+                    // echo $row['mk']."<br>";
+                    // echo $nilai_huruf." ".$nilai_num."<br>";
+                    echo "<tr>
+                            <td>".$row['mk']."</td>
+                            <td>".$nilai_huruf."</td>
+                            <td>".$nilai_num."</td>
+                        </tr>"."<break";
                 }
             
             ?>
