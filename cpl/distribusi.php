@@ -161,7 +161,7 @@ if (isset($_GET["val"])) {
                         }
 
                         $query .= " GROUP BY mk.id_mk";
-                        echo ($query);
+                        // echo ($query);
 
                         $query = $conn->prepare($query);
                         if ($periode !== "All") {
