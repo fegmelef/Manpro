@@ -24,6 +24,8 @@ if (isset($_GET["periode"])) {
 if (isset($_GET["val"])) {
     $val = $_GET['val'];
 }
+$sql_ipk = "SELECT ipk FROM ipk WHERE nrp_hash = '$nrp'";
+$sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
 ?>
 
 <!DOCTYPE html>
@@ -66,9 +68,17 @@ if (isset($_GET["val"])) {
                 <div class="col-md-6">
                     <div class="p-3">Angkatan: <?php echo $year; ?> </div>
                 </div>
+                <?php
+                    $sql_ipk = $conn->prepare($sql_ipk);
+                    $sql_ipk->execute();
+                    $row_ipk = $sql_ipk->fetch();
+                ?>
+                <div class="col-md-6">
+                    <div class="p-3">ipk: <?php echo $row_ipk['ipk']; ?> </div>
+                </div>
             </div>
 
-            <table>
+            <table border="1">
                 <thead>
                     <tr>
                         <th>Mata Kuliah </th>
@@ -76,7 +86,7 @@ if (isset($_GET["val"])) {
                         <th>Nilai Huruf </th>
                     </tr>
                 </thead>
-            </table>
+          
 
             <?php
                 // $nrp='$nrp';
@@ -145,7 +155,33 @@ if (isset($_GET["val"])) {
                 }
             
             ?>
+            </table>
             
+            <table border="1">
+                <tr>
+                    <th>Tahun</th>
+                    <th>Semester</th>
+                    <th>IPS</th>
+                </tr>
+                <?php
+                 $sql_ips = $conn->prepare($sql_ips);
+                 $sql_ips->execute();
+                 $semester;
+                 while ($row_ips = $sql_ips->fetch()){
+                    if ($row_ips['semester']==1){
+                        $semester="ganjil";
+                    }
+                    else if ($row_ips['semester']==2){
+                        $semester="genap";
+                    }
+                    echo '<tr>
+                            <td>'.$row_ips['tahun'].'</td>
+                            <td>'.$semester.'</td>
+                            <td>'.$row_ips['ips'].'</td>
+                        </tr>';
+                 }
+                ?>
+            </table>         
         </div>
     </body>
 </html>
