@@ -48,8 +48,8 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
         <!-- bread crumbs -->
             <div class="row">
             <ul id="breadcrumb" class="breadcrumb">
-                <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
-                <li class="breadcrumb-item active"><a href="data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">Data</a></li>
+                <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
+                <li class="breadcrumb-item active"><a href="data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">Data</a></li>
                 <li class="breadcrumb-item active">Detail data</li>               
             </ul>
             </div>
@@ -156,7 +156,7 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
             
             ?>
             </table>
-            
+            <br>
             <table border="1">
                 <tr>
                     <th>Tahun</th>
@@ -181,7 +181,132 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                         </tr>';
                  }
                 ?>
-            </table>         
+            </table> 
+
+            <canvas id="lineChart" width="400" height="200"></canvas>
+
+            <!-- JavaScript to create the line chart -->
+            <script>
+                // Extracting data from PHP to JavaScript
+                <?php
+                $sql_ips->execute();
+                $chartData = array();
+                while ($row_ips = $sql_ips->fetch()){
+                    $chartData[] = array(
+                        'tahun' => $row_ips['tahun'],
+                        'semester' => $semester,
+                        'ips' => $row_ips['ips']
+                    );
+                }
+                ?>
+            var ctx = document.getElementById('lineChart').getContext('2d');
+                var chartData = <?php echo json_encode($chartData); ?>;
+                
+                var data = {
+                    labels: chartData.map(item => item.tahun + ' ' + item.semester),
+                    datasets: [{
+                        label: 'IPS',
+                        data: chartData.map(item => item.ips),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                };
+
+                var options = {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                };
+
+                var myLineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    options: options
+                });
+            </script>
+            
+            
         </div>
+
+<!-- Create a canvas element for the chart -->
+<canvas id="barchart" width="400" height="200"></canvas>
+
+<!-- JavaScript to create the line chart -->
+<script>
+    // Extracted data from PHP to JavaScript
+    <?php
+    $query->execute([$nrp]);
+    $chart_data__nilai = array();
+    while ($row = $query->fetch()) {
+        if ($row['nilai CPL'] >= 86 AND $row['nilai CPL'] <= 100) {
+            $nilai_huruf = 'A';
+            $nilai_num = 4.0;
+        }
+        else if ($row['nilai CPL'] >= 76 AND $row['nilai CPL'] <= 85) {
+            $nilai_huruf = 'B+';
+            $nilai_num = 3.5;
+        }
+        else if ($row['nilai CPL'] >= 69 AND $row['nilai CPL'] <= 75) {
+            $nilai_huruf = 'B';
+            $nilai_num = 3.0;
+        }
+        else if ($row['nilai CPL'] >= 61 AND $row['nilai CPL'] <= 68) {
+            $nilai_huruf = 'C+';
+            $nilai_num = 2.5;
+        }
+        else if ($row['nilai CPL'] >= 56 AND $row['nilai CPL'] <= 60) {
+            $nilai_huruf = 'C';
+            $nilai_num = 2.0;
+        }
+        else if ($row['nilai CPL'] >= 41 AND $row['nilai CPL'] <= 55) {
+            $nilai_huruf = 'D';
+            $nilai_num = 1.0;
+        }
+        else if ($row['nilai CPL'] >= 0 AND $row['nilai CPL'] <= 40) {
+            $nilai_huruf = 'E';
+            $nilai_num = 0;
+        }
+        $chart_data__nilai[] = array(
+            'mk' => $row['mk'],
+            'nilai_num' => $nilai_num,
+            'nilai_huruf' => $nilai_huruf
+        );
+    }
+    ?>
+
+    // Create a line chart
+    var ctx = document.getElementById('barchart').getContext('2d');
+    var $chart_data__nilai = <?php echo json_encode($chart_data__nilai); ?>;
+    
+    var data_nilai = {
+        labels: $chart_data__nilai.map(item => item.mk),
+        datasets: [{
+            label: 'Nilai Numeric',
+            data: $chart_data__nilai.map(item => item.nilai_num),
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    var options = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+
+    var bar_chart = new Chart(ctx, {
+        type: 'bar',
+        data: data_nilai,
+        options: options
+    });
+</script>
+
+        
     </body>
 </html>
