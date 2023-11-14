@@ -232,80 +232,141 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
         </div>
 
 <!-- Create a canvas element for the chart -->
-<canvas id="barchart" width="400" height="200"></canvas>
+<canvas id="barchart" width="200" height="200"></canvas>
 
 <!-- JavaScript to create the line chart -->
 <script>
     // Extracted data from PHP to JavaScript
     <?php
+     $nilai_A = 0;
+     $nilai_B = 0;
+     $nilai_BP = 0;
+     $nilai_C = 0;
+     $nilai_CP = 0;
+     $nilai_D = 0;
+     $nilai_E = 0;
     $query->execute([$nrp]);
     $chart_data__nilai = array();
     while ($row = $query->fetch()) {
         if ($row['nilai CPL'] >= 86 AND $row['nilai CPL'] <= 100) {
             $nilai_huruf = 'A';
             $nilai_num = 4.0;
+            $nilai_A++;
         }
         else if ($row['nilai CPL'] >= 76 AND $row['nilai CPL'] <= 85) {
             $nilai_huruf = 'B+';
             $nilai_num = 3.5;
+            $nilai_BP++;
         }
         else if ($row['nilai CPL'] >= 69 AND $row['nilai CPL'] <= 75) {
             $nilai_huruf = 'B';
             $nilai_num = 3.0;
+            $nilai_B++;
         }
         else if ($row['nilai CPL'] >= 61 AND $row['nilai CPL'] <= 68) {
             $nilai_huruf = 'C+';
             $nilai_num = 2.5;
+            $nilai_CP++;
         }
         else if ($row['nilai CPL'] >= 56 AND $row['nilai CPL'] <= 60) {
             $nilai_huruf = 'C';
             $nilai_num = 2.0;
+            $nilai_C++;
         }
         else if ($row['nilai CPL'] >= 41 AND $row['nilai CPL'] <= 55) {
             $nilai_huruf = 'D';
             $nilai_num = 1.0;
+            $nilai_D++;
         }
         else if ($row['nilai CPL'] >= 0 AND $row['nilai CPL'] <= 40) {
             $nilai_huruf = 'E';
             $nilai_num = 0;
+            $nilai_E++;
         }
-        $chart_data__nilai[] = array(
-            'mk' => $row['mk'],
-            'nilai_num' => $nilai_num,
-            'nilai_huruf' => $nilai_huruf
-        );
     }
+     $chart_data__nilai[] = array(
+        'nilaiA' =>$nilai_A,
+        'nilaiB' =>$nilai_B,
+        'nilaiBP' =>$nilai_BP,
+        'nilaiC' =>$nilai_C,
+        'nilaiCP' =>$nilai_CP,
+        'nilaiD' =>$nilai_D,
+        'nilaiE' =>$nilai_E
+    );
     ?>
 
-    // Create a line chart
+    // Create a bar chart
+    
     var ctx = document.getElementById('barchart').getContext('2d');
     var $chart_data__nilai = <?php echo json_encode($chart_data__nilai); ?>;
-    
-    var data_nilai = {
-        labels: $chart_data__nilai.map(item => item.mk),
-        datasets: [{
-            label: 'Nilai Numeric',
-            data: $chart_data__nilai.map(item => item.nilai_num),
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }]
-    };
+    console.log($chart_data__nilai);
+    var xValues = ["A", "B+", "B", "C+", "C", "D", "E"];
+    var yValues = chart_data__nilai;
 
-    var options = {
-        scales: {
+    var myChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            data: yValues
+    }]
+        },
+        options: {
+            scales: {
             y: {
                 beginAtZero: true
             }
         }
-    };
+        }
+        });
 
-    var bar_chart = new Chart(ctx, {
-        type: 'bar',
-        data: data_nilai,
-        options: options
-    });
+    // var data_nilai = {
+    //     // labels: 'labels',
+    //     datasets: [{
+    //         label: 'Jumlah nilai',
+    //         data: $chart_data__nilai,
+    //         backgroundColor: [
+    //             'rgba(255, 99, 132, 0.2)',
+    //             'rgba(255, 159, 64, 0.2)',
+    //             'rgba(255, 205, 86, 0.2)',
+    //             'rgba(75, 192, 192, 0.2)',
+    //             'rgba(54, 162, 235, 0.2)',
+    //             'rgba(153, 102, 255, 0.2)',
+    //             'rgba(201, 203, 207, 0.2)'
+    //         ],
+    //         borderColor: 'rgba(75, 192, 192, 1)',
+    //         borderWidth: 1,
+    //         // barPercentage: 0.5,
+    //         // barThickness: 6,
+    //         // maxBarThickness: 8,
+    //         // minBarLength: 2
+    //     }]
+    // };
+
+    // var options = {
+    //     scales: {
+    //         y: {
+    //             beginAtZero: true
+    //         }
+    //     }
+    // };
+
+    // var bar_chart = new Chart(ctx, {
+    //     type: 'bar',
+    //     data: {},
+    //     options: options
+    // });
 </script>
+
 
         
     </body>
