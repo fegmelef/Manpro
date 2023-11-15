@@ -153,15 +153,6 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                         $nilai_num = 0;
                         $nilai_E++;
                     }
-            
-
-                    // echo $row['mk']."<br>";
-                    // echo $nilai_huruf." ".$nilai_num."<br>";
-                    // echo "<tr>
-                    //         <td>".$row['mk']."</td>
-                    //         <td>".$nilai_huruf."</td>
-                    //         <td>".$nilai_num."</td>
-                    //     </tr>"."<break";
 
                     echo '<tr>
                             <td>'.$row['mk'].'</td>
@@ -241,7 +232,11 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                 var options = {
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            max:4,
+                            min:0,
+                            suggestedMax:4,
+                            suggestedMin:0
                         }
                     }
                 };
