@@ -257,34 +257,34 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
         </div>
 
 <!-- Create a canvas element for the chart -->
-<canvas id="barchart" width="200" height="200"></canvas>
+<!-- <canvas id="barchart" width="200" height="200"></canvas> -->
 
 <!-- JavaScript to create the line chart -->
 <script>
     // Extracted data from PHP to JavaScript
 
-    var chart_data_nilai = <?php echo json_encode($chart_data_nilai); ?>;
-    var ctx = document.getElementById('barchart').getContext('2d');
-    var barChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: Object.keys(chart_data_nilai),
-                datasets: [{
-                    label: 'Nilai',
-                    data: Object.values(chart_data_nilai),
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Warna latar belakang batang
-                    borderColor: 'rgba(75, 192, 192, 1)', // Warna border batang
-                    borderWidth: 1 // Lebar border batang
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+    // var chart_data_nilai = <?php echo json_encode($chart_data_nilai); ?>;
+    // var ctx = document.getElementById('barchart').getContext('2d');
+    // var barChart = new Chart(ctx, {
+    //         type: 'bar',
+    //         data: {
+    //             labels: Object.keys(chart_data_nilai),
+    //             datasets: [{
+    //                 label: 'Nilai',
+    //                 data: Object.values(chart_data_nilai),
+    //                 backgroundColor: 'rgba(75, 192, 192, 0.2)', // Warna latar belakang batang
+    //                 borderColor: 'rgba(75, 192, 192, 1)', // Warna border batang
+    //                 borderWidth: 1 // Lebar border batang
+    //             }]
+    //         },
+    //         options: {
+    //             scales: {
+    //                 y: {
+    //                     beginAtZero: true
+    //                 }
+    //             }
+    //         }
+    //     });
     // Create a bar chart
     
     // var ctx = document.getElementById('barchart').getContext('2d');
@@ -355,8 +355,43 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
     //     data: {},
     //     options: options
     // });
-</script>
 
+</script>
+<div class="container">
+            <div style="width: 100%;height: 100%">
+		        <canvas id="barchart"></canvas>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+                <script>
+                    var ctx = document.getElementById("barchart").getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: <?php echo json_encode($chart_data_nilai); ?>,
+                            datasets: [{
+                                label: 'Nilai',
+                                data: <?php echo json_encode($chart_data_nilai); ?>,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                </script>
+	        </div>
+
+            
+
+            
+        </div>
 
         
     </body>
