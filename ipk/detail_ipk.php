@@ -89,6 +89,13 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
           
 
             <?php
+                $nilai_A = 0;
+                $nilai_B = 0;
+                $nilai_BP = 0;
+                $nilai_C = 0;
+                $nilai_CP = 0;
+                $nilai_D = 0;
+                $nilai_E = 0;
                 // $nrp='$nrp';
                 
                 $query = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, kelas_nilaicpmk.nilai, mk.mk, mhsw.nrp_hash, periode.tahun
@@ -114,31 +121,40 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                     if ($row['nilai CPL'] >= 86 AND $row['nilai CPL'] <= 100) {
                         $nilai_huruf = 'A';
                         $nilai_num = 4.0;
+                        $nilai_A++;
                     }
                     else if ($row['nilai CPL'] >= 76 AND $row['nilai CPL'] <= 85) {
                         $nilai_huruf = 'B+';
                         $nilai_num = 3.5;
+                        $nilai_BP++;
                     }
                     else if ($row['nilai CPL'] >= 69 AND $row['nilai CPL'] <= 75) {
                         $nilai_huruf = 'B';
                         $nilai_num = 3.0;
+                        $nilai_B++;
                     }
                     else if ($row['nilai CPL'] >= 61 AND $row['nilai CPL'] <= 68) {
                         $nilai_huruf = 'C+';
                         $nilai_num = 2.5;
+                        $nilai_CP++;
                     }
                     else if ($row['nilai CPL'] >= 56 AND $row['nilai CPL'] <= 60) {
                         $nilai_huruf = 'C';
                         $nilai_num = 2.0;
+                        $nilai_C++;
                     }
                     else if ($row['nilai CPL'] >= 41 AND $row['nilai CPL'] <= 55) {
                         $nilai_huruf = 'D';
                         $nilai_num = 1.0;
+                        $nilai_D++;
                     }
                     else if ($row['nilai CPL'] >= 0 AND $row['nilai CPL'] <= 40) {
                         $nilai_huruf = 'E';
                         $nilai_num = 0;
+                        $nilai_E++;
                     }
+            
+
                     // echo $row['mk']."<br>";
                     // echo $nilai_huruf." ".$nilai_num."<br>";
                     // echo "<tr>
@@ -153,7 +169,16 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                             <td>'.$nilai_huruf.'</td>
                         </tr>';
                 }
-            
+
+                $chart_data_nilai[] = array(
+                    'nilaiA' =>$nilai_A,
+                    'nilaiB' =>$nilai_B,
+                    'nilaiBP' =>$nilai_BP,
+                    'nilaiC' =>$nilai_C,
+                    'nilaiCP' =>$nilai_CP,
+                    'nilaiD' =>$nilai_D,
+                    'nilaiE' =>$nilai_E
+                );
             ?>
             </table>
             <br>
@@ -237,97 +262,62 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
 <!-- JavaScript to create the line chart -->
 <script>
     // Extracted data from PHP to JavaScript
-    <?php
-     $nilai_A = 0;
-     $nilai_B = 0;
-     $nilai_BP = 0;
-     $nilai_C = 0;
-     $nilai_CP = 0;
-     $nilai_D = 0;
-     $nilai_E = 0;
-    $query->execute([$nrp]);
-    $chart_data__nilai = array();
-    while ($row = $query->fetch()) {
-        if ($row['nilai CPL'] >= 86 AND $row['nilai CPL'] <= 100) {
-            $nilai_huruf = 'A';
-            $nilai_num = 4.0;
-            $nilai_A++;
-        }
-        else if ($row['nilai CPL'] >= 76 AND $row['nilai CPL'] <= 85) {
-            $nilai_huruf = 'B+';
-            $nilai_num = 3.5;
-            $nilai_BP++;
-        }
-        else if ($row['nilai CPL'] >= 69 AND $row['nilai CPL'] <= 75) {
-            $nilai_huruf = 'B';
-            $nilai_num = 3.0;
-            $nilai_B++;
-        }
-        else if ($row['nilai CPL'] >= 61 AND $row['nilai CPL'] <= 68) {
-            $nilai_huruf = 'C+';
-            $nilai_num = 2.5;
-            $nilai_CP++;
-        }
-        else if ($row['nilai CPL'] >= 56 AND $row['nilai CPL'] <= 60) {
-            $nilai_huruf = 'C';
-            $nilai_num = 2.0;
-            $nilai_C++;
-        }
-        else if ($row['nilai CPL'] >= 41 AND $row['nilai CPL'] <= 55) {
-            $nilai_huruf = 'D';
-            $nilai_num = 1.0;
-            $nilai_D++;
-        }
-        else if ($row['nilai CPL'] >= 0 AND $row['nilai CPL'] <= 40) {
-            $nilai_huruf = 'E';
-            $nilai_num = 0;
-            $nilai_E++;
-        }
-    }
-     $chart_data__nilai[] = array(
-        'nilaiA' =>$nilai_A,
-        'nilaiB' =>$nilai_B,
-        'nilaiBP' =>$nilai_BP,
-        'nilaiC' =>$nilai_C,
-        'nilaiCP' =>$nilai_CP,
-        'nilaiD' =>$nilai_D,
-        'nilaiE' =>$nilai_E
-    );
-    ?>
 
+    var chart_data_nilai = <?php echo json_encode($chart_data_nilai); ?>;
+    var ctx = document.getElementById('barchart').getContext('2d');
+    var barChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(chart_data_nilai),
+                datasets: [{
+                    label: 'Nilai',
+                    data: Object.values(chart_data_nilai),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Warna latar belakang batang
+                    borderColor: 'rgba(75, 192, 192, 1)', // Warna border batang
+                    borderWidth: 1 // Lebar border batang
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     // Create a bar chart
     
-    var ctx = document.getElementById('barchart').getContext('2d');
-    var $chart_data__nilai = <?php echo json_encode($chart_data__nilai); ?>;
-    console.log($chart_data__nilai);
-    var xValues = ["A", "B+", "B", "C+", "C", "D", "E"];
-    var yValues = chart_data__nilai;
+    // var ctx = document.getElementById('barchart').getContext('2d');
+    // var $chart_data__nilai = <?php echo json_encode($chart_data_nilai); ?>;
+    console.log(chart_data_nilai);
+    // var xValues = ["A", "B+", "B", "C+", "C", "D", "E"];
+    // var yValues = chart_data__nilai;
 
-    var myChart = new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: xValues,
-            datasets: [{
-                backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 205, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(201, 203, 207, 0.2)'
-            ],
-            data: yValues
-    }]
-        },
-        options: {
-            scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-        }
-        });
+    // var myChart = new Chart(ctx, {
+    //     type: "bar",
+    //     data: {
+    //         labels: xValues,
+    //         datasets: [{
+    //             backgroundColor: [
+    //             'rgba(255, 99, 132, 0.2)',
+    //             'rgba(255, 159, 64, 0.2)',
+    //             'rgba(255, 205, 86, 0.2)',
+    //             'rgba(75, 192, 192, 0.2)',
+    //             'rgba(54, 162, 235, 0.2)',
+    //             'rgba(153, 102, 255, 0.2)',
+    //             'rgba(201, 203, 207, 0.2)'
+    //         ],
+    //         data: yValues
+    // }]
+    //     },
+    //     options: {
+    //         scales: {
+    //         y: {
+    //             beginAtZero: true
+    //         }
+    //     }
+    //     }
+    //     });
 
     // var data_nilai = {
     //     // labels: 'labels',
