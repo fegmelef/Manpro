@@ -180,211 +180,69 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                     <th>IPS</th>
                 </tr>
                 <?php
-                 $sql_ips = $conn->prepare($sql_ips);
-                 $sql_ips->execute();
-                 $semester;
-                 while ($row_ips = $sql_ips->fetch()){
+                $labels = [];
+                $values = [];
+
+                $query1 = "SELECT nrp_hash, tahun, semester, SUM(ips.ips)/COUNT(ips.ips) AS 'Total_ips'		
+                FROM ips 
+                WHERE nrp_hash = ?
+                GROUP BY tahun, semester";
+
+                 $query1 = $conn->prepare($query1);
+                 $query1->execute([$nrp]);
+
+                 while ($row_ips = $query1->fetch()){
                     if ($row_ips['semester']==1){
                         $semester="ganjil";
                     }
                     else if ($row_ips['semester']==2){
                         $semester="genap";
                     }
+
+                    $labels[] = $row_ips['tahun'] . ' - ' . $semester;
+                    $values[] = $row_ips['Total_ips'];
+
                     echo '<tr>
                             <td>'.$row_ips['tahun'].'</td>
                             <td>'.$semester.'</td>
-                            <td>'.$row_ips['ips'].'</td>
+                            <td>'.$row_ips['Total_ips'].'</td>
                         </tr>';
                  }
                 ?>
             </table> 
 
-            <canvas id="lineChart" width="400" height="200"></canvas>
 
-            <!-- JavaScript to create the line chart -->
-            <script>
-                // Extracting data from PHP to JavaScript
-                <?php
-                $sql_ips->execute();
-                $chartData = array();
-                while ($row_ips = $sql_ips->fetch()){
-                    $chartData[] = array(
-                        'tahun' => $row_ips['tahun'],
-                        'semester' => $semester,
-                        'ips' => $row_ips['ips']
-                    );
-                }
-                ?>
-            var ctx = document.getElementById('lineChart').getContext('2d');
-                var chartData = <?php echo json_encode($chartData); ?>;
-                
-                var data = {
-                    labels: chartData.map(item => item.tahun + ' ' + item.semester),
-                    datasets: [{
-                        label: 'IPS',
-                        data: chartData.map(item => item.ips),
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                };
-
-                var options = {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max:4,
-                            min:0,
-                            suggestedMax:4,
-                            suggestedMin:0
-                        }
-                    }
-                };
-
-                var myLineChart = new Chart(ctx, {
-                    type: 'line',
-                    data: data,
-                    options: options
-                });
-            </script>
-            
-            
-        </div>
-
-<!-- Create a canvas element for the chart -->
-<!-- <canvas id="barchart" width="200" height="200"></canvas> -->
-
-<!-- JavaScript to create the line chart -->
-<script>
-    // Extracted data from PHP to JavaScript
-
-    // var chart_data_nilai = <?php echo json_encode($chart_data_nilai); ?>;
-    // var ctx = document.getElementById('barchart').getContext('2d');
-    // var barChart = new Chart(ctx, {
-    //         type: 'bar',
-    //         data: {
-    //             labels: Object.keys(chart_data_nilai),
-    //             datasets: [{
-    //                 label: 'Nilai',
-    //                 data: Object.values(chart_data_nilai),
-    //                 backgroundColor: 'rgba(75, 192, 192, 0.2)', // Warna latar belakang batang
-    //                 borderColor: 'rgba(75, 192, 192, 1)', // Warna border batang
-    //                 borderWidth: 1 // Lebar border batang
-    //             }]
-    //         },
-    //         options: {
-    //             scales: {
-    //                 y: {
-    //                     beginAtZero: true
-    //                 }
-    //             }
-    //         }
-    //     });
-    // Create a bar chart
-    
-    // var ctx = document.getElementById('barchart').getContext('2d');
-    // var $chart_data__nilai = <?php echo json_encode($chart_data_nilai); ?>;
-    console.log(chart_data_nilai);
-    // var xValues = ["A", "B+", "B", "C+", "C", "D", "E"];
-    // var yValues = chart_data__nilai;
-
-    // var myChart = new Chart(ctx, {
-    //     type: "bar",
-    //     data: {
-    //         labels: xValues,
-    //         datasets: [{
-    //             backgroundColor: [
-    //             'rgba(255, 99, 132, 0.2)',
-    //             'rgba(255, 159, 64, 0.2)',
-    //             'rgba(255, 205, 86, 0.2)',
-    //             'rgba(75, 192, 192, 0.2)',
-    //             'rgba(54, 162, 235, 0.2)',
-    //             'rgba(153, 102, 255, 0.2)',
-    //             'rgba(201, 203, 207, 0.2)'
-    //         ],
-    //         data: yValues
-    // }]
-    //     },
-    //     options: {
-    //         scales: {
-    //         y: {
-    //             beginAtZero: true
-    //         }
-    //     }
-    //     }
-    //     });
-
-    // var data_nilai = {
-    //     // labels: 'labels',
-    //     datasets: [{
-    //         label: 'Jumlah nilai',
-    //         data: $chart_data__nilai,
-    //         backgroundColor: [
-    //             'rgba(255, 99, 132, 0.2)',
-    //             'rgba(255, 159, 64, 0.2)',
-    //             'rgba(255, 205, 86, 0.2)',
-    //             'rgba(75, 192, 192, 0.2)',
-    //             'rgba(54, 162, 235, 0.2)',
-    //             'rgba(153, 102, 255, 0.2)',
-    //             'rgba(201, 203, 207, 0.2)'
-    //         ],
-    //         borderColor: 'rgba(75, 192, 192, 1)',
-    //         borderWidth: 1,
-    //         // barPercentage: 0.5,
-    //         // barThickness: 6,
-    //         // maxBarThickness: 8,
-    //         // minBarLength: 2
-    //     }]
-    // };
-
-    // var options = {
-    //     scales: {
-    //         y: {
-    //             beginAtZero: true
-    //         }
-    //     }
-    // };
-
-    // var bar_chart = new Chart(ctx, {
-    //     type: 'bar',
-    //     data: {},
-    //     options: options
-    // });
-
-</script>
-<div class="container">
-            <div style="width: 100%;height: 100%">
-		        <canvas id="barchart"></canvas>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-                <script>
-                    var ctx = document.getElementById("barchart").getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: <?php echo json_encode($chart_data_nilai); ?>,
-                            datasets: [{
-                                label: 'Nilai',
-                                data: <?php echo json_encode($chart_data_nilai); ?>,
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero:true
-                                    }
+            <div class="container">
+                <div style="width: 100%;height: 100%">
+                    <canvas id="myChart"></canvas>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+                    <script>
+                        var ctx = document.getElementById("myChart").getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: <?php echo json_encode($labels); ?>,
+                                datasets: [{
+                                    label: 'Nilai',
+                                    data: <?php echo json_encode($values); ?>,
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 1
                                 }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero:true
+                                        }
+                                    }]
+                                }
                             }
-                        }
-                    });
-                </script>
-	        </div>
-
-            
-
+                        });
+                    </script>
+                </div>
+            </div>
             
         </div>
 
