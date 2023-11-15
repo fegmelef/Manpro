@@ -54,18 +54,18 @@ if (isset($_GET["val"])) {
 
     <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
             <?php
-                $kode_cpl = 'TF-01';
+               
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Mengambil nilai dropdown yang dipilih
                     $selectedValue = $_POST['filtering'];
 
                     // Membuat pernyataan if berdasarkan nilai dropdown
-                    if ($selectedValue == 'Jumlah') {
-                        header("location: ../ipk/jumlah_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                    if ($selectedValue == 'Distribusi') {
+                        header("location: ../ipk/distribusi_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
-                    else if ($selectedValue == 'Penurunan IPS') {
-                        header("location: ../ipk/penurunan_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                    else if ($selectedValue == 'Data List') {
+                        header("location: ../ipk/data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
                     else if ($selectedValue == 'Rata-rata IPK') {
@@ -96,11 +96,12 @@ if (isset($_GET["val"])) {
             <div class="col-md-5">
                 <form action="" method="post">
                     <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+                        <option value="selected value"><?php echo $val; ?></option>
                         <option value="Data List">Data List</option>
-                        <option value="Jumlah">Jumlah</option>
-                        <option value="Penuruan IPS">Jumlah</option>
+                        <option value="Distribusi">Distribusi</option>
+                        <!-- <option value="Penuruan IPS">Jumlah</option> -->
                         <option value="Rata-rata IPK">Rata-rata</option>
-                        <option value="Rata-rata IPS">Reporting</option>
+                        <option value="Rata-rata IPS">Rata-rata</option>
                     </select>
                     <input type="submit" value="Kirim">
                 </form>

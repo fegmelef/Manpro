@@ -12,6 +12,7 @@ if (isset($_GET["tahun"])) {
 if (isset($_GET["periode"])) {
     $periode = $_GET['periode'];
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +37,7 @@ if (isset($_GET["periode"])) {
     <div class="row">
         <div class="col-md-9">
             <ul id="breadcrumb" class="breadcrumb">
-                <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
+                <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
                 <li class="breadcrumb-item active">Data</li>
             </ul>
         </div>
@@ -49,18 +50,17 @@ if (isset($_GET["periode"])) {
 
     <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
             <?php
-                $kode_cpl = 'TF-01';
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Mengambil nilai dropdown yang dipilih
                     $selectedValue = $_POST['filtering'];
 
                     // Membuat pernyataan if berdasarkan nilai dropdown
-                    if ($selectedValue == 'Jumlah') {
-                        header("location: ../ipk/jumlah_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                    if ($selectedValue == 'Distribusi') {
+                        header("location: ../ipk/distribusi_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
-                    else if ($selectedValue == 'Penurunan IPS') {
-                        header("location: ../ipk/penurunan_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                    else if ($selectedValue == 'Pengaruh MK') {
+                        header("location: ../ipk/pengaruh_mk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
                     else if ($selectedValue == 'Rata-rata IPK') {
@@ -91,11 +91,12 @@ if (isset($_GET["periode"])) {
             <div class="col-md-5">
                 <form action="" method="post">
                     <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+                       
                         <option value="Data List">Data List</option>
-                        <option value="Jumlah">Jumlah</option>
-                        <option value="Penurunan IPS">Jumlah</option>
+                        <option value="Distribusi">Distribusi</option>
+                        <option value="Pengaruh MK">Pengaruh MK</option>
                         <option value="Rata-rata IPK">Rata-rata</option>
-                        <option value="Rata-rata IPS">Reporting</option>
+                        <option value="Rata-rata IPS">Rata-rata IPS</option>
                     </select>
                     <input type="submit" value="Kirim">
                 </form>

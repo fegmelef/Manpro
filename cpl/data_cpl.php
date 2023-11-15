@@ -87,6 +87,7 @@ if (isset($_GET["periode"])) {
             <div class="col-md-5">
                 <form action="" method="post">
                     <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+                        
                         <option value="Data List">Data List</option>
                         <option value="Distribusi Data">Distribusi Data</option>
                         <option value="Jumlah">Jumlah</option>
