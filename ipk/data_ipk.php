@@ -93,7 +93,7 @@ if (isset($_GET["periode"])) {
                     <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
                         <option value="Data List">Data List</option>
                         <option value="Jumlah">Jumlah</option>
-                        <option value="Penuruan IPS">Jumlah</option>
+                        <option value="Penurunan IPS">Jumlah</option>
                         <option value="Rata-rata IPK">Rata-rata</option>
                         <option value="Rata-rata IPS">Reporting</option>
                     </select>
