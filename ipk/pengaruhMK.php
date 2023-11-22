@@ -121,23 +121,45 @@ if (isset($_GET["val"])) {
                                 <?php
                                     $query = "SELECT angkatan, tahun, semester, mk, MIN(rata) as nilai_terendah
                                     FROM rata_rata r1
-                                    WHERE angkatan = ?
-                                        AND tahun = ?
-                                        AND semester = ?
-                                        AND NOT EXISTS (
+                                    WHERE NOT EXISTS (
                                             SELECT *
                                             FROM rata_rata r2
                                             WHERE r1.mk = r2.mk
                                                 AND r2.semester < r1.semester
                                                 AND r2.tahun <= r1.tahun
                                                 AND r2.angkatan = r1.angkatan
-                                        )
-                                    GROUP BY angkatan, tahun, semester, mk
+                                        )";
+
+                                    if ($periode !== "All") {
+                                        $query .= " AND semester = :periode";
+                                    }
+
+                                    if ($tahun !== "All") {
+                                        $query .= " AND tahun = :tahun";
+                                    }
+
+                                    if ($angkatan !== "All") {
+                                        $query .= " AND tahun = :tahun";
+                                    }
+
+                                    $query .= "GROUP BY angkatan, tahun, semester, mk
                                     ORDER BY angkatan, tahun, semester, nilai_terendah
                                     LIMIT 3";
 
+                                    if ($periode !== "All") {
+                                        $query->bindParam(':periode', $periode, PDO::PARAM_STR);
+                                    }
+                                    
+                                    if ($angkatan !== "All") {
+                                        $query->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                                    }
+                                    
+                                    if ($tahun !== "All") {
+                                        $query->bindParam(':tahun', $tahun, PDO::PARAM_STR);
+                                    }
+
                                     $query = $conn->prepare($query);
-                                    $query->execute([$angkatan,$tahun,$periode]);
+                                    $query->execute();
 
                                     while($row = $query->fetch()) {
                                         echo '<tr>
@@ -150,10 +172,83 @@ if (isset($_GET["val"])) {
                                     }
                                 ?>
 
-                                </tbody>
-                                </table>
-                                </div>
-                                </div>
-                                </div>
-                                </body>
-                                </html>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h2>MK penyebab IPS naik</h2>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                                <tr> 
+                                    <th scope="col">Mata Kuliah</th>
+                                    <th scope="col">Nilai Rata-rata</th>
+                                    <th scope="col">Tahun</th>
+                                    <th scope="col">Semester</th>
+                                    <th scope="col">Angkatan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    $query1 = "SELECT angkatan, tahun, semester, mk, MAX(rata) as nilai_tertinggi
+                                    FROM rata_rata r1
+                                    WHERE NOT EXISTS (
+                                            SELECT *
+                                            FROM rata_rata r2
+                                            WHERE r1.mk = r2.mk
+                                                AND r2.semester < r1.semester
+                                                AND r2.tahun <= r1.tahun
+                                                AND r2.angkatan = r1.angkatan
+                                        )";
+
+                                    if ($periode !== "All") {
+                                        $query1 .= " AND semester = :periode";
+                                    }
+
+                                    if ($tahun !== "All") {
+                                        $query1 .= " AND tahun = :tahun";
+                                    }
+
+                                    if ($angkatan !== "All") {
+                                        $query1 .= " AND tahun = :tahun";
+                                    }
+                                    
+                                    $query1 .= "GROUP BY angkatan, tahun, semester, mk
+                                    ORDER BY angkatan, tahun, semester, nilai_tertinggi DESC
+                                    LIMIT 3";
+
+                                    if ($periode !== "All") {
+                                        $query1->bindParam(':periode', $periode, PDO::PARAM_STR);
+                                    }
+                                    
+                                    if ($angkatan !== "All") {
+                                        $query1>bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                                    }
+                                    
+                                    if ($tahun !== "All") {
+                                        $query1->bindParam(':tahun', $tahun, PDO::PARAM_STR);
+                                    }
+
+                                    $query1 = $conn->prepare($query1);
+                                    $query1->execute();
+
+                                    while($row1 = $query1->fetch()) {
+                                        echo '<tr>
+                                            <td>'.$row1['mk'].'</td>
+                                            <td>'.$row1['nilai_tertinggi'].'</td>
+                                            <td>'.$row1['tahun'].'</td>
+                                            <td>'.$row1['semester'].'</td>
+                                            <td>'.$row1['angkatan'].'</td>
+                                            </tr>';
+                                    }
+                                ?>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </body>
+    </html>
