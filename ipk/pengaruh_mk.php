@@ -136,27 +136,40 @@ if (isset($_GET["val"])) {
                                 FROM `rata_rata`";
 
                                 if ($periode !== "All") {
-                                    $query1 .= " WHERE periode.semester = :periode";
+                                    $query1 .= " WHERE semester = :periode";
                                 }
 
                                 if ($angkatan !== "All") {
-                                    $query1 .= " WHERE mhsw.tahun = :angkatan";
+                                    $query1 .= " AND angkatan = :angkatan";
                                 }
 
                                 if ($tahun !== "All") {
-                                    $query1 .= " WHERE periode.tahun = :tahun";
+                                    $query1 .= " AND tahun = :tahun";
                                 }
 
                                 $query2 = "SELECT * FROM `rata_rata`";
 
                                 if ($angkatan !== "All") {
-                                    $query2 .= " WHERE mhsw.tahun = :angkatan";
+                                    $query2 .= " WHERE tahun = :angkatan";
                                 }
                                 
                                 $query1 .= " GROUP BY angkatan, mk";
 
                                 $query1 = $conn->prepare($query1);
                                 $query2 = $conn->prepare($query2);
+
+                                if ($periode !== "All") {
+                                    $query1->bindParam(':periode', $periode, PDO::PARAM_STR);
+                                }
+                                
+                                if ($angkatan !== "All") {
+                                    $query1->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                                    $query2->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                                }
+                                
+                                if ($tahun !== "All") {
+                                    $query1->bindParam(':tahun', $tahun, PDO::PARAM_STR);
+                                }
 
                                 $query1->execute();
                                 $query2->execute();
@@ -247,23 +260,38 @@ if (isset($_GET["val"])) {
 
                                 #worst_mk
                                 $query3 = "SELECT * FROM `rata_rata`
-                                            WHERE  mk=?";
+                                            WHERE  mk=:worst";
 
                                 if ($periode !== "All") {
-                                    $query3 .= " WHERE periode.semester = :periode";
+                                    $query3 .= " AND semester = :periode";
                                 }
 
                                 if ($angkatan !== "All") {
-                                    $query3 .= " WHERE mhsw.tahun = :angkatan";
+                                    $query3 .= " AND angkatan = :angkatan";
                                 }
 
                                 if ($tahun !== "All") {
-                                    $query3 .= " WHERE periode.tahun = :tahun";
+                                    $query3 .= " AND tahun = :tahun";
                                 }
                                 // $query3 .= " GROUP BY angkatan";
 
+                                
                                 $query3 = $conn->prepare($query3);
-                                $query3->execute([$worst_mk]);
+
+                                $query3->bindParam(':worst', $worst_mk, PDO::PARAM_STR);
+                                if ($periode !== "All") {
+                                    $query3->bindParam(':periode', $periode, PDO::PARAM_STR);
+                                }
+                                
+                                if ($angkatan !== "All") {
+                                    $query3->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                                    $query3->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                                }
+                                
+                                if ($tahun !== "All") {
+                                    $query3->bindParam(':tahun', $tahun, PDO::PARAM_STR);
+                                }
+                                $query3->execute();
                                 // $mk_down = $query3->fetch();
 
                                 echo        '<div class="container">
@@ -302,27 +330,40 @@ if (isset($_GET["val"])) {
                                 FROM `rata_rata`";
 
                                 if ($periode !== "All") {
-                                    $query1 .= " WHERE periode.semester = :periode";
+                                    $query1 .= " WHERE semester = :periode";
                                 }
 
                                 if ($angkatan !== "All") {
-                                    $query1 .= " WHERE mhsw.tahun = :angkatan";
+                                    $query1 .= " AND angkatan = :angkatan";
                                 }
 
                                 if ($tahun !== "All") {
-                                    $query1 .= " WHERE periode.tahun = :tahun";
+                                    $query1 .= " AND tahun = :tahun";
                                 }
 
                                 $query2 = "SELECT * FROM `rata_rata`";
 
                                 if ($angkatan !== "All") {
-                                    $query2 .= " WHERE mhsw.tahun = :angkatan";
+                                    $query2 .= " WHERE tahun = :angkatan";
                                 }
                                 
                                 // $query1 .= " GROUP BY angkatan";
 
                                 $query1 = $conn->prepare($query1);
                                 $query2 = $conn->prepare($query2);
+
+                                if ($periode !== "All") {
+                                    $query1->bindParam(':periode', $periode, PDO::PARAM_STR);
+                                }
+                                
+                                if ($angkatan !== "All") {
+                                    $query1->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                                    $query2->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                                }
+                                
+                                if ($tahun !== "All") {
+                                    $query1->bindParam(':tahun', $tahun, PDO::PARAM_STR);
+                                }
 
                                 $query1->execute();
                                 $query2->execute();
@@ -375,24 +416,38 @@ if (isset($_GET["val"])) {
                                 }
 
                                 $query4 = "SELECT * FROM `rata_rata`
-                                            WHERE mk=?";
+                                            WHERE mk=:best";
 
                                 if ($periode !== "All") {
-                                    $query4 .= " WHERE periode.semester = :periode";
+                                    $query4 .= " AND semester = :periode";
                                 }
 
                                 if ($angkatan !== "All") {
-                                    $query4 .= " WHERE mhsw.tahun = :angkatan";
+                                    $query4 .= " AND angkatan = :angkatan";
                                 }
 
                                 if ($tahun !== "All") {
-                                    $query4 .= " WHERE periode.tahun = :tahun";
+                                    $query4 .= " AND tahun = :tahun";
                                 }
 
                                 // $query4 .= " GROUP BY angkatan, tahun, semester";
 
                                 $query4 = $conn->prepare($query4);
-                                $query4->execute([$best_mk]);
+
+                                $query4->bindParam(':best', $best_mk, PDO::PARAM_STR);
+                                if ($periode !== "All") {
+                                    $query4->bindParam(':periode', $periode, PDO::PARAM_STR);
+                                }
+                                
+                                if ($angkatan !== "All") {
+                                    $query4->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                                    $query4->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                                }
+                                
+                                if ($tahun !== "All") {
+                                    $query4->bindParam(':tahun', $tahun, PDO::PARAM_STR);
+                                }
+                                $query4->execute();
                                 // $rowCount = $query4->rowCount();
                                 // echo $rowCount;
                                 // $mk_up = $query4->fetch();

@@ -48,11 +48,6 @@ if (isset($_GET["periode"])) {
                 <li class="breadcrumb-item active">Data</li>
             </ul>
         </div>
-        <div class="col-md-3">
-            <input type="text" placeholder="Search" name="search" class="search">
-            <button type="submit" class="search"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
     </div>
 
     <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
@@ -67,7 +62,7 @@ if (isset($_GET["periode"])) {
                         exit;
                     } 
                     else if ($selectedValue == 'Pengaruh MK') {
-                        header("location: ../ipk/pengaruh_mk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        header("location: ../ipk/pengaruhMK.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
                     else if ($selectedValue == 'Rata-rata IPK') {

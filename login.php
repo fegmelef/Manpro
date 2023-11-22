@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <style>
         .login-form {
-            background-color: white;
-            max-width: 700px;
+            /* background-color: white; */
+            max-width: 500px;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -45,20 +45,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             border: none;
         }
 
-        a:link {
-            color: midnight blue;
+        .text {
+            color: white;
             text-decoration: none;
         }
         .mb-3{
             width: 80%;   
             margin: 0 auto;     
         }
+        .btn {
+            width: 20%;
+            margin: 0 auto; 
+        }
+        .row {
+            display: inline;
+            margin-right: 20px;
+            margin-top: 10px;
+            display: flex;
+            flex:1;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 
 </head>
 
 <body>
-    <?php include "navbar/navbar_before_login.php";?>
+        <nav class="navbar navbar-expand-lg navbar fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <div class="row">
+                    <div class="col-sm"> 
+                        <a class="navbar-brand" href="#">
+                            <img src="assets/pcu_black.png" alt="Logo" width="100" height="100" class="logo-img">
+                        </a>
+                    </div>
+                    <div class="col-sm">
+                        <a class="navbar-brand" href="#">
+                            <img src="assets/pcu_blue.png" alt="Logo" width="150" height="100" class="logo-img">
+                        </a>
+                    </div>
+                    <div>
+                </div>
+            </div>
+        </nav>
     <div class="login-form">
         <div class="content">
             <?=isset($msg) ? '<div class="alert alert-danger">'.$msg.'</div>' : ''?>
@@ -76,7 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 </div>
 
                 <div class="d-grid gap-2">
-                    <button class="btn" name="login"><a href="cpl/home_cpl.php">Login</a></button>
+                    <button type="button" class="btn btn-secondary btn-md"><a class="text" href="cpl/home_cpl.php">Login</a></button>
+                    <!-- <button class="btn" name="login"><a href="cpl/home_cpl.php">Login</a></button> -->
                 </div>
             </form>
         </div>
