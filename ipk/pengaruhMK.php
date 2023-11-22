@@ -139,12 +139,14 @@ if (isset($_GET["val"])) {
                                     }
 
                                     if ($angkatan !== "All") {
-                                        $query .= " AND tahun = :tahun";
+                                        $query .= " AND angkatan = :angkatan";
                                     }
 
-                                    $query .= "GROUP BY angkatan, tahun, semester, mk
-                                    ORDER BY angkatan, tahun, semester, nilai_terendah
-                                    LIMIT 3";
+                                    $query .= " GROUP BY angkatan, tahun, semester, mk";
+                                    $query .= " ORDER BY angkatan, tahun, semester, nilai_terendah";
+                                    $query .= " LIMIT 3";
+
+                                    $query = $conn->prepare($query);
 
                                     if ($periode !== "All") {
                                         $query->bindParam(':periode', $periode, PDO::PARAM_STR);
@@ -157,8 +159,7 @@ if (isset($_GET["val"])) {
                                     if ($tahun !== "All") {
                                         $query->bindParam(':tahun', $tahun, PDO::PARAM_STR);
                                     }
-
-                                    $query = $conn->prepare($query);
+                                
                                     $query->execute();
 
                                     while($row = $query->fetch()) {
@@ -212,26 +213,27 @@ if (isset($_GET["val"])) {
                                     }
 
                                     if ($angkatan !== "All") {
-                                        $query1 .= " AND tahun = :tahun";
+                                        $query1 .= " AND angkatan = :angkatan";
                                     }
-                                    
-                                    $query1 .= "GROUP BY angkatan, tahun, semester, mk
-                                    ORDER BY angkatan, tahun, semester, nilai_tertinggi DESC
-                                    LIMIT 3";
+
+                                    $query1 .= " GROUP BY angkatan, tahun, semester, mk";
+                                    $query1 .= " ORDER BY angkatan, tahun, semester, nilai_tertinggi DESC";
+                                    $query1 .= " LIMIT 3";
+
+                                    $query1 = $conn->prepare($query1);
 
                                     if ($periode !== "All") {
                                         $query1->bindParam(':periode', $periode, PDO::PARAM_STR);
                                     }
                                     
                                     if ($angkatan !== "All") {
-                                        $query1>bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                                        $query1->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
                                     }
                                     
                                     if ($tahun !== "All") {
                                         $query1->bindParam(':tahun', $tahun, PDO::PARAM_STR);
                                     }
 
-                                    $query1 = $conn->prepare($query1);
                                     $query1->execute();
 
                                     while($row1 = $query1->fetch()) {
