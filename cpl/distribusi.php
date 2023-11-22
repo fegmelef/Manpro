@@ -30,6 +30,13 @@ if (isset($_GET["val"])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../css.css">
+
+    <!-- lock screen, spy tdk bisa di swipe kanan kiri -->
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
 </head>
 
 <body>
@@ -101,115 +108,118 @@ if (isset($_GET["val"])) {
             </div>
         </div>
 
-        <div class="col-md-12">
-            <table border="1" style="width:100%;">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Kode MK</th>
-                        <th>Nama MK</th>
-                        <th>CPL 1</th>
-                        <th>CPL 2</th>
-                        <th>CPL 3</th>
-                        <th>CPL 4</th>
-                        <th>CPL 5</th>
-                        <th>CPL 6</th>
-                        <th>CPL 7</th>
-                        <th>CPL 8</th>
-                        <th>CPL 9</th>
-                        <th>CPL 10</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $query2 = "SELECT mk.mk, mk.id_mk
-            FROM mk
-            JOIN kelas AS k ON k.id_mk=mk.id_mk 
-            JOIN kelas_cpmk AS kc ON kc.id_kelas=k.id_kelas
-            JOIN kelas_nilaicpmk AS kn ON kn.id_cpmk=kc.id_cpmk
-            GROUP BY mk.id_mk";
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Kode MK</th>
+                            <th>Nama MK</th>
+                            <th>CPL 1</th>
+                            <th>CPL 2</th>
+                            <th>CPL 3</th>
+                            <th>CPL 4</th>
+                            <th>CPL 5</th>
+                            <th>CPL 6</th>
+                            <th>CPL 7</th>
+                            <th>CPL 8</th>
+                            <th>CPL 9</th>
+                            <th>CPL 10</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $query2 = "SELECT mk.mk, mk.id_mk
+                FROM mk
+                JOIN kelas AS k ON k.id_mk=mk.id_mk 
+                JOIN kelas_cpmk AS kc ON kc.id_kelas=k.id_kelas
+                JOIN kelas_nilaicpmk AS kn ON kn.id_cpmk=kc.id_cpmk
+                GROUP BY mk.id_mk";
 
-                    $query2 = $conn->prepare($query2);
+                        $query2 = $conn->prepare($query2);
 
-                    $query2->execute();
+                        $query2->execute();
 
-                    $rowNum = 1;
-                    while ($row2 = $query2->fetch()) {
-                        echo '<tr>
-            <th>' . $rowNum . '</th><td>' . $row2['id_mk'] . '</td><td>' . $row2['mk'] . '</td>';
+                        $rowNum = 1;
+                        while ($row2 = $query2->fetch()) {
+                            echo '<tr>
+                <th>' . $rowNum . '</th><td>' . $row2['id_mk'] . '</td><td>' . $row2['mk'] . '</td>';
 
-                        $query = "SELECT kelas_nilaicpmk.nilai, mk.id_mk, mk.mk, ikcpl.id_cpl, AVG(kelas_nilaicpmk.nilai) AS 'average nilai'
-            FROM kelas_nilaicpmk
-            JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk
-            JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
-            JOIN mk ON kelas.id_mk = mk.id_mk
-            JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
-            JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
-            JOIN periode ON kelas.id_periode = periode.id_periode
-            WHERE mk.id_mk = ?";
+                            $query = "SELECT kelas_nilaicpmk.nilai, mk.id_mk, mk.mk, ikcpl.id_cpl, AVG(kelas_nilaicpmk.nilai) AS 'average nilai'
+                FROM kelas_nilaicpmk
+                JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk
+                JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
+                JOIN mk ON kelas.id_mk = mk.id_mk
+                JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
+                JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
+                JOIN periode ON kelas.id_periode = periode.id_periode
+                WHERE mk.id_mk = ?";
 
-                        if ($periode !== "All") {
-                            $query .= " AND periode.semester = :periode";
-                        }
+                            if ($periode !== "All") {
+                                $query .= " AND periode.semester = :periode";
+                            }
 
-                        if ($angkatan !== "All") {
-                            $query .= " AND mhsw.tahun = :angkatan";
-                        }
+                            if ($angkatan !== "All") {
+                                $query .= " AND mhsw.tahun = :angkatan";
+                            }
 
-                        if ($tahun !== "All") {
-                            $query .= " AND periode.tahun = :tahun";
-                        }
+                            if ($tahun !== "All") {
+                                $query .= " AND periode.tahun = :tahun";
+                            }
 
-                        $query .= " GROUP BY mk.id_mk";
-                        // echo ($query);
+                            $query .= " GROUP BY mk.id_mk";
+                            // echo ($query);
 
-                        $query = $conn->prepare($query);
-                        if ($periode !== "All") {
-                            $query->bindParam(':periode', $periode, PDO::PARAM_STR);
-                        }
+                            $query = $conn->prepare($query);
+                            if ($periode !== "All") {
+                                $query->bindParam(':periode', $periode, PDO::PARAM_STR);
+                            }
 
-                        if ($angkatan !== "All") {
-                            $query->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
-                        }
+                            if ($angkatan !== "All") {
+                                $query->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                            }
 
-                        if ($tahun !== "All") {
-                            $query->bindParam(':tahun', $tahun, PDO::PARAM_STR);
-                        }
+                            if ($tahun !== "All") {
+                                $query->bindParam(':tahun', $tahun, PDO::PARAM_STR);
+                            }
 
-                        $query->execute([$row2['id_mk']]);
+                            $query->execute([$row2['id_mk']]);
 
-                        $rows = $query->fetchAll();
+                            $rows = $query->fetchAll();
 
-                        for ($i = 1; $i <= 10; $i++) {
-                            $found = false;
+                            for ($i = 1; $i <= 10; $i++) {
+                                $found = false;
 
-                            foreach ($rows as $row) {
-                                if ($i == 10) {
-                                    $id_cpl = 'TF-' . $i;
-                                } else {
-                                    $id_cpl = 'TF-0' . $i;
+                                foreach ($rows as $row) {
+                                    if ($i == 10) {
+                                        $id_cpl = 'TF-' . $i;
+                                    } else {
+                                        $id_cpl = 'TF-0' . $i;
+                                    }
+
+                                    if ($id_cpl == $row['id_cpl']) {
+                                        echo '<td>' . number_format($row['average nilai'], 2) . '</td>';
+                                        $found = true;
+                                        break;
+                                    }
                                 }
 
-                                if ($id_cpl == $row['id_cpl']) {
-                                    echo '<td>' . number_format($row['average nilai'], 2) . '</td>';
-                                    $found = true;
-                                    break;
+                                if (!$found) {
+                                    echo '<td>0</td>';
                                 }
                             }
 
-                            if (!$found) {
-                                echo '<td>0</td>';
-                            }
+                            $rowNum++;
                         }
-
-                        $rowNum++;
-                    }
-                    ?>
+                        ?>
 
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        
     </div>
 </body>
 

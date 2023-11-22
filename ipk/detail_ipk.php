@@ -41,6 +41,13 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
         <link rel="stylesheet" type="text/css" href="../css.css">
         <script type="text/javascript" src="../chartjs/Chart.js"></script>
+    
+        <!-- lock screen, spy tdk bisa di swipe kanan kiri -->
+        <style>
+            body {
+                overflow-x: hidden;
+            }
+        </style>
     </head>
     <body>
         <!-- navbar -->
