@@ -131,17 +131,18 @@ if (isset($_GET["periode"])) {
                             
                             $query->execute();
                             $rowNum = 1;
-                            while($row = $query->fetch()) {
-                                echo '<tr>
-                                <th scope="row">'.$rowNum.'</th>
-                                <td>'.$row['nrp_hash'].'</td>
-                                <td>'.$row['tahun'].'</td>
+                            while($row = $query->fetch()) { ?>
+                                <tr>
+                                <th scope="row"><?php $rowNum ?></th>
+                                <td><?php echo $row['nrp_hash'];?></td>
+                                <td><?php echo $row['tahun'];?></td>
                                 <td><form method="post" action="detail_ipk.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
-                                <input type="hidden" name="nrp" value="' . $row['nrp_hash'] . '">
-                                <input type="hidden" name="year" value="' . $row['tahun'] . '">
+                                <input type="hidden" name="nrp" value="<?php echo $row['nrp_hash'];?>">
+                                <input type="hidden" name="year" value="<?php echo $row['tahun'];?>">
                                 <button type="submit" name="detail" class="btn btn-dark">Detail</button>
                             </form></td>
-                            </tr>';
+                            </tr>
+                            <?php
                             $rowNum++;
                             }
                         ?>

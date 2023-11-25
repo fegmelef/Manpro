@@ -53,7 +53,12 @@ if (isset($_GET["val"])) {
             <div class="row">
             <ul id="breadcrumb" class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
-                <li class="breadcrumb-item active"><a href="data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">Data</a></li>
+                <!-- <li class="breadcrumb-item active"><a href="data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">Data</a></li> -->
+                <li class="breadcrumb-item active">
+                    <a href="data_cpl.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
+                        Data
+                    </a>
+                </li>
                 <li class="breadcrumb-item active">Detail data</li>               
             </ul>
             </div>

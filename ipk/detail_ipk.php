@@ -12,10 +12,12 @@ if (isset($_POST["year"])) {
 
 if (isset($_GET["angkatan"])) {
     $angkatan = $_GET['angkatan'];
+    // echo $angkatan;
 }
 
 if (isset($_GET["tahun"])) {
     $tahun = $_GET['tahun'];
+    // echo $tahun;
 }
 
 if (isset($_GET["periode"])) {
@@ -58,10 +60,9 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                 <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
                 <!-- <li class="breadcrumb-item active"><a href="data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">Data</a></li> -->
                 <li class="breadcrumb-item active">
-                    <!-- <a href="data_ipk.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
+                    <a href="data_ipk.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
                         Data
-                    </a> -->
-                    <a href="">Data</a>
+                    </a>
                 </li>
                 <li class="breadcrumb-item active">Detail data</li>               
             </ul>

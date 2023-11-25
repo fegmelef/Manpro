@@ -73,9 +73,6 @@ if (isset($_GET["val"])) {
         } else if ($selectedValue == 'Data List') {
             header("location: ../ipk/data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
             exit;
-        } else if ($selectedValue == 'Rata-rata IPS') {
-            header("location: ../ipk/rata2_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-            exit;
         }
         // else if ($selectedValue == 'Jumlah') {
         //     header("location: ../ipk/jumlah_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
@@ -118,15 +115,14 @@ if (isset($_GET["val"])) {
                         <th scope="col">Angkatan</th>
                         <th scope="col">Semester</th>
                         <th scope="col">Rata-rata IPK</th>
-                        <th scope="col">Rata-rata IPS</th>
                     </tr>
                     </thead>
                     <tbody>
                         <?php
                         $sql = "SELECT ipk.tahun, ipk.angkatan, ipk.semester, AVG(ipk.ipk) AS rata_ipk, AVG(ips.ips) AS rata_ips
-        FROM ipk
-        LEFT JOIN ips ON ipk.tahun = ips.tahun AND ipk.angkatan = ips.angkatan AND ipk.semester = ips.semester
-        WHERE ipk.ipk IS NOT NULL";
+                        FROM ipk
+                        LEFT JOIN ips ON ipk.tahun = ips.tahun AND ipk.angkatan = ips.angkatan AND ipk.semester = ips.semester
+                        WHERE ipk.ipk IS NOT NULL";
 
                         if ($periode !== "All") {
                             $sql .= " AND ipk.semester = :periode";
@@ -163,12 +159,12 @@ if (isset($_GET["val"])) {
                         if ($result) {
                             foreach ($result as $row) {
                                 echo '<tr>
-                <td>' . $row['tahun'] . '</td>
-                <td>' . $row['angkatan'] . '</td>
-                <td>' . $row['semester'] . '</td>
-                <td>' . $row['rata_ipk'] . '</td>
-                <td>' . $row['rata_ips'] . '</td>
-            </tr>';
+                                <td>' . $row['tahun'] . '</td>
+                                <td>' . $row['angkatan'] . '</td>
+                                <td>' . $row['semester'] . '</td>
+                                <td>' . $row['rata_ipk'] . '</td>
+                                <td>' . $row['rata_ips'] . '</td>
+                            </tr>';
                             }
                         } else {
                             echo "Tidak ada data yang ditemukan.";
