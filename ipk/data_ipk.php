@@ -136,7 +136,7 @@ if (isset($_GET["periode"])) {
                                 <th scope="row">'.$rowNum.'</th>
                                 <td>'.$row['nrp_hash'].'</td>
                                 <td>'.$row['tahun'].'</td>
-                                <td><form method="post" action="detail_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">
+                                <td><form method="post" action="detail_ipk.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
                                 <input type="hidden" name="nrp" value="' . $row['nrp_hash'] . '">
                                 <input type="hidden" name="year" value="' . $row['tahun'] . '">
                                 <button type="submit" name="detail" class="btn btn-dark">Detail</button>

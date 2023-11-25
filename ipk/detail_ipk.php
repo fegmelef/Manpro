@@ -56,7 +56,13 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
             <div class="row">
             <ul id="breadcrumb" class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
-                <li class="breadcrumb-item active"><a href="data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">Data</a></li>
+                <!-- <li class="breadcrumb-item active"><a href="data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">Data</a></li> -->
+                <li class="breadcrumb-item active">
+                    <!-- <a href="data_ipk.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
+                        Data
+                    </a> -->
+                    <a href="">Data</a>
+                </li>
                 <li class="breadcrumb-item active">Detail data</li>               
             </ul>
             </div>
@@ -226,7 +232,7 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                     <script>
                         var ctx = document.getElementById("myChart").getContext('2d');
                         var myChart = new Chart(ctx, {
-                            type: 'bar',
+                            type: 'line',
                             data: {
                                 labels: <?php echo json_encode($labels); ?>,
                                 datasets: [{
