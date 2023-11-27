@@ -105,6 +105,7 @@ if (isset($_GET["val"])) {
                 </select>
                 <input type="submit" value="Kirim">
             </form>
+            <button id="downloadCSV" onclick="downloadCSV()">Download CSV</button>
         </div>
     </div>
 
@@ -187,5 +188,40 @@ if (isset($_GET["val"])) {
             </div>
         </div>
                     </div>
+                    <script>
+    function downloadCSV() {
+        var table = document.querySelector('table'); // Get the table element
+        var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table
+        
+        // Create a CSV content string
+        var csvContent = rows.map(function(row) {
+            var rowData = Array.from(row.querySelectorAll('th, td'))
+                .map(function(cell) {
+                    return cell.textContent;
+                })
+                .join(',');
+            return rowData;
+        }).join('\n');
+        
+        // Create a Blob object with the CSV content
+        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        if (navigator.msSaveBlob) {
+            // For IE and Edge browsers
+            navigator.msSaveBlob(blob, 'table.csv');
+        } else {
+            // For other browsers
+            var link = document.createElement('a');
+            if (link.download !== undefined) {
+                var url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'tableReporting.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    }
+</script>
 </body>
 </html>

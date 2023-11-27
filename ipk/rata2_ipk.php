@@ -103,6 +103,7 @@ if (isset($_GET["val"])) {
                     </select>
                     <input type="submit" value="Kirim">
                 </form>
+                <button id="downloadCSV" onclick="downloadCSV()">Download CSV</button>
             </div>
         </div>
         <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
@@ -175,90 +176,42 @@ if (isset($_GET["val"])) {
             </div>
         </div>
     </div>
-    <!-- <script type="text/javascript">
-        function redirectPage() {
-            var selectedOption = document.getElementById("filtering").value;
-            var redirectUrl;
-
-            switch (selectedOption) {
-                // case "Data List":
-                //     redirectUrl = "data_list.php";
-                //     break;
-                // case "Distribusi Data":
-                //     redirectUrl = "distribusi_data.php";
-                //     break;
-                // case "Jumlah":
-                //     redirectUrl = "jumlah.php";
-                //     break;
-                // case "Rata-rata":
-                //     redirectUrl = "rata_rata.php";
-                //     break;
-                case "Reporting":
-                    redirectUrl = "reporting.php";
-                    break;
-                default:
-                    // Default URL or error handling
-                    break;
-            }
-
-            if (redirectUrl) {
-                window.location.href = redirectUrl;
+    </div>
+    <script>
+    function downloadCSV() {
+        var table = document.querySelector('table'); // Get the table element
+        var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table
+        
+        // Create a CSV content string
+        var csvContent = rows.map(function(row) {
+            var rowData = Array.from(row.querySelectorAll('th, td'))
+                .map(function(cell) {
+                    return cell.textContent;
+                })
+                .join(',');
+            return rowData;
+        }).join('\n');
+        
+        // Create a Blob object with the CSV content
+        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        if (navigator.msSaveBlob) {
+            // For IE and Edge browsers
+            navigator.msSaveBlob(blob, 'table.csv');
+        } else {
+            // For other browsers
+            var link = document.createElement('a');
+            if (link.download !== undefined) {
+                var url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'Rata Rata IPK.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             }
         }
-    </script> -->
-
-    <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
-
-
-
-
-    <!-- <div class="col-md-12">
-                    <table class="table">
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Nama</th>
-                            <th scope="col">NRP</th>
-                            <th scope="col">Tahun</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        </tbody>
-                    </table> 
-                </div>
-            </div>                       -->
-    <?php
-    // // Variabel yang ingin Anda kirim
-    // $variabel = $tahun;
-    
-    // // URL tujuan yang menerima variabel
-    // $tujuan = "reporting.php";
-    
-    // // Membuat URL dengan query string yang menyertakan variabel
-    // $url = $tujuan . "?variabel=" . urlencode($variabel);
-    
-    // // Melakukan pengalihan ke halaman tujuan
-    // header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode");
-    // exit; // Pastikan untuk keluar dari skrip saat melakukan redirect
-    ?>
-
-    </div>
+    }
+</script>
 </body>
 
 </html>

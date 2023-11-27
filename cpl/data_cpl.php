@@ -103,6 +103,7 @@ if (isset($_GET["periode"])) {
                     </select>
                     <input type="submit" value="Kirim">
                 </form>
+                <button id="downloadCSV" onclick="downloadCSV()">Download CSV</button>
             </div>
         </div>
         <div class="row">
@@ -110,7 +111,7 @@ if (isset($_GET["periode"])) {
                     <table class="table">
                         <tr>
                             <th scope="col">No</th>
-                            <!-- <th scope="col">Nama</th> -->
+
                             <th scope="col">NRP</th>
                             <th scope="col">Tahun</th>
                             <th scope="col"> </th>
@@ -118,7 +119,7 @@ if (isset($_GET["periode"])) {
                         </thead>
                         <tbody>
                         <?php
-                            // $query = $conn->prepare("SELECT * FROM mhsw WHERE mhsw.tahun = $angkatan ");
+
                             $sql = "SELECT * FROM mhsw";
 
                             if ($angkatan !== 'All'){
@@ -126,25 +127,8 @@ if (isset($_GET["periode"])) {
                             }
 
                             $query = $conn->prepare($sql);
-
-                            // $twodigit = $angkatan % 100;
-                            // $query->execute([$twodigit]);
-                            
                             $query->execute();
                             $rowNum = 1;
-                        //     while($row = $query->fetch()) {
-                        //         echo '<tr>
-                        //         <th scope="row">'.$rowNum.'</th>
-                        //         <td>'.$row['nrp_hash'].'</td>
-                        //         <td>'.$row['tahun'].'</td>
-                        //         <td><form method="post" action="detail_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">
-                        //         <input type="hidden" name="nrp" value="' . $row['nrp_hash'] . '">
-                        //         <input type="hidden" name="year" value="' . $row['tahun'] . '">
-                        //         <button type="submit" name="detail" class="btn btn-dark">Detail</button>
-                        //     </form></td>
-                        //     </tr>';
-                        //     $rowNum++;
-                        //     }
                         while($row = $query->fetch()) { ?>
                                 <tr>
                                 <th scope="row"><?php echo $rowNum; ?></th>
@@ -164,90 +148,42 @@ if (isset($_GET["periode"])) {
                     </table>
                 </div>
             </div>
-    <!-- <script type="text/javascript">
-        function redirectPage() {
-            var selectedOption = document.getElementById("filtering").value;
-            var redirectUrl;
-
-            switch (selectedOption) {
-                // case "Data List":
-                //     redirectUrl = "data_list.php";
-                //     break;
-                // case "Distribusi Data":
-                //     redirectUrl = "distribusi_data.php";
-                //     break;
-                // case "Jumlah":
-                //     redirectUrl = "jumlah.php";
-                //     break;
-                // case "Rata-rata":
-                //     redirectUrl = "rata_rata.php";
-                //     break;
-                case "Reporting":
-                    redirectUrl = "reporting.php";
-                    break;
-                default:
-                    // Default URL or error handling
-                    break;
-            }
-
-            if (redirectUrl) {
-                window.location.href = redirectUrl;
+    </div>
+    <script>
+    function downloadCSV() {
+        var table = document.querySelector('table'); // Get the table element
+        var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table
+        
+        // Create a CSV content string
+        var csvContent = rows.map(function(row) {
+            var rowData = Array.from(row.querySelectorAll('th, td'))
+                .map(function(cell) {
+                    return cell.textContent;
+                })
+                .join(',');
+            return rowData;
+        }).join('\n');
+        
+        // Create a Blob object with the CSV content
+        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        if (navigator.msSaveBlob) {
+            // For IE and Edge browsers
+            navigator.msSaveBlob(blob, 'table.csv');
+        } else {
+            // For other browsers
+            var link = document.createElement('a');
+            if (link.download !== undefined) {
+                var url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'data_cpl.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             }
         }
-    </script> -->
-
-        <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
-    
-
-
-
-        <!-- <div class="col-md-12">
-                    <table class="table">
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Nama</th>
-                            <th scope="col">NRP</th>
-                            <th scope="col">Tahun</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        </tbody>
-                    </table> 
-                </div>
-            </div>                       -->
-        <?php
-            // // Variabel yang ingin Anda kirim
-            // $variabel = $tahun;
-
-            // // URL tujuan yang menerima variabel
-            // $tujuan = "reporting.php";
-
-            // // Membuat URL dengan query string yang menyertakan variabel
-            // $url = $tujuan . "?variabel=" . urlencode($variabel);
-
-            // // Melakukan pengalihan ke halaman tujuan
-            // header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode");
-            // exit; // Pastikan untuk keluar dari skrip saat melakukan redirect
-        ?>
-
-    </div>
+    }
+</script>
 </body>
 
 </html>

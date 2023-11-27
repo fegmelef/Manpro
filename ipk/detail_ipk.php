@@ -33,7 +33,7 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Detail CPL</title>
+        <title>Detail IPK</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
@@ -64,18 +64,13 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                         Data
                     </a>
                 </li>
-                <li class="breadcrumb-item active">Detail data</li>               
+                <li class="breadcrumb-item active">Detail data</li>   
+                <li><button onclick="downloadAsPDF()">Download as PDF</button></li>            
             </ul>
             </div>
         <!-- isi -->
-        <div class="container">
+        <div class="container" name="content">
             <div class="row g-2" style="margin-bottom:20px;">
-                <!-- <div class="col-md-6">
-                    <div class="p-3">Nama:</div>
-                </div>
-                <div class="col-md-6">
-                    <div class="p-3">Program Studi:</div>
-                </div> -->
                 <div class="col-md-6">
                     <div class="p-3">NRP: <?php echo $nrp; ?> </div>
                 </div>
@@ -92,7 +87,7 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                 </div>
             </div>
 
-            <table border="1">
+            <table border="1" name="content">
                 <thead>
                     <tr>
                         <th>Mata Kuliah </th>
@@ -187,7 +182,7 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
             ?>
             </table>
             <br>
-            <table border="1">
+            <table border="1" name="content">
                 <tr>
                     <th>Tahun</th>
                     <th>Semester</th>
@@ -226,7 +221,7 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
             </table> 
 
 
-            <div class="container">
+            <div class="container" name="content">
                 <div style="width: 100%;height: 100%">
                     <canvas id="myChart"></canvas>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
@@ -260,6 +255,5 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
             
         </div>
 
-        
     </body>
 </html>

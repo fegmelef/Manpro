@@ -28,6 +28,7 @@ if (isset($_GET["val"])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../css.css">
 
     <!-- lock screen, spy tdk bisa di swipe kanan kiri -->
@@ -108,12 +109,13 @@ if (isset($_GET["val"])) {
                     </select>
                     <input type="submit" value="Kirim">
                 </form>
+                <button id="downloadCSV" onclick="downloadAllTables()">Download CSV</button>
             </div>
         </div>
 
         <div class="row">
                 <div class="col-md-12">
-                    <table class="table">
+                    <table class="table" id="mata_kuliah">
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Mata Kuliah</th>
@@ -166,7 +168,7 @@ if (isset($_GET["val"])) {
 
         <div class="row">
                 <div class="col-md-12">
-                    <table class="table">
+                    <table class="table" id="detail">
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Nilai CPL</th>
@@ -230,6 +232,161 @@ if (isset($_GET["val"])) {
     
         
     </div>
+<script>
+    function downloadAllTables() {
+    downloadCSV('Jumlah Mahasiswa.csv', 'mata_kuliah'); // Download first table
+    downloadCSV('Detail Mahasiswa.csv', 'detail'); // Download second table
+    // ... add downloadCSV for other tables here
+}
+
+function downloadCSV(filename, tableId) {
+    var table = document.getElementById(tableId); // Get the table element
+    var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table
+
+    // Create a CSV content string
+    var csvContent = rows.map(function (row) {
+        var rowData = Array.from(row.querySelectorAll('th, td'))
+            .map(function (cell) {
+                return cell.textContent;
+            })
+            .join(',');
+        return rowData;
+    }).join('\n');
+
+    // Create a Blob object with the CSV content
+    var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) {
+        // For IE and Edge browsers
+        navigator.msSaveBlob(blob, filename);
+    } else {
+        // For other browsers
+        var link = document.createElement('a');
+        if (link.download !== undefined) {
+            var url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+}
+
+</script>
+<script>
+//     function downloadAllTables() {
+//     var table1 = document.getElementById('mata_kuliah');
+//     var table2 = document.getElementById('detail');
+
+//     var dataFromTable1 = collectData(table1);
+//     var dataFromTable2 = collectData(table2);
+
+//     // Menggunakan SheetJS untuk membuat workbook
+//     var wb = XLSX.utils.book_new();
+
+//     // Membuat sheets untuk tabel 1 dan tabel 2
+//     var ws1 = XLSX.utils.aoa_to_sheet(dataFromTable1);
+//     var ws2 = XLSX.utils.aoa_to_sheet(dataFromTable2);
+
+//     // Menamai sheet dan menambahkannya ke workbook
+//     XLSX.utils.book_append_sheet(wb, ws1, "mata_kuliah");
+//     XLSX.utils.book_append_sheet(wb, ws2, "detail");
+
+//     // Membuat file XLSX
+//     var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+//     // Mengkonversi file XLSX menjadi Blob
+//     var blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+
+//     // Mendownload file XLSX
+//     saveAs(blob, 'CombinedData.xlsx');
+//     if (navigator.msSaveBlob) {
+//     navigator.msSaveBlob(blob, filename);
+// } else {
+//     var link = document.createElement('a');
+//     if (link.download !== undefined) {
+//         var url = URL.createObjectURL(blob);
+//         link.setAttribute('href', url);
+//         link.setAttribute('download', filename);
+//         link.style.visibility = 'hidden';
+//         document.body.appendChild(link);
+//         link.click();
+//         document.body.removeChild(link);
+//     }
+// }
+
+// }
+
+// function collectData(table) {
+//     var rows = Array.from(table.querySelectorAll('tr'));
+//     var data = rows.map(function (row) {
+//         return Array.from(row.querySelectorAll('th, td'))
+//             .map(function (cell) {
+//                 return cell.textContent;
+//             })
+//             .join(',');
+//     });
+//     return data;
+// }
+
+// function s2ab(s) {
+//     var buf = new ArrayBuffer(s.length);
+//     var view = new Uint8Array(buf);
+//     for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+//     return buf;
+// } 
+
+// function downloadAllTables() {
+//     var table1 = document.getElementById('mata_kuliah');
+//     var table2 = document.getElementById('detail');
+
+//     var dataFromTable1 = collectData(table1);
+//     var dataFromTable2 = collectData(table2);
+
+//     var combinedData = dataFromTable1.concat(dataFromTable2);
+
+//     downloadCSV('CombinedData.csv', combinedData);
+// }
+
+// function collectData(table) {
+//     var rows = Array.from(table.querySelectorAll('tr'));
+//     var data = rows.map(function (row) {
+//         return Array.from(row.querySelectorAll('th, td'))
+//             .map(function (cell) {
+//                 return cell.textContent;
+//             })
+//             .join(',');
+//     });
+//     return data;
+// }
+
+// function downloadCSV(filename, data) {
+//     var csvContent = data.join('\n');
+//     var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+//     // ... sama seperti kode sebelumnya untuk membuat dan mendownload file CSV
+//     if (navigator.msSaveBlob) {
+//         // For IE and Edge browsers
+//         navigator.msSaveBlob(blob, filename);
+//     } else {
+//         // For other browsers
+//         var link = document.createElement('a');
+//         if (link.download !== undefined) {
+//             var url = URL.createObjectURL(blob);
+//             link.setAttribute('href', url);
+//             link.setAttribute('download', filename);
+//             link.style.visibility = 'hidden';
+//             document.body.appendChild(link);
+//             link.click();
+//             document.body.removeChild(link);
+//         }
+// }}
+
+</script>
+
+
+    
 </body>
 
 </html>
