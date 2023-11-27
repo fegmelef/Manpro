@@ -110,46 +110,16 @@ if (isset($_GET["val"])) {
                         </select>
                         <input type="submit" value="Kirim">
                     </form>
+                    <button id="downloadCSV" onclick="downloadCSV()">Download CSV</button>
                 </div>
             </div>
         </div>
-<!-- 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                <select name="filtering" id="filtering" class="form-control1">
-                    <option value="Data List">Data List</option>
-                    <option value="Distribusi Data">Distribusi Data</option>
-                    <option value="Jumlah">Jumlah</option>
-                    <option value="Rata-rata">Rata-rata</option>                                  
-                    <option value="Reporting">Reporting</option>                                  
-                </select>
-                </div>    
-            </div> -->
-
-            <!-- <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                <select name="filtering-CPL" id="filtering-CPL" class="form-control1">
-                    <option value="TF-01">TF-01</option>                               
-                    <option value="TF-02">TF-02</option>                               
-                    <option value="TF-03">TF-03</option>                               
-                    <option value="TF-04">TF-04</option>                               
-                    <option value="TF-05">TF-05</option>                               
-                    <option value="TF-06">TF-06</option>                               
-                    <option value="TF-07">TF-07</option>                               
-                    <option value="TF-08">TF-08</option>                               
-                    <option value="TF-09">TF-09</option>                               
-                    <option value="TF-10">TF-10</option>                               
-                </select>
-                </div>    
-            </div> -->
-
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
                     <form method="post" action="">
                         <select name="filtering-CPL" id="filtering-CPL" class="form-control1">
+                            <option value="All_CPL">All</option>
                             <option value="TF-01">TF-01</option>
                             <option value="TF-02">TF-02</option>
                             <option value="TF-03">TF-03</option>
@@ -179,10 +149,11 @@ if (isset($_GET["val"])) {
                         </thead>
                         <tbody>
                         <?php
+                            $selectedValue = 'ALL_CPL';
                             $kode_cpl = 'TF-01' ;
                             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 // Mengambil nilai dropdown yang dipilih
-                                $selectedValue = $_POST['filtering-CPL'];
+                                // $selectedValue = $_POST['filtering-CPL'];
 
                                 // Membuat pernyataan if berdasarkan nilai dropdown
                                 if ($selectedValue == 'TF-01') {
@@ -208,20 +179,23 @@ if (isset($_GET["val"])) {
                                 } 
                             }   
 
-                            // $query = $conn->prepare("SELECT kelas_nilaicpmk.*, ikcpl.id_ikcpl, mhsw.tahun, mhsw.nama, ikcpl.id_cpl 
-                            // FROM kelas_nilaicpmk 
-                            // JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
-                            // JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl 
-                            // JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash 
-                            // WHERE ikcpl.id_cpl = '$kode_cpl' AND kelas_nilaicpmk.nilai < 
-                            //     (SELECT AVG(nilai) 
-                            //      FROM kelas_nilaicpmk 
-                            //      JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
-                            //      JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl
-                            //      WHERE ikcpl.id_cpl = '$kode_cpl' 
-                            //      GROUP BY ikcpl.id_cpl )");
-
-                            $sql = "SELECT kelas_nilaicpmk.*, ikcpl.id_cpl, mhsw.tahun, mhsw.nama
+                            if ($selectedValue == "ALL_CPL"){
+                                $sql = "SELECT kn.*, ikcpl.id_cpl, m.tahun, m.nama
+                                FROM kelas_nilaicpmk kn
+                                JOIN kelas_cpmk kc ON kn.id_cpmk = kc.id_cpmk 
+                                JOIN ikcpl ON ikcpl.id_ikcpl = kc.id_ikcpl 
+                                JOIN mhsw m ON kn.nrp_hash = m.nrp_hash
+                                WHERE kn.nilai < (
+                                    SELECT AVG(sub.nilai)
+                                    FROM kelas_nilaicpmk sub
+                                    JOIN kelas_cpmk subkc ON sub.id_cpmk = subkc.id_cpmk 
+                                    JOIN ikcpl subik ON subik.id_ikcpl = subkc.id_ikcpl 
+                                    JOIN mhsw submhsw ON sub.nrp_hash = submhsw.nrp_hash
+                                    WHERE subik.id_ikcpl = ikcpl.id_ikcpl
+                                )";
+                            }
+                            else{
+                                $sql = "SELECT kelas_nilaicpmk.*, ikcpl.id_cpl, mhsw.tahun, mhsw.nama
                             FROM kelas_nilaicpmk
                             JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
                             JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl 
@@ -252,31 +226,8 @@ if (isset($_GET["val"])) {
                             if ($angkatan !== 'All'){
                                 $sql .= " AND mhsw.tahun = $angkatan";
                             }
-
+                            }
                             $query = $conn->prepare($sql);
-                            
-                            // $query = $conn->prepare("SELECT kelas_nilaicpmk.*, ikcpl.id_cpl, mhsw.tahun, mhsw.nama
-                            //     FROM kelas_nilaicpmk
-                            //     JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
-                            //     JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl 
-                            //     JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
-                            //     WHERE ikcpl.id_cpl = '$kode_cpl' 
-                            //     AND kelas_nilaicpmk.nilai < (
-                            //         SELECT AVG(nilai) 
-                            //         FROM kelas_nilaicpmk 
-                            //         JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
-                            //         JOIN ikcpl ON ikcpl.id_ikcpl = kelas_cpmk.id_ikcpl 
-                            //         JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
-                            //         JOIN periode ON kelas.id_periode = periode.id_periode
-                            //         JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
-                            //         WHERE ikcpl.id_cpl = '$kode_cpl' 
-                            //         AND periode.tahun = '$tahun'
-                            //         AND periode.semester = $periode
-                            //         AND mhsw.tahun = $angkatan
-                            //         GROUP BY ikcpl.id_cpl
-                            //     )
-                            //     AND mhsw.tahun = $angkatan");
-
                             $query->execute();
                             $rowNum = 1; 
                             while($row = $query->fetch()) {
@@ -298,5 +249,43 @@ if (isset($_GET["val"])) {
             </div>    
         </div>           
         </div>
+
+
+<script>
+    function downloadCSV() {
+        var table = document.querySelector('table'); // Get the table element
+        var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table
+        
+        // Create a CSV content string
+        var csvContent = rows.map(function(row) {
+            var rowData = Array.from(row.querySelectorAll('th, td'))
+                .map(function(cell) {
+                    return cell.textContent;
+                })
+                .join(',');
+            return rowData;
+        }).join('\n');
+        
+        // Create a Blob object with the CSV content
+        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        if (navigator.msSaveBlob) {
+            // For IE and Edge browsers
+            navigator.msSaveBlob(blob, 'table.csv');
+        } else {
+            // For other browsers
+            var link = document.createElement('a');
+            if (link.download !== undefined) {
+                var url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'tableReporting.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    }
+</script>
+
     </body>
 </html>

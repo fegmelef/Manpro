@@ -65,7 +65,7 @@ if (isset($_GET["val"])) {
 
         // Membuat pernyataan if berdasarkan nilai dropdown
         if ($selectedValue == 'Pengaruh MK') {
-            header("location: ../ipk/pengaruh_mk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+            header("location: ../ipk/pengaruhMK.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
             exit;
         } else if ($selectedValue == 'Rata-rata IPK') {
             header("location: ../ipk/rata2_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");

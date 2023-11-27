@@ -51,28 +51,13 @@ if (isset($_GET["val"])) {
                 <li class="breadcrumb-item active">Data</li>
             </ul>
         </div>
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
             <input type="text" placeholder="Search" name="search" class="search">
             <button type="submit" class="search"><i class="fa fa-search"></i></button>
             </form>
-        </div>
+        </div> -->
     </div>
 
-    <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
-    <div class="col-md-5">
-        <form action="" method="post">
-            <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
-                <option value="selected value">
-                    <?php echo $val; ?>
-                </option>
-                <option value="Data List">Data List</option>
-                <option value="Rata-rata">Rata-rata</option>
-                <option value="Jumlah">Jumlah</option>
-                <option value="Reporting">Reporting</option>
-            </select>
-            <input type="submit" value="Kirim">
-        </form>
-    </div>
     <?php
     $kode_cpl = 'TF-01';
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -98,13 +83,25 @@ if (isset($_GET["val"])) {
 
     <div class="container">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-7">
                 <p class="semester">Semester:
                     <?php echo $periode; ?><br>Angkatan:
                     <?php echo $angkatan; ?><br>Tahun:
                     <?php echo $tahun; ?>
-
                 </p>
+            </div>
+            <div class="col-md-5">
+                <form action="" method="post">
+                    <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
+                        
+                        <option value="Data List">Data List</option>
+                        <option value="Distribusi Data">Distribusi Data</option>
+                        <option value="Jumlah">Jumlah</option>
+                        <option value="Rata-rata">Rata-rata</option>
+                        <option value="Reporting">Reporting</option>
+                    </select>
+                    <input type="submit" value="Kirim">
+                </form>
             </div>
         </div>
 
