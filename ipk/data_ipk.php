@@ -33,6 +33,9 @@ if (isset($_GET["periode"])) {
         body {
             overflow-x: hidden;
         }
+        th {
+        cursor: pointer;
+        }
     </style>
 </head>
 
@@ -55,8 +58,6 @@ if (isset($_GET["periode"])) {
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Mengambil nilai dropdown yang dipilih
                     $selectedValue = $_POST['filtering'];
-
-                    // Membuat pernyataan if berdasarkan nilai dropdown
                     if ($selectedValue == 'Distribusi') {
                         header("location: ../ipk/distribusi_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
@@ -69,14 +70,6 @@ if (isset($_GET["periode"])) {
                         header("location: ../ipk/rata2_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                         exit;
                     } 
-                    else if ($selectedValue == 'Rata-rata IPS') {
-                        header("location: ../ipk/rata2_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                        exit;
-                    } 
-                    // else if ($selectedValue == 'Jumlah') {
-                    //     header("location: ../ipk/jumlah_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                    //     exit;
-                    // } 
                 }   
             ?>
     <!-- isi -->
@@ -98,7 +91,6 @@ if (isset($_GET["periode"])) {
                         <option value="Distribusi">Distribusi</option>
                         <option value="Pengaruh MK">Pengaruh MK</option>
                         <option value="Rata-rata IPK">Rata-rata</option>
-                        <option value="Rata-rata IPS">Rata-rata IPS</option>
                     </select>
                     <input type="submit" value="Kirim">
                 </form>
@@ -106,14 +98,15 @@ if (isset($_GET["periode"])) {
         </div>
         <div class="row">
                 <div class="col-md-12">
-                    <table class="table">
-                        <tr>
-                            <th scope="col">No</th>
-                            <!-- <th scope="col">Nama</th> -->
-                            <th scope="col">NRP</th>
-                            <th scope="col">Tahun</th>
-                            <th scope="col"> </th>
-                        </tr>
+                    <table class="table" id="tabel_ipk">
+                        <thead>
+                            <tr>
+                                <th scope="col" onclick="sortTable(0)">No</th>
+                                <!-- <th scope="col">Nama</th> -->
+                                <th scope="col" onclick="sortTable(1)">NRP</th>
+                                <th scope="col" onclick="sortTable(2)">Tahun</th>
+                                <th scope="col"> </th>
+                            </tr>
                         </thead>
                         <tbody>
                         <?php
@@ -125,22 +118,18 @@ if (isset($_GET["periode"])) {
                             }
 
                             $query = $conn->prepare($sql);
-
-                            // $twodigit = $angkatan % 100;
-                            // $query->execute([$twodigit]);
-                            
                             $query->execute();
                             $rowNum = 1;
                             while($row = $query->fetch()) { ?>
                                 <tr>
-                                <th scope="row"><?php $rowNum ?></th>
+                                <th scope="row"><?php echo $rowNum; ?></th>
                                 <td><?php echo $row['nrp_hash'];?></td>
                                 <td><?php echo $row['tahun'];?></td>
                                 <td><form method="post" action="detail_ipk.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
                                 <input type="hidden" name="nrp" value="<?php echo $row['nrp_hash'];?>">
                                 <input type="hidden" name="year" value="<?php echo $row['tahun'];?>">
                                 <button type="submit" name="detail" class="btn btn-dark">Detail</button>
-                            </form></td>
+                                </form></td>
                             </tr>
                             <?php
                             $rowNum++;
@@ -150,90 +139,40 @@ if (isset($_GET["periode"])) {
                     </table>
                 </div>
             </div>
-    <!-- <script type="text/javascript">
-        function redirectPage() {
-            var selectedOption = document.getElementById("filtering").value;
-            var redirectUrl;
+    </div>
+    <script>
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwap;
+            table = document.getElementById("tabel_ipk");
+            switching = true;
+            rows = table.getElementsByTagName("TR");
 
-            switch (selectedOption) {
-                // case "Data List":
-                //     redirectUrl = "data_list.php";
-                //     break;
-                // case "Distribusi Data":
-                //     redirectUrl = "distribusi_data.php";
-                //     break;
-                // case "Jumlah":
-                //     redirectUrl = "jumlah.php";
-                //     break;
-                // case "Rata-rata":
-                //     redirectUrl = "rata_rata.php";
-                //     break;
-                case "Reporting":
-                    redirectUrl = "reporting.php";
-                    break;
-                default:
-                    // Default URL or error handling
-                    break;
+            while (switching) {
+            switching = false;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwap = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                if (x.textContent.toLowerCase() < y.textContent.toLowerCase()) {
+                shouldSwap = true;
+                break;
+                } else if (x.textContent.toLowerCase() > y.textContent.toLowerCase()) {
+                shouldSwap = false;
+                break;
+                }
             }
 
-            if (redirectUrl) {
-                window.location.href = redirectUrl;
+            if (shouldSwap) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
             }
         }
-    </script> -->
-
-        <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
-    
+     </script>
 
 
 
-        <!-- <div class="col-md-12">
-                    <table class="table">
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Nama</th>
-                            <th scope="col">NRP</th>
-                            <th scope="col">Tahun</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        </tbody>
-                    </table> 
-                </div>
-            </div>                       -->
-        <?php
-            // // Variabel yang ingin Anda kirim
-            // $variabel = $tahun;
-
-            // // URL tujuan yang menerima variabel
-            // $tujuan = "reporting.php";
-
-            // // Membuat URL dengan query string yang menyertakan variabel
-            // $url = $tujuan . "?variabel=" . urlencode($variabel);
-
-            // // Melakukan pengalihan ke halaman tujuan
-            // header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode");
-            // exit; // Pastikan untuk keluar dari skrip saat melakukan redirect
-        ?>
-
-    </div>
 </body>
-
 </html>
+

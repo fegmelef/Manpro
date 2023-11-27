@@ -147,14 +147,14 @@ if (isset($_GET["val"])) {
                 <th>' . $rowNum . '</th><td>' . $row2['id_mk'] . '</td><td>' . $row2['mk'] . '</td>';
 
                             $query = "SELECT kelas_nilaicpmk.nilai, mk.id_mk, mk.mk, ikcpl.id_cpl, AVG(kelas_nilaicpmk.nilai) AS 'average nilai'
-                FROM kelas_nilaicpmk
-                JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk
-                JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
-                JOIN mk ON kelas.id_mk = mk.id_mk
-                JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
-                JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
-                JOIN periode ON kelas.id_periode = periode.id_periode
-                WHERE mk.id_mk = ?";
+                            FROM kelas_nilaicpmk
+                            JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk
+                            JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
+                            JOIN mk ON kelas.id_mk = mk.id_mk
+                            JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
+                            JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
+                            JOIN periode ON kelas.id_periode = periode.id_periode
+                            WHERE mk.id_mk = ?";
 
                             if ($periode !== "All") {
                                 $query .= " AND periode.semester = :periode";

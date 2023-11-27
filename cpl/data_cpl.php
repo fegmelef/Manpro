@@ -147,7 +147,7 @@ if (isset($_GET["periode"])) {
                         //     }
                         while($row = $query->fetch()) { ?>
                                 <tr>
-                                <th scope="row"><?php $rowNum ?></th>
+                                <th scope="row"><?php echo $rowNum; ?></th>
                                 <td><?php echo $row['nrp_hash'];?></td>
                                 <td><?php echo $row['tahun'];?></td>
                                 <td><form method="post" action="detail_cpl.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">

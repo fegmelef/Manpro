@@ -73,14 +73,7 @@ if (isset($_GET["val"])) {
         } else if ($selectedValue == 'Data List') {
             header("location: ../ipk/data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
             exit;
-        } else if ($selectedValue == 'Rata-rata IPS') {
-            header("location: ../ipk/rata2_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-            exit;
-        }
-        // else if ($selectedValue == 'Jumlah') {
-        //     header("location: ../ipk/jumlah_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-        //     exit;
-        // } 
+        } 
     }
     ?>
     <!-- isi -->
@@ -102,7 +95,6 @@ if (isset($_GET["val"])) {
                         <option value="Pengaruh MK">Pengaruh MK</option>
                         <!-- <option value="Penuruan IPS">Jumlah</option> -->
                         <option value="Rata-rata IPK">Rata-rata</option>
-                        <option value="Rata-rata IPS">Rata-rata</option>
                     </select>
                     <input type="submit" value="Kirim">
                 </form>
