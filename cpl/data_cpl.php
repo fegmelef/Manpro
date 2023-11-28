@@ -1,17 +1,17 @@
 <?php
-include("../api/connect.php");
+    include("../api/connect.php");
 
-if (isset($_GET["angkatan"])) {
-    $angkatan = $_GET['angkatan'];
-}
+    if (isset($_GET["angkatan"])) {
+        $angkatan = $_GET['angkatan'];
+    }
 
-if (isset($_GET["tahun"])) {
-    $tahun = $_GET['tahun'];
-}
+    if (isset($_GET["tahun"])) {
+        $tahun = $_GET['tahun'];
+    }
 
-if (isset($_GET["periode"])) {
-    $periode = $_GET['periode'];
-}
+    if (isset($_GET["periode"])) {
+        $periode = $_GET['periode'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +26,8 @@ if (isset($_GET["periode"])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../css.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+
 
     <!-- lock screen, spy tdk bisa di swipe kanan kiri -->
     <style>
@@ -44,99 +46,98 @@ if (isset($_GET["periode"])) {
 
     <!-- bread crumbs -->
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-9 col-xs-9">
             <ul id="breadcrumb" class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
-                <li class="breadcrumb-item active">Data</li>
+                <li class="breadcrumb-item active">List Data</li>
             </ul>
-        </div>
-        <div class="col-md-3">
-            <input type="text" placeholder="Search" name="search" class="search">
-            <button type="submit" class="search"><i class="fa fa-search"></i></button>
-            </form>
         </div>
     </div>
 
     <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
-            <?php
-                $kode_cpl = 'TF-01';
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    // Mengambil nilai dropdown yang dipilih
-                    $selectedValue = $_POST['filtering'];
+    <?php
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Mengambil nilai dropdown yang dipilih
+            $selectedValue = $_POST['filtering'];
 
-                    // Membuat pernyataan if berdasarkan nilai dropdown
-                    if ($selectedValue == 'Reporting') {
-                        header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                        exit;
-                    } 
-                    else if ($selectedValue == 'Distribusi Data') {
-                        header("location: ../cpl/distribusi.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                        exit;
-                    } 
-                    else if ($selectedValue == 'Rata-rata') {
-                        header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                        exit;
-                    } 
-                    else if ($selectedValue == 'Jumlah') {
-                        header("location: ../cpl/jumlah.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-                        exit;
-                    } 
-                }   
-            ?>
+            // Membuat pernyataan if berdasarkan nilai dropdown
+            if ($selectedValue == 'Daftar Mahasiswa Dibawah Rata-rata Nilai') {
+                header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");                    exit;
+            } 
+            else if ($selectedValue == 'Distribusi Nilai') {
+                header("location: ../cpl/distribusi.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                exit;
+            } 
+            else if ($selectedValue == 'Rata-rata Nilai') {
+                header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                exit;
+            } 
+            else if ($selectedValue == 'Jumlah Mahasiswa Mengulang MK') {
+                header("location: ../cpl/jumlah.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                exit;
+            } 
+        }   
+    ?>
+
     <!-- isi -->
     <div class="container">
         <div class="row">
-            <div class="col-md-7">
-                <p class="semester">Semester:
-                    <?php echo $periode; ?><br>Angkatan:
-                    <?php echo $angkatan; ?><br>Tahun:
-                    <?php echo $tahun; ?>
-                </p>
+            <div class="col-md-7 col-xs-7">
+                <p class="semester">Semester <span><?php echo $periode; ?></span> || Angkatan <span><?php echo $angkatan; ?></span> || Tahun <span><?php echo $tahun; ?></span></p>
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-4 col-xs-4">
                 <form action="" method="post">
-                    <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
-                        
-                        <option value="Data List">Data List</option>
-                        <option value="Distribusi Data">Distribusi Data</option>
-                        <option value="Jumlah">Jumlah</option>
-                        <option value="Rata-rata">Rata-rata</option>
-                        <option value="Reporting">Reporting</option>
-                    </select>
-                    <input type="submit" value="Kirim">
+                    <div class="col-md-10 col-xs-10">
+                            <select name="filtering" id="filtering" class="form-control" onchange="redirectPage()">
+                                <option value="List Data">List Data</option>
+                                <option value="Distribusi Nilai">Distribusi Nilai</option>
+                                <option value="Jumlah Mahasiswa Mengulang MK">Jumlah Mahasiswa Mengulang MK</option>
+                                <option value="Rata-rata Nilai">Rata-rata Nilai</option>
+                                <option value="Daftar Mahasiswa Dibawah Rata-rata Nilai">Daftar Mahasiswa Dibawah Rata-rata Nilai</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-xs-2">
+                            <input type="submit" value="Kirim" class="btn btn-primary">
+                        </div>
                 </form>
-                <button id="downloadCSV" onclick="downloadCSV()">Download CSV</button>
+            </div>
+            
+            <div class="col-md-1 col-xs-1">
+                    <div class="col-md-1 col-xs-1">
+                <svg id="downloadCSV" onclick="downloadCSV()" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="cursor: pointer;">
+                    <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
+                </svg>
             </div>
         </div>
+
         <div class="row">
-                <div class="col-md-12">
-                    <table class="table" id="tabel_cpl">
-                        <tr>
-                            <th scope="col" onclick="sortTable(0)">No</th>
-                            <th scope="col" onclick="sortTable(1)">NRP</th>
-                            <th scope="col" onclick="sortTable(2)">Tahun</th>
-                            <th scope="col" onclick="sortTable(3)"> </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
+            <div class="col-md-12 col-xs-12">
+                <table class="table" id="tabel_cpl">
+                    <tr>
+                        <th class="bordered-header" scope="col" onclick="sortTable(0)">No</th>
+                        <th class="bordered-header" scope="col" onclick="sortTable(1)">NRP</th>
+                        <th class="bordered-header" scope="col" onclick="sortTable(2)">Tahun</th>
+                        <th class="bordered-header" scope="col" onclick="sortTable(3)"> </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        $sql = "SELECT * FROM mhsw";
+                        if ($angkatan !== 'All'){
+                            $sql .= " WHERE mhsw.tahun = '$angkatan'";
+                        }
 
-                            $sql = "SELECT * FROM mhsw";
+                        $query = $conn->prepare($sql);
+                        $query->execute();
+                        $rowNum = 1;
 
-                            if ($angkatan !== 'All'){
-                                $sql .= " WHERE mhsw.tahun = '$angkatan'";
-                            }
-
-                            $query = $conn->prepare($sql);
-                            $query->execute();
-                            $rowNum = 1;
                         while($row = $query->fetch()) { ?>
                                 <tr>
-                                <td scope="row"><?php echo $rowNum; ?></td>
-                                <td><?php echo $row['nrp_hash'];?></td>
-                                <td><?php echo $row['tahun'];?></td>
-                                <td><form method="post" action="detail_cpl.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
+                                <td class="bordered-cell" scope="row"><?php echo $rowNum; ?></th>
+                                <td class="bordered-cell"><?php echo $row['nrp_hash'];?></td>
+                                <td class="bordered-cell"><?php echo $row['tahun'];?></td>
+                                <td class="bordered-cell"><form method="post" action="detail_cpl.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
                                 <input type="hidden" name="nrp" value="<?php echo $row['nrp_hash'];?>">
                                 <input type="hidden" name="year" value="<?php echo $row['tahun'];?>">
                                 <button type="submit" name="detail" class="btn btn-dark">Detail</button>
@@ -144,12 +145,12 @@ if (isset($_GET["periode"])) {
                             </tr>
                             <?php
                             $rowNum++;
-                            }
-                        ?>
-                        </tbody>
-                    </table>
-                </div>
+                        }
+                    ?>
+                    </tbody>
+                </table>
             </div>
+        </div>
     </div>
     <script>
         var sort = "ascending";
@@ -214,7 +215,8 @@ if (isset($_GET["periode"])) {
             }
             // console.log(rows)
         }
-    function downloadCSV() {
+    
+        function downloadCSV() {
         var table = document.querySelector('table'); // Get the table element
         var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table
         
@@ -247,7 +249,6 @@ if (isset($_GET["periode"])) {
             }
         }
     }
-</script>
+    </script>
 </body>
-
 </html>

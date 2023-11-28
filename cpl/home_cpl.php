@@ -1,5 +1,5 @@
 <?php
-include "../api/connect.php";
+    include("../api/connect.php");
 ?>
 
 <!DOCTYPE html>
@@ -30,72 +30,65 @@ include "../api/connect.php";
 
 <body>
     <!-- navbar -->
-
     <?php include "../navbar/navbar_after_login.php";?>
 
     <!-- bread crumbs -->
     <div class="row">
-        <ul id="breadcrumb" class="breadcrumb">
-            <li class="breadcrumb-item active">Home</li>
-        </ul>
+        <div class="col-md-9  col-xs-9">
+            <ul id="breadcrumb" class="breadcrumb">
+                <li class="breadcrumb-item active">Home</li>
+            </ul>
+        </div>
     </div>
 
     <!-- isi -->
     <form action="../api/get_data_cpl.php" method="POST">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">Periode</div>
-                <div class="col-md-2">:</div>
-                <div class="col-md-6">
+                <div class="col-md-4 col-xs-4">Periode</div>
+                <div class="col-md-2 col-xs-2">:</div>
+                <div class="col-md-6 col-xs-6">
                     <select name="periode" id="periode" class="form-control" required>
                         <option value="All">All</option>
                         <option value="1">Gasal</option>
                         <option value="2">Genap</option>
-
-
                     </select>
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-md-4">Tahun</div>
-                <div class="col-md-2">:</div>
-                <div class="col-md-6">
+                <div class="col-md-4 col-xs-4">Tahun</div>
+                <div class="col-md-2 col-xs-2">:</div>
+                <div class="col-md-6 col-xs-6">
                     <select name="tahun" id="tahun" class="form-control" required>
-                        <!-- <option value="none">Pilih tahun</option> -->
                         <option value="All">All</option>
-                        <!-- <option value="21">2021</option> -->
                         <?php
                         $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `periode`");
-                        while ($row = mysqli_fetch_array($query)) {
-                            echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
+                            while ($row = mysqli_fetch_array($query)) {
+                                echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
                         }
-                        
                         ?>
                     </select>
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-md-4">Angkatan</div>
-                <div class="col-md-2">:</div>
-                <div class="col-md-6">
+                <div class="col-md-4 col-xs-4">Angkatan</div>
+                <div class="col-md-2 col-xs-2">:</div>
+                <div class="col-md-6 col-xs-6">
                     <select name="angkatan" id="angkatan" class="form-control" required>
-                        <!-- <option disabled>Pilih angkatan</option> -->
                         <option value="All">All</option>
                         <?php
                         $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `mhsw` ORDER BY tahun");
-                        while ($row = mysqli_fetch_array($query)) {
-                            echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
+                            while ($row = mysqli_fetch_array($query)) {
+                                echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
                         }
                         ?>
-                        <!-- <option value="19">2019</option>
-                        <option value="20">2020</option>
-                        <option value="21">2021</option>
-                        <option value="22">2022</option>
-                        <option value="23">2023</option> -->
                     </select>
                 </div>
             </div>
             <br>
+
             <div class="row">
                 <div class="col-md-12 text-center">
                     <!-- Center the button within the column -->

@@ -1,36 +1,31 @@
-.navbar-header {
-    display: flex; /* Menggunakan display flex untuk mengatur elemen berdampingan */
-    align-items: center; /* Mengatur elemen secara vertikal di tengah navbar */
-}
-
-.column {
-    display: flex;
-    flex:1;
-    justify-content: center;
-    align-items: center;
-} 
-.navbar-brand {
-    /* margin-right: 20px; Memberikan jarak antara dua elemen */
-    text-align: center;
-}
-  
+/* navbar */
 .logo-img {
-    display: block; /* Menghilangkan margin bawah pada gambar */
+    display: block;
     margin-left: 20px;
 }
 
 #nav {
     margin-right: 20px;
-    margin-top: 40px;
     font-size: 20px;
     font-weight: bold;
-    align-items: center;
 }
 
-#nav a {
-    color: midnightblue !important;
+#nav li{
+    margin-top: 35px;
 }
 
+.navbar{
+    background-color: whitesmoke;
+    width: 100%;
+    height: 100%;
+}
+
+.navbar-brand{
+    margin-bottom: 80px;
+    padding-right: 10px;
+}
+
+/* untuk tulisan welcome di welcome page */
 .welcome{
     display: flex;
     justify-content: center;
@@ -40,8 +35,10 @@
     color: midnightblue;
     font-weight: bold;
     text-decoration: underline;
+    margin-top: 50px;
 }
 
+/* untuk breadcrum di semua page */
 #breadcrumb{
     color: midnightblue;
     background: none;
@@ -58,7 +55,14 @@
     border-width: 1px;
     width: 50%; */
 /* } */
+
+/* tulisan tahun, periode, angkatan yg digenerate di home */
 .semester{
+    font-size: 20px;
+    margin-left: 150px;
+}
+
+.TF{
     font-size: 20px;
     margin-left: 150px;
 }
@@ -73,9 +77,17 @@
     color: midnightblue;
 }
 
-/* class buat navbar */
-.row1{ 
-    margin-bottom: 100px;
-    background-color: whitesmoke;
-    padding-bottom: 18px;
-} 
+/* untuk border table */
+.bordered-cell {
+    border: 1px solid #ddd;
+}
+
+.bordered-header {
+    border: 1px solid #ddd;
+}
+
+/* download CSV icon */
+#downloadCSV{
+    width: 30px;
+    height: 30px;
+}

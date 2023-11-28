@@ -11,7 +11,7 @@
     </head>
 
     <body>
-        <div class="row1">
+        <!-- <div class="row1">
             <nav class="navbar navbar-expand-lg navbar fixed-top">
                 <div class="container-fluid">
                 <div class="navbar-header">
@@ -34,6 +34,20 @@
                 </ul>
                 </div>
             </nav>
-        </div>
+        </div> -->
+
+        <nav class="navbar navbar-expand-lg navbar fixed-top">
+            <a class="navbar-brand" href="#">
+                <img src="../assets/pcu_black.png" alt="Logo" width="100" height="100" class="logo-img">
+            </a>
+            <a class="navbar-brand" href="#">
+                <img src="../assets/pcu_blue.png" alt="Logo" width="150" height="100" class="logo-img">                    
+            </a>
+            <ul id="nav" class="nav navbar-nav navbar-right">
+                <li><a href="../cpl/home_cpl.php">CPL</a></li>
+                <li><a href="../ipk/home_ipk.php">IPK</a></li>
+                <li><a href="../welcome_page.php">LOG OUT</a></li>                
+            </ul>
+        </nav>
     </body>
 </html>
