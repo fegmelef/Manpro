@@ -36,6 +36,9 @@ if (isset($_GET["val"])) {
             body {
                 overflow-x: hidden;
             }
+            th {
+            cursor: pointer;
+            };
         </style>
     </head>
     <body>
@@ -119,7 +122,7 @@ if (isset($_GET["val"])) {
                 <div class="col-md-3">
                     <form method="post" action="">
                         <select name="filtering-CPL" id="filtering-CPL" class="form-control1">
-                            <option value="All_CPL">All</option>
+                            <!-- <option value="All_CPL">All</option> gajadi pake all soale kalau pake all lemot karena datae kebanyakan -->
                             <option value="TF-01">TF-01</option>
                             <option value="TF-02">TF-02</option>
                             <option value="TF-03">TF-03</option>
@@ -137,23 +140,23 @@ if (isset($_GET["val"])) {
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table">
+                    <table class="table" id="tabel_reporting_cpl">
                         <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">NRP hash</th>
-                            <th scope="col">Nama</th>
-                            <th scope="col">Nilai</th>
-                            <th scope="col">CPL</th>
-                            <th scope="col">Tahun</th>
+                            <th scope="col" onclick="sortTable(0)">No</th>
+                            <th scope="col" onclick="sortTable(1)">NRP hash</th>
+                            <th scope="col" onclick="sortTable(2)">Nilai</th>
+                            <th scope="col" onclick="sortTable(3)">CPL</th>
+                            <th scope="col" onclick="sortTable(4)">Tahun</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php
-                            $selectedValue = 'ALL_CPL';
+                            // $selectedValue = 'ALL_CPL';
+                            // $selectedValue = 'TF-01';
                             $kode_cpl = 'TF-01' ;
                             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 // Mengambil nilai dropdown yang dipilih
-                                // $selectedValue = $_POST['filtering-CPL'];
+                                $selectedValue = $_POST['filtering-CPL'];
 
                                 // Membuat pernyataan if berdasarkan nilai dropdown
                                 if ($selectedValue == 'TF-01') {
@@ -179,22 +182,22 @@ if (isset($_GET["val"])) {
                                 } 
                             }   
 
-                            if ($selectedValue == "ALL_CPL"){
-                                $sql = "SELECT kn.*, ikcpl.id_cpl, m.tahun, m.nama
-                                FROM kelas_nilaicpmk kn
-                                JOIN kelas_cpmk kc ON kn.id_cpmk = kc.id_cpmk 
-                                JOIN ikcpl ON ikcpl.id_ikcpl = kc.id_ikcpl 
-                                JOIN mhsw m ON kn.nrp_hash = m.nrp_hash
-                                WHERE kn.nilai < (
-                                    SELECT AVG(sub.nilai)
-                                    FROM kelas_nilaicpmk sub
-                                    JOIN kelas_cpmk subkc ON sub.id_cpmk = subkc.id_cpmk 
-                                    JOIN ikcpl subik ON subik.id_ikcpl = subkc.id_ikcpl 
-                                    JOIN mhsw submhsw ON sub.nrp_hash = submhsw.nrp_hash
-                                    WHERE subik.id_ikcpl = ikcpl.id_ikcpl
-                                )";
-                            }
-                            else{
+                            // if ($selectedValue == "ALL_CPL"){
+                            //     $sql = "SELECT kn.*, ikcpl.id_cpl, m.tahun, m.nama
+                            //     FROM kelas_nilaicpmk kn
+                            //     JOIN kelas_cpmk kc ON kn.id_cpmk = kc.id_cpmk 
+                            //     JOIN ikcpl ON ikcpl.id_ikcpl = kc.id_ikcpl 
+                            //     JOIN mhsw m ON kn.nrp_hash = m.nrp_hash
+                            //     WHERE kn.nilai < (
+                            //         SELECT AVG(sub.nilai)
+                            //         FROM kelas_nilaicpmk sub
+                            //         JOIN kelas_cpmk subkc ON sub.id_cpmk = subkc.id_cpmk 
+                            //         JOIN ikcpl subik ON subik.id_ikcpl = subkc.id_ikcpl 
+                            //         JOIN mhsw submhsw ON sub.nrp_hash = submhsw.nrp_hash
+                            //         WHERE subik.id_ikcpl = ikcpl.id_ikcpl
+                            //     )";
+                            // }
+                            // else{
                                 $sql = "SELECT kelas_nilaicpmk.*, ikcpl.id_cpl, mhsw.tahun, mhsw.nama
                             FROM kelas_nilaicpmk
                             JOIN kelas_cpmk ON kelas_nilaicpmk.id_cpmk = kelas_cpmk.id_cpmk 
@@ -226,15 +229,14 @@ if (isset($_GET["val"])) {
                             if ($angkatan !== 'All'){
                                 $sql .= " AND mhsw.tahun = $angkatan";
                             }
-                            }
+                            // }
                             $query = $conn->prepare($sql);
                             $query->execute();
                             $rowNum = 1; 
                             while($row = $query->fetch()) {
                                 echo '<tr>
-                                <th scope="row">'.$rowNum.'</th>
+                                <td scope="row">'.$rowNum.'</td>
                                 <td>'.$row['nrp_hash'].'</td>
-                                <td>'.$row['nama'].'</td>
                                 <td>'.$row['nilai'].'</td>
                                 <td>'.$row['id_cpl'].'</td>
                                 <td>'.$row['tahun'].'</td>
@@ -251,6 +253,68 @@ if (isset($_GET["val"])) {
         </div>
 
 <script>
+    var sort = "ascending";
+        function sortTable(n) {
+
+            var table, rows, switching, i, x, y, shouldSwap;
+            table = document.getElementById("tabel_reporting_cpl");
+            switching = true;
+            rows = table.getElementsByTagName("TR");
+            // console.log(sort);
+            for (i = 1; i < (rows.length - 1); i++) {
+                if (n==1){
+                    max = rows[1].getElementsByTagName("TD")[1].textContent.toString();
+                    min = "";
+                }else{
+                    max = 0;
+                    min = Infinity;
+                }
+
+                for (j = i; j < (rows.length); j++) {
+                    shouldSwap = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[j].getElementsByTagName("TD")[n];
+
+                    if (n==0 || n==2){
+                        xValue = parseInt(x.textContent.toString());
+                        yValue = parseInt(y.textContent.toString());
+                    }else{
+                        xValue = x.textContent.toLowerCase();
+                        yValue = y.textContent.toLowerCase();
+                    }
+                    
+                    if(sort == "ascending"){
+                        if (max < yValue) {
+                            max = yValue;
+                            index = j;
+                        }
+                    }else if (sort == "descending"){
+                        if (min > yValue) {
+                            min = yValue;
+                            index = j;
+                        }
+                    }
+                    
+                }
+                if (sort == "ascending") {
+                    // console.log(max);  
+                    if (xValue <= max){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }else{
+                    // console.log(min);
+                    if (xValue >= min){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }
+            }
+            if(sort == "ascending"){
+                sort = "descending";
+            }else{
+                sort = "ascending";
+            }
+            // console.log(rows)
+        }
     function downloadCSV() {
         var table = document.querySelector('table'); // Get the table element
         var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table

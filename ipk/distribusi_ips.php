@@ -197,7 +197,7 @@ if (isset($_GET["val"])) {
             table = document.getElementById("Tabel_dist");
             switching = true;
             rows = table.getElementsByTagName("TR");
-            console.log(sort);
+            // console.log(sort);
             for (i = 1; i < (rows.length - 1); i++) {
                 if (n==0){
                     max = rows[1].getElementsByTagName("TD")[1].textContent.toString();
@@ -234,12 +234,12 @@ if (isset($_GET["val"])) {
                     
                 }
                 if (sort == "ascending") {
-                    console.log(max);  
+                    // console.log(max);  
                     if (xValue <= max){
                         rows[i].parentNode.insertBefore(rows[index], rows[i]);
                     }
                 }else{
-                    console.log(min);
+                    // console.log(min);
                     if (xValue >= min){
                         rows[i].parentNode.insertBefore(rows[index], rows[i]);
                     }
@@ -250,8 +250,9 @@ if (isset($_GET["val"])) {
             }else{
                 sort = "ascending";
             }
-            console.log(rows)
+            // console.log(rows)
         }
+        
     function downloadCSV() {
         var table = document.querySelector('table'); // Get the table element
         var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table

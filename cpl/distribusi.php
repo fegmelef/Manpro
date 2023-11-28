@@ -36,6 +36,9 @@ if (isset($_GET["val"])) {
         body {
             overflow-x: hidden;
         }
+        th {
+        cursor: pointer;
+        };
     </style>
 </head>
 
@@ -93,9 +96,9 @@ if (isset($_GET["val"])) {
             <div class="col-md-5">
                 <form action="" method="post">
                     <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
-                        
+                        <option value="selected value"><?php echo $val; ?></option>
                         <option value="Data List">Data List</option>
-                        <option value="Distribusi Data">Distribusi Data</option>
+                        <!-- <option value="Distribusi Data">Distribusi Data</option> -->
                         <option value="Jumlah">Jumlah</option>
                         <option value="Rata-rata">Rata-rata</option>
                         <option value="Reporting">Reporting</option>
@@ -108,22 +111,22 @@ if (isset($_GET["val"])) {
 
         <div class="row">
             <div class="col-md-12">
-                <table class="table">
+                <table class="table" id="tabel_distribusi_cpl">
                     <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Kode MK</th>
-                            <th>Nama MK</th>
-                            <th>CPL 1</th>
-                            <th>CPL 2</th>
-                            <th>CPL 3</th>
-                            <th>CPL 4</th>
-                            <th>CPL 5</th>
-                            <th>CPL 6</th>
-                            <th>CPL 7</th>
-                            <th>CPL 8</th>
-                            <th>CPL 9</th>
-                            <th>CPL 10</th>
+                            <th onclick="sortTable(0)">No</th>
+                            <th onclick="sortTable(1)">Kode MK</th>
+                            <th onclick="sortTable(2)">Nama MK</th>
+                            <th onclick="sortTable(3)">CPL 1</th>
+                            <th onclick="sortTable(4)">CPL 2</th>
+                            <th onclick="sortTable(5)">CPL 3</th>
+                            <th onclick="sortTable(6)">CPL 4</th>
+                            <th onclick="sortTable(7)">CPL 5</th>
+                            <th onclick="sortTable(8)">CPL 6</th>
+                            <th onclick="sortTable(9)">CPL 7</th>
+                            <th onclick="sortTable(10)">CPL 8</th>
+                            <th onclick="sortTable(11)">CPL 9</th>
+                            <th onclick="sortTable(12)">CPL 10</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -142,7 +145,7 @@ if (isset($_GET["val"])) {
                         $rowNum = 1;
                         while ($row2 = $query2->fetch()) {
                             echo '<tr>
-                <th>' . $rowNum . '</th><td>' . $row2['id_mk'] . '</td><td>' . $row2['mk'] . '</td>';
+                <td>' . $rowNum . '</td><td>' . $row2['id_mk'] . '</td><td>' . $row2['mk'] . '</td>';
 
                             $query = "SELECT kelas_nilaicpmk.nilai, mk.id_mk, mk.mk, ikcpl.id_cpl, AVG(kelas_nilaicpmk.nilai) AS 'average nilai'
                             FROM kelas_nilaicpmk
@@ -220,6 +223,68 @@ if (isset($_GET["val"])) {
         
     </div>
     <script>
+        var sort = "ascending";
+        function sortTable(n) {
+
+            var table, rows, switching, i, x, y, shouldSwap;
+            table = document.getElementById("tabel_distribusi_cpl");
+            switching = true;
+            rows = table.getElementsByTagName("TR");
+            // console.log(sort);
+            for (i = 1; i < (rows.length - 1); i++) {
+                if (n==1 || n==2){
+                    max = rows[1].getElementsByTagName("TD")[1].textContent.toString();
+                    min = "";
+                }else{
+                    max = 0;
+                    min = Infinity;
+                }
+
+                for (j = i; j < (rows.length); j++) {
+                    shouldSwap = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[j].getElementsByTagName("TD")[n];
+
+                    if (n==0 || n==2){
+                        xValue = parseInt(x.textContent.toString());
+                        yValue = parseInt(y.textContent.toString());
+                    }else{
+                        xValue = x.textContent.toLowerCase();
+                        yValue = y.textContent.toLowerCase();
+                    }
+                    
+                    if(sort == "ascending"){
+                        if (max < yValue) {
+                            max = yValue;
+                            index = j;
+                        }
+                    }else if (sort == "descending"){
+                        if (min > yValue) {
+                            min = yValue;
+                            index = j;
+                        }
+                    }
+                    
+                }
+                if (sort == "ascending") {
+                    // console.log(max);  
+                    if (xValue <= max){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }else{
+                    // console.log(min);
+                    if (xValue >= min){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }
+            }
+            if(sort == "ascending"){
+                sort = "descending";
+            }else{
+                sort = "ascending";
+            }
+            // console.log(rows)
+        }
     function downloadCSV() {
         var table = document.querySelector('table'); // Get the table element
         var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table

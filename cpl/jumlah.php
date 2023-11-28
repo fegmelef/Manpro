@@ -36,6 +36,9 @@ if (isset($_GET["val"])) {
         body {
             overflow-x: hidden;
         }
+        th {
+        cursor: pointer;
+        };
     </style>
 </head>
 
@@ -117,9 +120,9 @@ if (isset($_GET["val"])) {
                 <div class="col-md-12">
                     <table class="table" id="mata_kuliah">
                         <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Mata Kuliah</th>
-                            <th scope="col">Jumlah Mahasiswa Tidak Lulus</th>
+                            <th scope="col" onclick="sortTable(0, 'mata_kuliah')">No</th>
+                            <th scope="col" onclick="sortTable(1,'mata_kuliah')">Mata Kuliah</th>
+                            <th scope="col" onclick="sortTable(2, 'mata_kuliah')">Jumlah Mahasiswa Tidak Lulus</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -158,7 +161,7 @@ if (isset($_GET["val"])) {
                                 $labels[]=$row1['Mata Kuliah'];
                                 $values[]=$row1['Jumlah Mahasiswa Tidak Lulus'];
                                     echo '<tr>
-                                        <th scope="row">'.$rowNum.'</th> 
+                                        <td scope="row">'.$rowNum.'</td> 
                                         <td>'.$row1['Mata Kuliah'].'</td>
                                         <td>'.$row1['Jumlah Mahasiswa Tidak Lulus'].'</td>
                                     </tr>';
@@ -223,16 +226,14 @@ if (isset($_GET["val"])) {
                 <div class="col-md-12">
                     <table class="table" id="detail">
                         <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Nilai CPL</th>
-                            <!-- <th scope="col">Persentase</th> -->
-                            <th scope="col">ID ikcpl</th>
-                            <th scope="col">ID CPL</th>
-                            <th scope="col">Mata Kuliah</th>
-                            <!-- <th scope="col">Nama</th> -->
-                            <th scope="col">NRPhash</th>
-                            <th scope="col">Tahun</th>
-                            <th scope="col">Angkatan</th>
+                            <th scope="col" onclick="sortTable(0, 'detail')">No</th>
+                            <th scope="col" onclick="sortTable(1, 'detail')">Nilai CPL</th>
+                            <th scope="col" onclick="sortTable(2, 'detail')">ID ikcpl</th>
+                            <th scope="col" onclick="sortTable(3, 'detail')">ID CPL</th>
+                            <th scope="col" onclick="sortTable(4, 'detail')">Mata Kuliah</th>
+                            <th scope="col" onclick="sortTable(5, 'detail')">NRPhash</th>
+                            <th scope="col" onclick="sortTable(6, 'detail')">Tahun</th>
+                            <th scope="col" onclick="sortTable(7, 'detail')">Angkatan</th>
                     
                         </tr>
                         </thead>
@@ -266,7 +267,7 @@ if (isset($_GET["val"])) {
                             $rowNum = 1;
                             while ($row = $query->fetch()) {
                                     echo '<tr>
-                                        <th scope="row">'.$rowNum.'</th> 
+                                        <td scope="row">'.$rowNum.'</td> 
                                         <td>'.$row['nilai CPL'].'</td>
                                         <td>'.$row['id_ikcpl'].'</td>
                                         <td>'.$row['id_cpl'].'</td>
@@ -287,6 +288,69 @@ if (isset($_GET["val"])) {
         
     </div>
 <script>
+
+var sort = "ascending";
+        function sortTable(n,id) {
+
+            var table, rows, switching, i, x, y, shouldSwap;
+            table = document.getElementById(id);
+            switching = true;
+            rows = table.getElementsByTagName("TR");
+            // console.log(sort);
+            for (i = 1; i < (rows.length - 1); i++) {
+                if (id == 'detail' && n ==1){
+                    max = rows[1].getElementsByTagName("TD")[1].textContent.toString();
+                    min = "";
+                }else{
+                    max = 0;
+                    min = Infinity;
+                }
+
+                for (j = i; j < (rows.length); j++) {
+                    shouldSwap = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[j].getElementsByTagName("TD")[n];
+
+                    if (n==0 || n==2){
+                        xValue = parseInt(x.textContent.toString());
+                        yValue = parseInt(y.textContent.toString());
+                    }else{
+                        xValue = x.textContent.toLowerCase();
+                        yValue = y.textContent.toLowerCase();
+                    }
+                    
+                    if(sort == "ascending"){
+                        if (max < yValue) {
+                            max = yValue;
+                            index = j;
+                        }
+                    }else if (sort == "descending"){
+                        if (min > yValue) {
+                            min = yValue;
+                            index = j;
+                        }
+                    }
+                    
+                }
+                if (sort == "ascending") {
+                    // console.log(max);  
+                    if (xValue <= max){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }else{
+                    // console.log(min);
+                    if (xValue >= min){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }
+            }
+            if(sort == "ascending"){
+                sort = "descending";
+            }else{
+                sort = "ascending";
+            }
+            // console.log(rows)
+        }
     function downloadAllTables() {
     downloadCSV('Jumlah Mahasiswa.csv', 'mata_kuliah'); // Download first table
     downloadCSV('Detail Mahasiswa.csv', 'detail'); // Download second table
@@ -328,118 +392,6 @@ function downloadCSV(filename, tableId) {
 }
 
 </script>
-<script>
-//     function downloadAllTables() {
-//     var table1 = document.getElementById('mata_kuliah');
-//     var table2 = document.getElementById('detail');
-
-//     var dataFromTable1 = collectData(table1);
-//     var dataFromTable2 = collectData(table2);
-
-//     // Menggunakan SheetJS untuk membuat workbook
-//     var wb = XLSX.utils.book_new();
-
-//     // Membuat sheets untuk tabel 1 dan tabel 2
-//     var ws1 = XLSX.utils.aoa_to_sheet(dataFromTable1);
-//     var ws2 = XLSX.utils.aoa_to_sheet(dataFromTable2);
-
-//     // Menamai sheet dan menambahkannya ke workbook
-//     XLSX.utils.book_append_sheet(wb, ws1, "mata_kuliah");
-//     XLSX.utils.book_append_sheet(wb, ws2, "detail");
-
-//     // Membuat file XLSX
-//     var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-
-//     // Mengkonversi file XLSX menjadi Blob
-//     var blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
-
-//     // Mendownload file XLSX
-//     saveAs(blob, 'CombinedData.xlsx');
-//     if (navigator.msSaveBlob) {
-//     navigator.msSaveBlob(blob, filename);
-// } else {
-//     var link = document.createElement('a');
-//     if (link.download !== undefined) {
-//         var url = URL.createObjectURL(blob);
-//         link.setAttribute('href', url);
-//         link.setAttribute('download', filename);
-//         link.style.visibility = 'hidden';
-//         document.body.appendChild(link);
-//         link.click();
-//         document.body.removeChild(link);
-//     }
-// }
-
-// }
-
-// function collectData(table) {
-//     var rows = Array.from(table.querySelectorAll('tr'));
-//     var data = rows.map(function (row) {
-//         return Array.from(row.querySelectorAll('th, td'))
-//             .map(function (cell) {
-//                 return cell.textContent;
-//             })
-//             .join(',');
-//     });
-//     return data;
-// }
-
-// function s2ab(s) {
-//     var buf = new ArrayBuffer(s.length);
-//     var view = new Uint8Array(buf);
-//     for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-//     return buf;
-// } 
-
-// function downloadAllTables() {
-//     var table1 = document.getElementById('mata_kuliah');
-//     var table2 = document.getElementById('detail');
-
-//     var dataFromTable1 = collectData(table1);
-//     var dataFromTable2 = collectData(table2);
-
-//     var combinedData = dataFromTable1.concat(dataFromTable2);
-
-//     downloadCSV('CombinedData.csv', combinedData);
-// }
-
-// function collectData(table) {
-//     var rows = Array.from(table.querySelectorAll('tr'));
-//     var data = rows.map(function (row) {
-//         return Array.from(row.querySelectorAll('th, td'))
-//             .map(function (cell) {
-//                 return cell.textContent;
-//             })
-//             .join(',');
-//     });
-//     return data;
-// }
-
-// function downloadCSV(filename, data) {
-//     var csvContent = data.join('\n');
-//     var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    
-//     // ... sama seperti kode sebelumnya untuk membuat dan mendownload file CSV
-//     if (navigator.msSaveBlob) {
-//         // For IE and Edge browsers
-//         navigator.msSaveBlob(blob, filename);
-//     } else {
-//         // For other browsers
-//         var link = document.createElement('a');
-//         if (link.download !== undefined) {
-//             var url = URL.createObjectURL(blob);
-//             link.setAttribute('href', url);
-//             link.setAttribute('download', filename);
-//             link.style.visibility = 'hidden';
-//             document.body.appendChild(link);
-//             link.click();
-//             document.body.removeChild(link);
-//         }
-// }}
-
-</script>
-
-
     
 </body>
 

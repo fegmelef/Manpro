@@ -32,6 +32,9 @@ if (isset($_GET["periode"])) {
         body {
             overflow-x: hidden;
         }
+        th {
+        cursor: pointer;
+        };
     </style>
 </head>
 
@@ -108,13 +111,12 @@ if (isset($_GET["periode"])) {
         </div>
         <div class="row">
                 <div class="col-md-12">
-                    <table class="table">
+                    <table class="table" id="tabel_cpl">
                         <tr>
-                            <th scope="col">No</th>
-
-                            <th scope="col">NRP</th>
-                            <th scope="col">Tahun</th>
-                            <th scope="col"> </th>
+                            <th scope="col" onclick="sortTable(0)">No</th>
+                            <th scope="col" onclick="sortTable(1)">NRP</th>
+                            <th scope="col" onclick="sortTable(2)">Tahun</th>
+                            <th scope="col" onclick="sortTable(3)"> </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -131,7 +133,7 @@ if (isset($_GET["periode"])) {
                             $rowNum = 1;
                         while($row = $query->fetch()) { ?>
                                 <tr>
-                                <th scope="row"><?php echo $rowNum; ?></th>
+                                <td scope="row"><?php echo $rowNum; ?></td>
                                 <td><?php echo $row['nrp_hash'];?></td>
                                 <td><?php echo $row['tahun'];?></td>
                                 <td><form method="post" action="detail_cpl.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
@@ -150,6 +152,68 @@ if (isset($_GET["periode"])) {
             </div>
     </div>
     <script>
+        var sort = "ascending";
+        function sortTable(n) {
+
+            var table, rows, switching, i, x, y, shouldSwap;
+            table = document.getElementById("tabel_cpl");
+            switching = true;
+            rows = table.getElementsByTagName("TR");
+            // console.log(sort);
+            for (i = 1; i < (rows.length - 1); i++) {
+                if (n==1){
+                    max = rows[1].getElementsByTagName("TD")[1].textContent.toString();
+                    min = "";
+                }else{
+                    max = 0;
+                    min = Infinity;
+                }
+
+                for (j = i; j < (rows.length); j++) {
+                    shouldSwap = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[j].getElementsByTagName("TD")[n];
+
+                    if (n==0 || n==2){
+                        xValue = parseInt(x.textContent.toString());
+                        yValue = parseInt(y.textContent.toString());
+                    }else{
+                        xValue = x.textContent.toLowerCase();
+                        yValue = y.textContent.toLowerCase();
+                    }
+                    
+                    if(sort == "ascending"){
+                        if (max < yValue) {
+                            max = yValue;
+                            index = j;
+                        }
+                    }else if (sort == "descending"){
+                        if (min > yValue) {
+                            min = yValue;
+                            index = j;
+                        }
+                    }
+                    
+                }
+                if (sort == "ascending") {
+                    // console.log(max);  
+                    if (xValue <= max){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }else{
+                    // console.log(min);
+                    if (xValue >= min){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }
+            }
+            if(sort == "ascending"){
+                sort = "descending";
+            }else{
+                sort = "ascending";
+            }
+            // console.log(rows)
+        }
     function downloadCSV() {
         var table = document.querySelector('table'); // Get the table element
         var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table

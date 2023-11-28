@@ -34,7 +34,9 @@ if (isset($_GET["val"])) {
     <style>
         body {
             overflow-x: hidden;
-        }
+        } th {
+        cursor: pointer;
+        };
     </style>
 </head>
 <body>
@@ -114,13 +116,13 @@ if (isset($_GET["val"])) {
     <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
 <div class="row">
             <div class="col-md-12">
-                <table class="table">
+                <table class="table" id="rata2_cpl">
                     <tr>
-                        <th scope="col">CPL</th>
-                        <th scope="col">Tahun</th>
-                        <th scope="col">Angkatan</th>
-                        <th scope="col">Semester</th>
-                        <th scope="col">Rata-rata Nilai</th>
+                        <th scope="col" onclick="sorTable(0)">CPL</th>
+                        <th scope="col" onclick="sortTable(1)">Tahun</th>
+                        <th scope="col" onclick="sortTable(2)">Angkatan</th>
+                        <th scope="col" onclick="sortTable(3)">Semester</th>
+                        <th scope="col" onclick="sortTable(4)">Rata-rata Nilai</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -189,6 +191,69 @@ if (isset($_GET["val"])) {
         </div>
                     </div>
                     <script>
+
+var sort = "ascending";
+        function sortTable(n) {
+
+            var table, rows, switching, i, x, y, shouldSwap;
+            table = document.getElementById("rata2_cpl");
+            switching = true;
+            rows = table.getElementsByTagName("TR");
+            // console.log(sort);
+            for (i = 1; i < (rows.length - 1); i++) {
+                if (n==0 || n==1){
+                    max = rows[1].getElementsByTagName("TD")[1].textContent.toString();
+                    min = "";
+                }else{
+                    max = 0;
+                    min = Infinity;
+                }
+
+                for (j = i; j < (rows.length); j++) {
+                    shouldSwap = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[j].getElementsByTagName("TD")[n];
+
+                    if (n==0 || n==2){
+                        xValue = parseInt(x.textContent.toString());
+                        yValue = parseInt(y.textContent.toString());
+                    }else{
+                        xValue = x.textContent.toLowerCase();
+                        yValue = y.textContent.toLowerCase();
+                    }
+                    
+                    if(sort == "ascending"){
+                        if (max < yValue) {
+                            max = yValue;
+                            index = j;
+                        }
+                    }else if (sort == "descending"){
+                        if (min > yValue) {
+                            min = yValue;
+                            index = j;
+                        }
+                    }
+                    
+                }
+                if (sort == "ascending") {
+                    // console.log(max);  
+                    if (xValue <= max){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }else{
+                    // console.log(min);
+                    if (xValue >= min){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }
+            }
+            if(sort == "ascending"){
+                sort = "descending";
+            }else{
+                sort = "ascending";
+            }
+            // console.log(rows)
+        }
     function downloadCSV() {
         var table = document.querySelector('table'); // Get the table element
         var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table

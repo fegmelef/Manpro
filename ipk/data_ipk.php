@@ -149,7 +149,7 @@ if (isset($_GET["periode"])) {
             table = document.getElementById("tabel_ipk");
             switching = true;
             rows = table.getElementsByTagName("TR");
-            console.log(sort);
+            // console.log(sort);
             for (i = 1; i < (rows.length - 1); i++) {
                 if (n==1){
                     max = rows[1].getElementsByTagName("TD")[1].textContent.toString();
@@ -186,12 +186,12 @@ if (isset($_GET["periode"])) {
                     
                 }
                 if (sort == "ascending") {
-                    console.log(max);  
+                    // console.log(max);  
                     if (xValue <= max){
                         rows[i].parentNode.insertBefore(rows[index], rows[i]);
                     }
                 }else{
-                    console.log(min);
+                    // console.log(min);
                     if (xValue >= min){
                         rows[i].parentNode.insertBefore(rows[index], rows[i]);
                     }
@@ -202,7 +202,7 @@ if (isset($_GET["periode"])) {
             }else{
                 sort = "ascending";
             }
-            console.log(rows)
+            // console.log(rows)
         }
 
     //DOWNLOAD CSV

@@ -110,11 +110,11 @@ if (isset($_GET["val"])) {
                     <table class="table" id="turun">
                         <thead>
                             <tr> 
-                                <th scope="col" onclick="sortTable(4,turun">Mata Kuliah</th>
+                                <th scope="col" onclick="sortTable(0,'turun')">Mata Kuliah</th>
                                 <th scope="col" onclick="sortTable(1,'turun')">Nilai Rata-rata</th>
-                                <th scope="col"onclick="sortTable(1)">Tahun</th>
-                                <th scope="col"onclick="sortTable(2)">Semester</th>
-                                <th scope="col" onclick="sortTable(3)">Angkatan</th>
+                                <th scope="col"onclick="sortTable(2,'turun')">Tahun</th>
+                                <th scope="col"onclick="sortTable(3,'turun')">Semester</th>
+                                <th scope="col" onclick="sortTable(4,'turun')">Angkatan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -185,11 +185,11 @@ if (isset($_GET["val"])) {
                         <table class="table" id="naik">
                             <thead>
                                 <tr> 
-                                    <th scope="col">Mata Kuliah</th>
-                                    <th scope="col">Nilai Rata-rata</th>
-                                    <th scope="col">Tahun</th>
-                                    <th scope="col">Semester</th>
-                                    <th scope="col">Angkatan</th>
+                                    <th scope="col" onclick="sortTable(0,'naik')">Mata Kuliah</th>
+                                    <th scope="col" onclick="sortTable(1,'naik')">Nilai Rata-rata</th>
+                                    <th scope="col" onclick="sortTable(2,'naik')">Tahun</th>
+                                    <th scope="col" onclick="sortTable(3,'naik')">Semester</th>
+                                    <th scope="col" onclick="sortTable(4,'naik')">Angkatan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -262,9 +262,9 @@ var sort = "ascending";
             table = document.getElementById(id_tabel);
             switching = true;
             rows = table.getElementsByTagName("TR");
-            console.log(sort);
+            // console.log(sort);
             for (i = 1; i < (rows.length - 1); i++) {
-                if (n==4){
+                if (n==0){
                     max = rows[1].getElementsByTagName("TD")[1].textContent.toString();
                     min = "";
                 }else{
@@ -299,12 +299,12 @@ var sort = "ascending";
                     
                 }
                 if (sort == "ascending") {
-                    console.log(max);  
+                    // console.log(max);  
                     if (xValue <= max){
                         rows[i].parentNode.insertBefore(rows[index], rows[i]);
                     }
                 }else{
-                    console.log(min);
+                    // console.log(min);
                     if (xValue >= min){
                         rows[i].parentNode.insertBefore(rows[index], rows[i]);
                     }
@@ -315,7 +315,7 @@ var sort = "ascending";
             }else{
                 sort = "ascending";
             }
-            console.log(rows)
+            // console.log(rows)
         }
     function downloadAllTables() {
     downloadCSV('Pengaruh MK Turun.csv', 'turun'); // Download first table
