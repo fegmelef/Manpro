@@ -56,9 +56,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             width: 600px;   
             margin: 0 auto;     
         }
-        .btn {
+        /* .btn {
             width: 100px;
             margin: 0 auto; 
+        } */
+        .btn-midnightblue {
+            background-color: midnightblue;
+            color: white; /* Set the text color to ensure visibility */
+            width: 100px;
+            margin: 0 auto;
+        }
+
+        .btn-midnightblue:hover {
+            background-color: darkblue; /* Change the color on hover if needed */
         }
         .row {
             display: inline;
@@ -97,7 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                     <div class="d-grid gap-2">
                         <!-- <button class="btn" name="login"><a href="cpl/home_cpl.php">Login</a></button> -->
                         <!-- <button type="button" class="btn btn-secondary btn-md"><a class="text" href="cpl/home_cpl.php">Login</a></button> -->
-                        <button type="button" class="btn btn-secondary btn-md" style="background-color: midnightblue;"><a class="text" href="cpl/home_cpl.php">Login</a></button>
+                        <!-- <button type="button" class="btn btn-secondary btn-md" style="background-color: midnightblue;"><a class="text" href="cpl/home_cpl.php">Login</a></button> -->
+                        <button type="button" class="btn btn-midnightblue btn-md"><a class="text" href="cpl/home_cpl.php">Login</a></button>
 
                         <!-- <button class="btn" name="login"><a href="cpl/home_cpl.php">Login</a></button> -->
                     </div>
