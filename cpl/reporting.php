@@ -250,7 +250,6 @@ if (isset($_GET["val"])) {
         </div>           
         </div>
 
-
 <script>
     function downloadCSV() {
         var table = document.querySelector('table'); // Get the table element
@@ -277,7 +276,7 @@ if (isset($_GET["val"])) {
             if (link.download !== undefined) {
                 var url = URL.createObjectURL(blob);
                 link.setAttribute('href', url);
-                link.setAttribute('download', 'tableReporting.csv');
+                link.setAttribute('download', 'Reporting.csv');
                 link.style.visibility = 'hidden';
                 document.body.appendChild(link);
                 link.click();
