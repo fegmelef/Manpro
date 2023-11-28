@@ -35,6 +35,9 @@ if (isset($_GET["val"])) {
         body {
             overflow-x: hidden;
         }
+        th {
+        cursor: pointer;
+        }
     </style>
 </head>
 
@@ -104,10 +107,10 @@ if (isset($_GET["val"])) {
         <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
         <div class="row">
             <div class="col-md-12">
-                <table class="table">
+                <table class="table" id="Tabel_dist">
                     <tr>
-                        <th scope="col">Nilai</th>
-                        <th scope="col">Jumlah Mahasiswa</th>
+                        <th scope="col" onclick="sortTable(0)">Nilai</th>
+                        <th scope="col" onclick="sortTable(1)">Jumlah Mahasiswa</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -187,6 +190,68 @@ if (isset($_GET["val"])) {
     </div>
 
     <script>
+        var sort = "ascending";
+        function sortTable(n) {
+
+            var table, rows, switching, i, x, y, shouldSwap;
+            table = document.getElementById("Tabel_dist");
+            switching = true;
+            rows = table.getElementsByTagName("TR");
+            console.log(sort);
+            for (i = 1; i < (rows.length - 1); i++) {
+                if (n==0){
+                    max = rows[1].getElementsByTagName("TD")[1].textContent.toString();
+                    min = "";
+                }else{
+                    max = 0;
+                    min = Infinity;
+                }
+
+                for (j = i; j < (rows.length); j++) {
+                    shouldSwap = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[j].getElementsByTagName("TD")[n];
+
+                    if (n==0 || n==2){
+                        xValue = parseInt(x.textContent.toString());
+                        yValue = parseInt(y.textContent.toString());
+                    }else{
+                        xValue = x.textContent.toLowerCase();
+                        yValue = y.textContent.toLowerCase();
+                    }
+                    
+                    if(sort == "ascending"){
+                        if (max < yValue) {
+                            max = yValue;
+                            index = j;
+                        }
+                    }else if (sort == "descending"){
+                        if (min > yValue) {
+                            min = yValue;
+                            index = j;
+                        }
+                    }
+                    
+                }
+                if (sort == "ascending") {
+                    console.log(max);  
+                    if (xValue <= max){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }else{
+                    console.log(min);
+                    if (xValue >= min){
+                        rows[i].parentNode.insertBefore(rows[index], rows[i]);
+                    }
+                }
+            }
+            if(sort == "ascending"){
+                sort = "descending";
+            }else{
+                sort = "ascending";
+            }
+            console.log(rows)
+        }
     function downloadCSV() {
         var table = document.querySelector('table'); // Get the table element
         var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table
