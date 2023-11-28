@@ -121,7 +121,7 @@
         <div class="container">
             <div class="row">                    
                 <?php
-                    $kode_cpl = 'TF-01' ;
+                    // $kode_cpl = 'TF-01' ;
                     if (isset($_POST['filtering-CPL'])) {
                         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             // Mengambil nilai dropdown yang dipilih
@@ -185,8 +185,8 @@
                 <div class="row">
                     <div class="col-md-12 col-xs-12">
                         <?php
-                            $selectedValue = 'ALL_CPL';
-                            $kode_cpl = 'TF-01' ;
+                            // $selectedValue = 'ALL_CPL';
+                            // $kode_cpl = 'TF-01' ;
                             if(isset($_POST['filtering-CPL'])){
                             ?>
                                 <table class="table" id="tabel_reporting_cpl">
