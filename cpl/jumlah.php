@@ -113,6 +113,87 @@
             </div>
         </div>
 
+        <?php
+                            $query1 = "SELECT subquery.mk AS 'Mata Kuliah', COUNT(subquery.nrp_hash) AS 'Jumlah Mahasiswa Tidak Lulus'
+                            FROM (
+                                SELECT mk.mk, kelas_nilaicpmk.nrp_hash, mhsw.tahun AS 'angkatan', periode.tahun, periode.semester AS 'semester'
+                                FROM kelas_cpmk
+                                    JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
+                                    JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
+                                    JOIN kelas ON kelas_cpmk.id_kelas = kelas.id_kelas
+                                    JOIN mk ON kelas.id_mk = mk.id_mk
+                                    JOIN mhsw ON kelas_nilaicpmk.nrp_hash = mhsw.nrp_hash
+                                    JOIN periode ON kelas.id_periode = periode.id_periode  
+                                    JOIN cpl ON ikcpl.id_cpl = cpl.id_cpl
+                                    GROUP BY mk.mk, kelas_nilaicpmk.nrp_hash
+                                    HAVING SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) < 55.5";
+
+                            if ($angkatan !== 'All'){
+                                $query1 .= " AND angkatan = $angkatan";
+                            } if ($periode !== 'All'){
+                                $query1 .= " AND semester = $periode";
+                            } if ($tahun !== 'All'){
+                                $query1 .= " AND tahun = '$tahun'";
+                            } 
+
+                            $query1 .=") AS subquery GROUP BY subquery.mk";
+                            $query1 = $conn->prepare($query1);
+                            $query1->execute();
+
+                            
+                            $labels=[];
+                            $values=[];
+                            while($row1 = $query1->fetch()) {
+                                $labels[]=$row1['Mata Kuliah'];
+                                $values[]=$row1['Jumlah Mahasiswa Tidak Lulus'];
+                            }
+                            ?>
+                            <div class="row"> 
+                <div class="col-md-12 col-xs-12">
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <canvas id="myChart" width="400" height="200"></canvas>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            // Get data from PHP and convert it to a JavaScript array
+                            var label = <?php echo json_encode($labels); ?>;
+                            var value = <?php echo json_encode($values); ?>;
+
+                            // Extract relevant data for the chart
+                            // var labels = data.map(function (item) {
+                            //     return item.mk;
+                            // });
+
+                            // var values = data.map(function (item) {
+                            //     return item['nilai CPL'];
+                            // });
+
+                            // Create a bar chart
+                            var ctx = document.getElementById('myChart').getContext('2d');
+                            var myChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: label,
+                                    datasets: [{
+                                        label: 'Nilai CPL',
+                                        data: value,
+                                        backgroundColor: 'rgba(255, 192, 203, 1)',
+                                        borderColor: 'rgba(255, 192, 203, 1)',
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+
         <div class="row">
                 <div class="col-md-12 col-xs-12">
                     <table class="table" id="mata_kuliah">
@@ -150,13 +231,8 @@
                             $query1 = $conn->prepare($query1);
                             $query1->execute();
 
-                            
-                            $labels=[];
-                            $values=[];
                             $rowNum = 1;
                             while($row1 = $query1->fetch()) {
-                                $labels[]=$row1['Mata Kuliah'];
-                                $values[]=$row1['Jumlah Mahasiswa Tidak Lulus'];
                                     echo '<tr>
                                         <td class="bordered-cell"scope="row">'.$rowNum.'</td> 
                                         <td class="bordered-cell">'.$row1['Mata Kuliah'].'</td>
@@ -173,51 +249,7 @@
                 </div>
             </div>
 
-            <div class="row"> 
-                <div class="col-md-12 col-xs-12">
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <canvas id="myChart" width="400" height="200"></canvas>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            // Get data from PHP and convert it to a JavaScript array
-                            var label = <?php echo json_encode($labels); ?>;
-                            var value = <?php echo json_encode($values); ?>;
-
-                            // Extract relevant data for the chart
-                            // var labels = data.map(function (item) {
-                            //     return item.mk;
-                            // });
-
-                            // var values = data.map(function (item) {
-                            //     return item['nilai CPL'];
-                            // });
-
-                            // Create a bar chart
-                            var ctx = document.getElementById('myChart').getContext('2d');
-                            var myChart = new Chart(ctx, {
-                                type: 'bar',
-                                data: {
-                                    labels: label,
-                                    datasets: [{
-                                        label: 'Nilai CPL',
-                                        data: value,
-                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-                        });
-                    </script>
-                </div>
-            </div>
+            
 
         <div class="row">
                 <div class="col-md-12 col-xs-12">
