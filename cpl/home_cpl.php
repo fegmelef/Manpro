@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <!-- isi -->
+    <!-- isi  -->
     <form action="../api/get_data_cpl.php" method="POST">
         <div class="container">
             <div class="row">
