@@ -149,8 +149,14 @@ if (isset($_GET["val"])) {
                             $query1 .=") AS subquery GROUP BY subquery.mk";
                             $query1 = $conn->prepare($query1);
                             $query1->execute();
+
+                            
+                            $labels=[];
+                            $values=[];
                             $rowNum = 1;
                             while($row1 = $query1->fetch()) {
+                                $labels[]=$row1['Mata Kuliah'];
+                                $values[]=$row1['Jumlah Mahasiswa Tidak Lulus'];
                                     echo '<tr>
                                         <th scope="row">'.$rowNum.'</th> 
                                         <td>'.$row1['Mata Kuliah'].'</td>
@@ -161,8 +167,55 @@ if (isset($_GET["val"])) {
                                 }                            
                             
                                 ?>
+                                
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div class="row"> 
+                <div class="col-md-12">
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <canvas id="myChart" width="400" height="200"></canvas>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            // Get data from PHP and convert it to a JavaScript array
+                            var label = <?php echo json_encode($labels); ?>;
+                            var value = <?php echo json_encode($values); ?>;
+
+                            // Extract relevant data for the chart
+                            // var labels = data.map(function (item) {
+                            //     return item.mk;
+                            // });
+
+                            // var values = data.map(function (item) {
+                            //     return item['nilai CPL'];
+                            // });
+
+                            // Create a bar chart
+                            var ctx = document.getElementById('myChart').getContext('2d');
+                            var myChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: label,
+                                    datasets: [{
+                                        label: 'Nilai CPL',
+                                        data: value,
+                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    </script>
                 </div>
             </div>
 
@@ -225,6 +278,7 @@ if (isset($_GET["val"])) {
                                     $rowNum++; 
                                 }                            
                         ?>
+                        
                         </tbody>
                     </table>
                 </div>
