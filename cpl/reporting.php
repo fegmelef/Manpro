@@ -185,7 +185,7 @@
                 <div class="row">
                     <div class="col-md-12 col-xs-12">
                         <?php
-                            $selectedValue = 'ALL_CPL';
+                            // $selectedValue = 'ALL_CPL';
                             $kode_cpl = 'TF-01' ;
                             if(isset($_POST['filtering-CPL'])){
                             ?>
