@@ -120,16 +120,25 @@ if (isset($_GET["val"])) {
                         <tbody>
                             
                                 <?php
-                                    $query = "SELECT angkatan, tahun, semester, mk, MIN(rata) as nilai_terendah
-                                    FROM rata_rata r1
-                                    WHERE NOT EXISTS (
-                                            SELECT *
+                                    $query = "WITH RankedMataKuliah AS (
+                                        SELECT
+                                            angkatan,
+                                            tahun,
+                                            semester,
+                                            mk,
+                                            MIN(rata) as nilai_terendah,
+                                            ROW_NUMBER() OVER (PARTITION BY angkatan ORDER BY MIN(rata)) AS row_num
+                                        FROM
+                                            rata_rata r1
+                                        WHERE NOT EXISTS (
+                                            SELECT 1
                                             FROM rata_rata r2
                                             WHERE r1.mk = r2.mk
                                                 AND r2.semester < r1.semester
                                                 AND r2.tahun <= r1.tahun
                                                 AND r2.angkatan = r1.angkatan
                                         )";
+    
 
                                     if ($periode !== "All") {
                                         $query .= " AND semester = :periode";
@@ -143,9 +152,20 @@ if (isset($_GET["val"])) {
                                         $query .= " AND angkatan = :angkatan";
                                     }
 
-                                    $query .= " GROUP BY angkatan, tahun, semester, mk";
-                                    $query .= " ORDER BY angkatan, tahun, semester, nilai_terendah";
-                                    $query .= " LIMIT 3";
+                                    $query .= " GROUP BY angkatan, tahun, semester, mk
+                                    )
+                                    SELECT
+                                        angkatan,
+                                        tahun,
+                                        semester,
+                                        mk,
+                                        nilai_terendah
+                                    FROM
+                                        RankedMataKuliah
+                                    WHERE
+                                        row_num <= 3
+                                    ORDER BY
+                                        angkatan, nilai_terendah;";
 
                                     $query = $conn->prepare($query);
 
@@ -194,10 +214,18 @@ if (isset($_GET["val"])) {
                             </thead>
                             <tbody>
                                 <?php
-                                    $query1 = "SELECT angkatan, tahun, semester, mk, MAX(rata) as nilai_tertinggi
-                                    FROM rata_rata r1
-                                    WHERE NOT EXISTS (
-                                            SELECT *
+                                    $query1 = "WITH RankedMataKuliah AS (
+                                        SELECT
+                                            angkatan,
+                                            tahun,
+                                            semester,
+                                            mk,
+                                            MAX(rata) as nilai_tertinggi,
+                                            ROW_NUMBER() OVER (PARTITION BY angkatan ORDER BY MAX(rata) DESC) AS row_num
+                                        FROM
+                                            rata_rata r1
+                                        WHERE NOT EXISTS (
+                                            SELECT 1
                                             FROM rata_rata r2
                                             WHERE r1.mk = r2.mk
                                                 AND r2.semester < r1.semester
@@ -217,9 +245,20 @@ if (isset($_GET["val"])) {
                                         $query1 .= " AND angkatan = :angkatan";
                                     }
 
-                                    $query1 .= " GROUP BY angkatan, tahun, semester, mk";
-                                    $query1 .= " ORDER BY angkatan, tahun, semester, nilai_tertinggi DESC";
-                                    $query1 .= " LIMIT 3";
+                                    $query1 .= " GROUP BY angkatan, tahun, semester, mk
+                                    )
+                                    SELECT
+                                        angkatan,
+                                        tahun,
+                                        semester,
+                                        mk,
+                                        nilai_tertinggi
+                                    FROM
+                                        RankedMataKuliah
+                                    WHERE
+                                        row_num <= 3
+                                    ORDER BY
+                                        angkatan, nilai_tertinggi DESC";
 
                                     $query1 = $conn->prepare($query1);
 
