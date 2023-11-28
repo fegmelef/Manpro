@@ -114,7 +114,7 @@
 
         <div class="row">
             <div class="col-md-12 col-xs-12">
-                <table class="table">
+                <table class="table" id="tabel_distribusi_cpl">
                         <tr>
                             <th onclick="sortTable(0)" class="bordered-header">No</th>
                             <th onclick="sortTable(1)" class="bordered-header">Kode MK</th>

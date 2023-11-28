@@ -105,9 +105,10 @@
 
             <div class="col-md-1 col-xs-1">
                 <div class="col-md-1 col-xs-1">
-                    <svg id="downloadCSV" onclick="downloadCSV()" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="cursor: pointer;">
+                    <svg id="downloadCSV" onclick="downloadAllTables()" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="cursor: pointer;">
                         <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
                     </svg>
+
                 </div>
             </div>
         </div>
@@ -347,48 +348,42 @@
                 }
                 // console.log(rows)
             }
-        function downloadAllTables() {
-        downloadCSV('Jumlah Mahasiswa.csv', 'mata_kuliah'); // Download first table
-        downloadCSV('Detail Mahasiswa.csv', 'detail'); // Download second table
-        // ... add downloadCSV for other tables here
-    }
-
-    function downloadCSV(filename, tableId) {
-        var table = document.getElementById(tableId); // Get the table element
-        var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table
-
-        // Create a CSV content string
-        var csvContent = rows.map(function (row) {
-            var rowData = Array.from(row.querySelectorAll('th, td'))
-                .map(function (cell) {
-                    return cell.textContent;
-                })
-                .join(',');
-            return rowData;
-        }).join('\n');
-
-        // Create a Blob object with the CSV content
-        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        if (navigator.msSaveBlob) {
-            // For IE and Edge browsers
-            navigator.msSaveBlob(blob, filename);
-        } else {
-            // For other browsers
-            var link = document.createElement('a');
-            if (link.download !== undefined) {
-                var url = URL.createObjectURL(blob);
-                link.setAttribute('href', url);
-                link.setAttribute('download', filename);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+            function downloadAllTables() {
+                downloadCSV('Jumlah Mahasiswa.csv', 'mata_kuliah'); // Download first table
+                downloadCSV('Detail Mahasiswa.csv', 'detail'); // Download second table
+                // ... add downloadCSV for other tables here
             }
-        }
-    }
-
+            function downloadCSV(filename, tableId) {
+                var table = document.getElementById(tableId); // Get the table element
+                var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table
+                // Create a CSV content string
+                var csvContent = rows.map(function (row) {
+                    var rowData = Array.from(row.querySelectorAll('th, td'))
+                        .map(function (cell) {
+                            return cell.textContent;
+                        })
+                        .join(',');
+                    return rowData;
+                }).join('\n');
+                // Create a Blob object with the CSV content
+                var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                if (navigator.msSaveBlob) {
+                    // For IE and Edge browsers
+                    navigator.msSaveBlob(blob, filename);
+                } else {
+                    // For other browsers
+                    var link = document.createElement('a');
+                    if (link.download !== undefined) {
+                        var url = URL.createObjectURL(blob);
+                        link.setAttribute('href', url);
+                        link.setAttribute('download', filename);
+                        link.style.visibility = 'hidden';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                }
+            }
     </script>
-    
 </body>
-
 </html>
