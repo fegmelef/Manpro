@@ -35,6 +35,9 @@ if (isset($_GET["val"])) {
         body {
             overflow-x: hidden;
         }
+        th {
+        cursor: pointer;
+        }
     </style>
 </head>
 
@@ -112,10 +115,11 @@ if (isset($_GET["val"])) {
                 <table class="table">
                     <tr>
 
-                        <th scope="col">Tahun</th>
-                        <th scope="col">Angkatan</th>
+                        <th scope="col" onclick="sortTable(0)">Tahun</th>
+                        <th scope="col" onclick="sortTable(1)">Angkatan</th>
                         <th scope="col">Semester</th>
                         <th scope="col">Rata-rata IPK</th>
+                        <th scope="col">Rata-rata IPS</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -178,6 +182,36 @@ if (isset($_GET["val"])) {
     </div>
     </div>
     <script>
+function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwap;
+            table = document.getElementById("tabel_ipk");
+            switching = true;
+            rows = table.getElementsByTagName("TR");
+
+            while (switching) {
+            switching = false;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwap = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                if (x.textContent.toLowerCase() < y.textContent.toLowerCase()) {
+                shouldSwap = true;
+                break;
+                } else if (x.textContent.toLowerCase() > y.textContent.toLowerCase()) {
+                shouldSwap = false;
+                break;
+                }
+            }
+
+            if (shouldSwap) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+            }
+        }
+
+
     function downloadCSV() {
         var table = document.querySelector('table'); // Get the table element
         var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table

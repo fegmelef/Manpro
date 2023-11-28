@@ -245,7 +245,7 @@ if (isset($_GET["val"])) {
             if (link.download !== undefined) {
                 var url = URL.createObjectURL(blob);
                 link.setAttribute('href', url);
-                link.setAttribute('download', 'tableReporting.csv');
+                link.setAttribute('download', 'distribusi.csv');
                 link.style.visibility = 'hidden';
                 document.body.appendChild(link);
                 link.click();
