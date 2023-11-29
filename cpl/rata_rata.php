@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
     <link rel="stylesheet" type="text/css" href="../css.css">
 
     <!-- lock screen, spy tdk bisa di swipe kanan kiri -->
@@ -110,6 +111,8 @@
                 </div>
             </div>
 
+            <canvas id="gradeChart" width="800" height="400"></canvas>
+
         <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
             <div class="row">
                 <div class="col-md-12 col-xs-12">
@@ -187,6 +190,233 @@
                 </div>
             </div>
         </div>
+        <script>
+        // Your PHP data as JavaScript array
+var data = <?php echo json_encode($result); ?>;
+
+// Object to store sum and count for each id_cpl
+var idCplData = {};
+
+// Loop through the data array
+data.forEach(function(row) {
+    var idCpl = row.id_cpl;
+    var rataNilai = parseFloat(row.rata_nilai);
+
+    if (!idCplData[idCpl]) {
+        // If id_cpl is not seen before, initialize the data
+        idCplData[idCpl] = {
+            sum: rataNilai,
+            count: 1
+        };
+    } else {
+        // If id_cpl is seen before, update the sum and count
+        idCplData[idCpl].sum += rataNilai;
+        idCplData[idCpl].count += 1;
+    }
+});
+
+// Calculate average for each id_cpl
+Object.keys(idCplData).forEach(function(idCpl) {
+    var average = idCplData[idCpl].sum / idCplData[idCpl].count;
+    console.log('id_cpl:', idCpl);
+    console.log('average_rata_nilai:', average);
+    console.log('---');
+});
+
+
+// Preprocess data to calculate average values for each id_cpl and angkatan
+var idCplAngkatanData = {};
+
+data.forEach(function(row) {
+    var idCpl = row.id_cpl; // Assuming id_cpl is the identifier for TF
+    var angkatan = row.angkatan;
+    var value = parseFloat(row.rata_nilai); // Assuming rata_nilai is the numeric value
+
+    if (!idCplAngkatanData[idCpl]) {
+        idCplAngkatanData[idCpl] = {};
+    }
+
+    if (!idCplAngkatanData[idCpl][angkatan]) {
+        idCplAngkatanData[idCpl][angkatan] = { sum: value, count: 1 };
+    } else {
+        idCplAngkatanData[idCpl][angkatan].sum += value;
+        idCplAngkatanData[idCpl][angkatan].count += 1;
+    }
+});
+
+// Calculate average values for each id_cpl and angkatan
+var averageData = [];
+
+Object.keys(idCplAngkatanData).forEach(function(idCpl) {
+    var angkatanValues = idCplAngkatanData[idCpl];
+
+    Object.keys(angkatanValues).forEach(function(angkatan) {
+        var averageValue = angkatanValues[angkatan].sum / angkatanValues[angkatan].count;
+
+        // Add an entry for each angkatan
+        averageData.push({ id_cpl: idCpl, angkatan: angkatan, average: averageValue });
+    });
+});
+
+console.log(averageData);
+
+// Create the chart using the calculated average values
+var ctx = document.getElementById('gradeChart').getContext('2d');
+
+// Extract unique IDs from the averageData, sort them in ascending order, and then reverse the order
+var uniqueIds = Array.from(new Set(averageData.map(row => row.id_cpl)))
+  .sort((a, b) => {
+    // Extract numerical parts from the id_cpl (assuming the format is tf01, tf02, etc.)
+    const numA = parseInt(a.slice(2));
+    const numB = parseInt(b.slice(2));
+    return numA - numB;
+  })
+  .reverse();
+
+// Extract unique Angkatan values
+var uniqueAngkatan = Array.from(new Set(averageData.map(row => row.angkatan)));
+
+var predefinedColors = ['#FF5733', '#33FF57', '#5733FF', '#FF33A1', '#33A1FF'];
+
+// Function to get a consistent color based on an index
+function getConsistentColor(index) {
+    // Use modulo to ensure the index wraps around if it exceeds the number of predefined colors
+    var colorIndex = index % predefinedColors.length;
+    return predefinedColors[colorIndex];
+}
+
+// Create datasets array
+var datasets = uniqueAngkatan.map(angkatan => {
+    return {
+        label: 'Angkatan ' + angkatan,
+        data: uniqueIds.map(idCpl => {
+            // Find the corresponding row for the current ID_CPL and Angkatan
+            var rowData = averageData.find(row => row.id_cpl === idCpl && row.angkatan === angkatan);
+            // Return the average value if the row exists, otherwise, return null
+            return rowData ? rowData.average : null;
+        }),
+        borderColor: getConsistentColor(),
+        borderWidth: 2,
+        fill: false
+    };
+});
+
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: uniqueIds,  // Use uniqueIds for x-axis
+        datasets: datasets
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 5,  // Atur langkah antar angka pada sumbu Y
+                    // maxTicksLimit: 6  // Atur jumlah maksimum label pada sumbu Y
+                }
+            }
+        }
+    }
+});
+
+// Function to generate a random color
+// function getRandomColor() {
+//     var letters = '0123456789ABCDEF';
+//     var color = '#';
+//     for (var i = 0; i < 6; i++) {
+//         color += letters[Math.floor(Math.random() * 16)];
+//     }
+//     return color;
+// }
+
+
+// // Function to generate a random color
+// function getRandomColor() {
+//     var letters = '0123456789ABCDEF';
+//     var color = '#';
+//     for (var i = 0; i < 6; i++) {
+//         color += letters[Math.floor(Math.random() * 16)];
+//     }
+//     return color;
+// }
+
+
+
+// // Create the chart using the calculated average values
+// var ctx = document.getElementById('gradeChart').getContext('2d');
+
+// // Extract unique IDs from the averageData
+// var uniqueIds = Array.from(new Set(averageData.map(row => row.id_cpl)));
+
+// // Create datasets array
+// var datasets = uniqueIds.map(idCpl => {
+//     return {
+//         label: 'ID_CPL ' + idCpl,
+//         data: averageData
+//             .filter(row => row.id_cpl === idCpl)
+//             .map(row => row.average),
+//         borderColor: getRandomColor(),
+//         borderWidth: 2,
+//         fill: false
+//     };
+// });
+
+// var myChart = new Chart(ctx, {
+//     type: 'line',
+//     data: {
+//         labels: Array.from(new Set(averageData.map(row => row.angkatan))),
+//         datasets: datasets
+//     },
+//     options: {
+//         scales: {
+//             y: {
+//                 beginAtZero: true
+//             }
+//         }
+//     }
+// });
+// // Create the chart using the calculated average values
+// // var ctx = document.getElementById('gradeChart').getContext('2d');
+// // var myChart = new Chart(ctx, {
+// //     type: 'line',
+// //     data: {
+// //         labels: Array.from(new Set(averageData.map(row => row.angkatan))),
+// //         datasets: averageData.reduce(function (acc, row) {
+// //             if (!acc[row.id_cpl]) {
+// //                 acc[row.id_cpl] = {
+// //                     label: 'ID_CPL ' + row.id_cpl,
+// //                     data: [],
+// //                     borderColor: getRandomColor(),
+// //                     borderWidth: 2,
+// //                     fill: false
+// //                 };
+// //             }
+
+// //             acc[row.id_cpl].data.push(row.average);
+// //             return acc;
+// //         }, {})
+// //     },
+// //     options: {
+// //         scales: {
+// //             y: {
+// //                 beginAtZero: true
+// //             }
+// //         }
+// //     }
+// // });
+
+// // Function to generate a random color
+// function getRandomColor() {
+//     var letters = '0123456789ABCDEF';
+//     var color = '#';
+//     for (var i = 0; i < 6; i++) {
+//         color += letters[Math.floor(Math.random() * 16)];
+//     }
+//     return color;
+// }
+
+    </script>
 
         <script>
         var sort = "ascending";

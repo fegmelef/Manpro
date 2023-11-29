@@ -28,6 +28,9 @@ if (isset($_GET["val"])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     <link rel="stylesheet" type="text/css" href="../css.css">
 
     <!-- lock screen, spy tdk bisa di swipe kanan kiri -->
@@ -104,6 +107,14 @@ if (isset($_GET["val"])) {
                 <button id="downloadCSV" onclick="downloadCSV()">Download CSV</button>
             </div>
         </div>
+
+        
+     <!-- Render the pie chart -->
+    <div class="row" style="margin-bottom: 15px">
+     <div style="width: 50%;">
+        <canvas id="pieChart"></canvas>
+    </div>
+</div>
         <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
         <div class="row">
             <div class="col-md-12">
@@ -186,6 +197,50 @@ if (isset($_GET["val"])) {
             </div>
         </div>
     </div>
+
+
+<!-- Include PHP data directly in the JavaScript section -->
+<script>
+    // Your PHP data as JavaScript array
+    var data = <?php echo json_encode($result); ?>;
+
+    // Extract labels and values from the data array
+    var labels = data.map(item => item.hasil); // Update 'hasil' with the actual field name
+    var values = data.map(item => item.jumlah_mahasiswa);
+
+    // Define specific colors for the dataset
+    var colors = ['#FFC3A0', '#FFDCB0', '#FFD2D2', '#B0E57C', '#9EDAE2', '#C0C0C0', '#FFD700'];
+    console.log(data); // Check the data in the browser's console
+
+    // Create the chart using the data and specific colors
+    var ctx = document.getElementById('pieChart').getContext('2d');
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: colors,
+            }]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    color: '#fff',
+                    formatter: (value, ctx) => {
+                        let dataset = ctx.chart.data.datasets[0];
+                        let total = dataset.data.reduce((acc, data) => acc + data, 0);
+                        let percentage = ((value / total) * 100).toFixed(2) + "%";
+                        return percentage;
+                    },
+                    anchor: 'end',
+                    align: 'start',
+                },
+            },
+        },
+    });
+</script>
+
 
     </div>
 
