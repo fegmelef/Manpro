@@ -169,16 +169,21 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                             <td>'.$nilai_huruf.'</td>
                         </tr>';
                 }
-
+                echo $nilai_A;
+                echo $nilai_B;
+                echo $nilai_BP;
+                echo $nilai_C;
+                echo $nilai_CP;
                 $chart_data_nilai[] = array(
                     'nilaiA' =>$nilai_A,
-                    'nilaiB' =>$nilai_B,
-                    'nilaiBP' =>$nilai_BP,
-                    'nilaiC' =>$nilai_C,
-                    'nilaiCP' =>$nilai_CP,
+                    'nilaiBP' =>$nilai_B,
+                    'nilaiB' =>$nilai_BP,
+                    'nilaiCP' =>$nilai_C,
+                    'nilaiC' =>$nilai_CP,
                     'nilaiD' =>$nilai_D,
                     'nilaiE' =>$nilai_E
                 );
+
             ?>
             </table>
             <br>
@@ -222,33 +227,83 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
 
 
             <div class="container" name="content">
-                <div style="width: 100%;height: 100%">
-                    <canvas id="myChart"></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+
+                <div style="width: 100%;height: 100%">
+                    <canvas id="ipkLineChart"></canvas>
+                    <canvas id="barChartNilai"></canvas>
                     <script>
-                        var ctx = document.getElementById("myChart").getContext('2d');
-                        var myChart = new Chart(ctx, {
+                        
+
+    // Data yang diberikan
+    var chart_data_nilai = <?php echo json_encode($chart_data_nilai); ?>;
+    console.log(chart_data_nilai);
+    // Ekstraksi nilai dari data untuk chart
+    var labels = ['nilaiA', 'nilaiB+', 'nilaiB', 'nilaiC+', 'nilaiC', 'nilaiD', 'nilaiE'];
+    console.log(labels);
+    var values = labels.map(function(label) {
+        return chart_data_nilai[label];
+    });
+
+    // Membuat bar chart
+    var ctxbar = document.getElementById('barChartNilai').getContext('2d');
+    var barChartNilai = new Chart("barChartNilai", {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Jumlah',
+                // data: values,
+                data:<?php echo json_encode($chart_data_nilai); ?>,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    min:0
+                }
+            }
+        }
+    });
+                        var ctxline = document.getElementById("ipkLineChart").getContext('2d');
+                        var ipkLineChart = new Chart(ctxline, {
                             type: 'line',
                             data: {
                                 labels: <?php echo json_encode($labels); ?>,
                                 datasets: [{
-                                    label: 'Nilai',
+                                    label: 'ips',
                                     data: <?php echo json_encode($values); ?>,
                                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                     borderColor: 'rgba(75, 192, 192, 1)',
                                     borderWidth: 1
                                 }]
                             },
+                            // options: {
+                            //     scales: {
+                            //         yAxes: [{
+                            //             ticks: {
+                            //                 beginAtZero:true,
+                            //                 min:0
+                            //             }
+                            //         }]
+                            //     }
+                            // }
                             options: {
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero:true
-                                        }
-                                    }]
-                                }
-                            }
+            scales: {
+                y: {
+                    beginAtZero: true,
+                   
+                }
+            }
+        }
                         });
+                        
                     </script>
                 </div>
             </div>
