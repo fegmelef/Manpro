@@ -1,8 +1,9 @@
 <?php
 include("../api/connect.php");
 
-if (isset($_GET["angkatan"])) {
-    $angkatan = $_GET['angkatan'];
+if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
+    $angkatan1 = min($_GET['angkatan1'], $_GET['angkatan2']);
+    $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
 }
 
 if (isset($_GET["tahun"])) {
@@ -35,8 +36,9 @@ if (isset($_GET["val"])) {
         body {
             overflow-x: hidden;
         }
+
         th {
-        cursor: pointer;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -68,15 +70,16 @@ if (isset($_GET["val"])) {
 
         // Membuat pernyataan if berdasarkan nilai dropdown
         if ($selectedValue == 'Distribusi') {
-            header("location: ../ipk/distribusi_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+            header("location: ../ipk/distribusi_ips.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
             exit;
         } else if ($selectedValue == 'Pengaruh MK') {
-            header("location: ../ipk/pengaruh_mk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+            header("location: ../ipk/pengaruh_mk.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
             exit;
         } else if ($selectedValue == 'Data List') {
-            header("location: ../ipk/data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+            header("location: ../ipk/data_ipk.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
             exit;
         }
+
         // else if ($selectedValue == 'Jumlah') {
         //     header("location: ../ipk/jumlah_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
         //     exit;
@@ -89,7 +92,8 @@ if (isset($_GET["val"])) {
             <div class="col-md-7">
                 <p class="semester">Semester:
                     <?php echo $periode; ?><br>Angkatan:
-                    <?php echo $angkatan; ?><br>Tahun:
+                    <?php echo $angkatan1; ?>-
+                    <?php echo $angkatan2; ?><br>Tahun:
                     <?php echo $tahun; ?>
                 </p>
             </div>
@@ -97,7 +101,9 @@ if (isset($_GET["val"])) {
             <div class="col-md-5">
                 <form action="" method="post">
                     <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
-                        <option value="selected value"><?php echo $val; ?></option>
+                        <option value="selected value">
+                            <?php echo $val; ?>
+                        </option>
                         <option value="Data List">Data List</option>
                         <option value="Distribusi">Distribusi</option>
                         <option value="Pengaruh MK">Pengaruh MK</option>
@@ -133,8 +139,8 @@ if (isset($_GET["val"])) {
                             $sql .= " AND ipk.semester = :periode";
                         }
 
-                        if ($angkatan !== "All") {
-                            $sql .= " AND ipk.angkatan = :angkatan";
+                        if ($angkatan1 !== "All") {
+                            $sql .= " AND ipk.angkatan between :angkatan1 and :angkatan2";
                         }
 
                         if ($tahun !== "All") {
@@ -150,10 +156,12 @@ if (isset($_GET["val"])) {
                             $query->bindParam(':periode', $periode, PDO::PARAM_STR);
                         }
 
-                        if ($angkatan !== "All") {
-                            $query->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                        if ($angkatan1 !== "All") {
+                            $query->bindParam(':angkatan1', $angkatan1, PDO::PARAM_STR);
                         }
-
+                        if ($angkatan2 !== "All") {
+                            $query->bindParam(':angkatan2', $angkatan2, PDO::PARAM_STR);
+                        }
                         if ($tahun !== "All") {
                             $query->bindParam(':tahun', $tahun, PDO::PARAM_STR);
                         }
@@ -182,7 +190,7 @@ if (isset($_GET["val"])) {
     </div>
     </div>
     <script>
-var sort = "ascending";
+        var sort = "ascending";
         function sortTable(n) {
 
             var table, rows, switching, i, x, y, shouldSwap;
@@ -191,10 +199,10 @@ var sort = "ascending";
             rows = table.getElementsByTagName("TR");
             // console.log(sort);
             for (i = 1; i < (rows.length - 1); i++) {
-                if (n==0){
+                if (n == 0) {
                     max = rows[1].getElementsByTagName("TD")[1].textContent.toString();
                     min = "";
-                }else{
+                } else {
                     max = 0;
                     min = Infinity;
                 }
@@ -204,81 +212,81 @@ var sort = "ascending";
                     x = rows[i].getElementsByTagName("TD")[n];
                     y = rows[j].getElementsByTagName("TD")[n];
 
-                    if (n==0 || n==2){
+                    if (n == 0 || n == 2) {
                         xValue = parseInt(x.textContent.toString());
                         yValue = parseInt(y.textContent.toString());
-                    }else{
+                    } else {
                         xValue = x.textContent.toLowerCase();
                         yValue = y.textContent.toLowerCase();
                     }
-                    
-                    if(sort == "ascending"){
+
+                    if (sort == "ascending") {
                         if (max < yValue) {
                             max = yValue;
                             index = j;
                         }
-                    }else if (sort == "descending"){
+                    } else if (sort == "descending") {
                         if (min > yValue) {
                             min = yValue;
                             index = j;
                         }
                     }
-                    
+
                 }
                 if (sort == "ascending") {
                     // console.log(max);  
-                    if (xValue <= max){
+                    if (xValue <= max) {
                         rows[i].parentNode.insertBefore(rows[index], rows[i]);
                     }
-                }else{
+                } else {
                     // console.log(min);
-                    if (xValue >= min){
+                    if (xValue >= min) {
                         rows[i].parentNode.insertBefore(rows[index], rows[i]);
                     }
                 }
             }
-            if(sort == "ascending"){
+            if (sort == "ascending") {
                 sort = "descending";
-            }else{
+            } else {
                 sort = "ascending";
             }
             // console.log(rows)
         }
 
-    function downloadCSV() {
-        var table = document.querySelector('table'); // Get the table element
-        var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table
-        
-        // Create a CSV content string
-        var csvContent = rows.map(function(row) {
-            var rowData = Array.from(row.querySelectorAll('th, td'))
-                .map(function(cell) {
-                    return cell.textContent;
-                })
-                .join(',');
-            return rowData;
-        }).join('\n');
-        
-        // Create a Blob object with the CSV content
-        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        if (navigator.msSaveBlob) {
-            // For IE and Edge browsers
-            navigator.msSaveBlob(blob, 'table.csv');
-        } else {
-            // For other browsers
-            var link = document.createElement('a');
-            if (link.download !== undefined) {
-                var url = URL.createObjectURL(blob);
-                link.setAttribute('href', url);
-                link.setAttribute('download', 'Rata Rata IPK.csv');
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+        function downloadCSV() {
+            var table = document.querySelector('table'); // Get the table element
+            var rows = Array.from(table.querySelectorAll('tr')); // Get all rows in the table
+
+            // Create a CSV content string
+            var csvContent = rows.map(function (row) {
+                var rowData = Array.from(row.querySelectorAll('th, td'))
+                    .map(function (cell) {
+                        return cell.textContent;
+                    })
+                    .join(',');
+                return rowData;
+            }).join('\n');
+
+            // Create a Blob object with the CSV content
+            var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            if (navigator.msSaveBlob) {
+                // For IE and Edge browsers
+                navigator.msSaveBlob(blob, 'table.csv');
+            } else {
+                // For other browsers
+                var link = document.createElement('a');
+                if (link.download !== undefined) {
+                    var url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', 'Rata Rata IPK.csv');
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
             }
         }
-    }
-</script>
+    </script>
 </body>
 
 </html>

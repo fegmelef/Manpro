@@ -78,20 +78,24 @@ include "../api/connect.php";
                 <div class="col-md-4">Angkatan</div>
                 <div class="col-md-2">:</div>
                 <div class="col-md-6">
-                    <select name="angkatan" id="angkatan" class="form-control" required>
+                    <select name="angkatan1" id="angkatan1" class="form-control" required>
                         <!-- <option disabled>Pilih angkatan</option> -->
-                        <option value="All">All</option>
+                        <!-- <option value="All">All</option> -->
                         <?php
                         $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `mhsw` ORDER BY tahun");
                         while ($row = mysqli_fetch_array($query)) {
                             echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
                         }
                         ?>
-                        <!-- <option value="19">2019</option>
-                        <option value="20">2020</option>
-                        <option value="21">2021</option>
-                        <option value="22">2022</option>
-                        <option value="23">2023</option> -->
+                    </select>
+                    <select name="angkatan2" id="angkatan2" class="form-control" required>
+                        <!-- <option value="All">All</option> -->
+                        <?php
+                        $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `mhsw` ORDER BY tahun");
+                            while ($row = mysqli_fetch_array($query)) {
+                                echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
+                        }
+                        ?>
                     </select>
                 </div>
             </div>

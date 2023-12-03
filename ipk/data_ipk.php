@@ -1,8 +1,9 @@
 <?php
 include("../api/connect.php");
 
-if (isset($_GET["angkatan"])) {
-    $angkatan = $_GET['angkatan'];
+if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
+    $angkatan1 = min($_GET['angkatan1'], $_GET['angkatan2']);
+    $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
 }
 
 if (isset($_GET["tahun"])) {
@@ -59,17 +60,17 @@ if (isset($_GET["periode"])) {
                     // Mengambil nilai dropdown yang dipilih
                     $selectedValue = $_POST['filtering'];
                     if ($selectedValue == 'Distribusi') {
-                        header("location: ../ipk/distribusi_ips.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        header("location: ../ipk/distribusi_ips.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&periode=$periode&val=$selectedValue");
                         exit;
                     } 
                     else if ($selectedValue == 'Pengaruh MK') {
-                        header("location: ../ipk/pengaruhMK.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        header("location: ../ipk/pengaruhMK.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&periode=$periode&val=$selectedValue");
                         exit;
                     } 
                     else if ($selectedValue == 'Rata-rata IPK') {
-                        header("location: ../ipk/rata2_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                        header("location: ../ipk/rata2_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&periode=$periode&val=$selectedValue");
                         exit;
-                    } 
+                    }
                 }   
             ?>
     <!-- isi -->
@@ -78,7 +79,7 @@ if (isset($_GET["periode"])) {
             <div class="col-md-7">
                 <p class="semester">Semester:
                     <?php echo $periode; ?><br>Angkatan:
-                    <?php echo $angkatan; ?><br>Tahun:
+                    <?php echo $angkatan1; ?>-<?php echo $angkatan2; ?><br>Tahun:
                     <?php echo $tahun; ?>
                 </p>
             </div>
@@ -114,8 +115,8 @@ if (isset($_GET["periode"])) {
                             // $query = $conn->prepare("SELECT * FROM mhsw WHERE mhsw.tahun = $angkatan ");
                             $sql = "SELECT * FROM mhsw";
 
-                            if ($angkatan !== 'All'){
-                                $sql .= " WHERE mhsw.tahun = '$angkatan'";
+                            if ($angkatan1 !== 'All'){
+                                $sql .= " WHERE mhsw.tahun between '$angkatan1' and '$angkatan2'";
                             }
 
                             $query = $conn->prepare($sql);
@@ -126,7 +127,7 @@ if (isset($_GET["periode"])) {
                                 <td scope="row"><?php echo $rowNum; ?></td>
                                 <td><?php echo $row['nrp_hash'];?></td>
                                 <td><?php echo $row['tahun'];?></td>
-                                <td><form method="post" action="detail_ipk.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
+                                <td><form method="post" action="detail_ipk.php?angkatan=<?php echo $angkatan1; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
                                 <input type="hidden" name="nrp" value="<?php echo $row['nrp_hash'];?>">
                                 <input type="hidden" name="year" value="<?php echo $row['tahun'];?>">
                                 <button type="submit" name="detail" class="btn btn-dark">Detail</button>
