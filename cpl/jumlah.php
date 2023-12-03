@@ -1,20 +1,21 @@
 <?php
-    include("../api/connect.php");
+include("../api/connect.php");
 
-    if (isset($_GET["angkatan"])) {
-        $angkatan = $_GET['angkatan'];
-    }
+if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
+    $angkatan1 = min($_GET['angkatan1'], $_GET['angkatan2']);
+    $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
+}
 
-    if (isset($_GET["tahun"])) {
-        $tahun = $_GET['tahun'];
-    }
+if (isset($_GET["tahun"])) {
+    $tahun = $_GET['tahun'];
+}
 
-    if (isset($_GET["periode"])) {
-        $periode = $_GET['periode'];
-    }
-    if (isset($_GET["val"])) {
-        $val = $_GET['val'];
-    }
+if (isset($_GET["periode"])) {
+    $periode = $_GET['periode'];
+}
+if (isset($_GET["val"])) {
+    $val = $_GET['val'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -36,9 +37,12 @@
         body {
             overflow-x: hidden;
         }
+
         th {
-        cursor: pointer;
-        };
+            cursor: pointer;
+        }
+
+        ;
     </style>
 </head>
 
@@ -55,66 +59,80 @@
             </ul>
         </div>
 
-    <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
-    <?php
+        <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
+        <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Mengambil nilai dropdown yang dipilih
             $selectedValue = $_POST['filtering'];
-    
+
             // Membuat pernyataan if berdasarkan nilai dropdown
             if ($selectedValue == 'Daftar Mahasiswa Dibawah Rata-rata Nilai') {
-                header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/reporting.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
             } else if ($selectedValue == 'List Data') {
-                header("location: ../cpl/data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/data_cpl.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
             } else if ($selectedValue == 'Rata-rata Nilai') {
-                header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/rata_rata.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
             } else if ($selectedValue == 'Distribusi Nilai') {
-                header("location: ../cpl/distribusi.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/distribusi.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
-            } 
+            }
+
         }
-    ?>
+        ?>
 
-    <!-- isi -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-7 col-xs-7">
-                <p class="semester">Semester <span><?php echo $periode; ?></span> || Angkatan <span><?php echo $angkatan; ?></span> || Tahun <span><?php echo $tahun; ?></span></p>
-            </div>
+        <!-- isi -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7 col-xs-7">
+                    <p class="semester">Semester <span>
+                            <?php echo $periode; ?>
+                        </span> || Angkatan <span>
+                            <?php echo $angkatan1; ?>
+                        </span>-<span>
+                            <?php echo $angkatan2; ?>
+                        </span> || Tahun <span>
+                            <?php echo $tahun; ?>
+                        </span></p>
+                </div>
 
-            <div class="col-md-4 col-xs-4">
-                <form action="" method="post">
-                    <div class="col-md-10 col-xs-10">
+                <div class="col-md-4 col-xs-4">
+                    <form action="" method="post">
+                        <div class="col-md-10 col-xs-10">
                             <select name="filtering" id="filtering" class="form-control" onchange="redirectPage()">
-                                <option value="selected value"><?php echo $val; ?></option>
+                                <option value="selected value">
+                                    <?php echo $val; ?>
+                                </option>
                                 <option value="List Data">List Data</option>
                                 <option value="Distribusi Nilai">Distribusi Nilai</option>
                                 <!-- <option value="Jumlah Mahasiswa Mengulang MK">Jumlah Mahasiswa Mengulang MK</option> -->
                                 <option value="Rata-rata Nilai">Rata-rata Nilai</option>
-                                <option value="Daftar Mahasiswa Dibawah Rata-rata Nilai">Daftar Mahasiswa Dibawah Rata-rata Nilai</option>
+                                <option value="Daftar Mahasiswa Dibawah Rata-rata Nilai">Daftar Mahasiswa Dibawah
+                                    Rata-rata Nilai</option>
                             </select>
                         </div>
                         <div class="col-md-2 col-xs-2">
                             <input type="submit" value="Kirim" class="btn btn-primary">
                         </div>
-                </form>
-            </div>
+                    </form>
+                </div>
 
-            <div class="col-md-1 col-xs-1">
                 <div class="col-md-1 col-xs-1">
-                    <svg id="downloadCSV" onclick="downloadAllTables()" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="cursor: pointer;">
-                        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
-                    </svg>
+                    <div class="col-md-1 col-xs-1">
+                        <svg id="downloadCSV" onclick="downloadAllTables()" xmlns="http://www.w3.org/2000/svg"
+                            height="1em" viewBox="0 0 512 512" style="cursor: pointer;">
+                            <path
+                                d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+                        </svg>
 
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <?php
-                            $query1 = "SELECT subquery.mk AS 'Mata Kuliah', COUNT(subquery.nrp_hash) AS 'Jumlah Mahasiswa Tidak Lulus'
+            <?php
+            $query1 = "SELECT subquery.mk AS 'Mata Kuliah', COUNT(subquery.nrp_hash) AS 'Jumlah Mahasiswa Tidak Lulus'
                             FROM (
                                 SELECT mk.mk, kelas_nilaicpmk.nrp_hash, mhsw.tahun AS 'angkatan', periode.tahun, periode.semester AS 'semester'
                                 FROM kelas_cpmk
@@ -128,27 +146,29 @@
                                     GROUP BY mk.mk, kelas_nilaicpmk.nrp_hash
                                     HAVING SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) < 55.5";
 
-                            if ($angkatan !== 'All'){
-                                $query1 .= " AND angkatan = $angkatan";
-                            } if ($periode !== 'All'){
-                                $query1 .= " AND semester = $periode";
-                            } if ($tahun !== 'All'){
-                                $query1 .= " AND tahun = '$tahun'";
-                            } 
+            if ($angkatan1 !== 'All') {
+                $query1 .= " AND angkatan BETWEEN $angkatan1 and $angkatan2";
+            }
+            if ($periode !== 'All') {
+                $query1 .= " AND semester = $periode";
+            }
+            if ($tahun !== 'All') {
+                $query1 .= " AND tahun = '$tahun'";
+            }
 
-                            $query1 .=") AS subquery GROUP BY subquery.mk";
-                            $query1 = $conn->prepare($query1);
-                            $query1->execute();
+            $query1 .= ") AS subquery GROUP BY subquery.mk";
+            $query1 = $conn->prepare($query1);
+            $query1->execute();
 
-                            
-                            $labels=[];
-                            $values=[];
-                            while($row1 = $query1->fetch()) {
-                                $labels[]=$row1['Mata Kuliah'];
-                                $values[]=$row1['Jumlah Mahasiswa Tidak Lulus'];
-                            }
-                            ?>
-                            <div class="row"> 
+
+            $labels = [];
+            $values = [];
+            while ($row1 = $query1->fetch()) {
+                $labels[] = $row1['Mata Kuliah'];
+                $values[] = $row1['Jumlah Mahasiswa Tidak Lulus'];
+            }
+            ?>
+            <div class="row">
                 <div class="col-md-12 col-xs-12">
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <canvas id="myChart" width="400" height="200"></canvas>
@@ -194,17 +214,19 @@
                 </div>
             </div>
 
-        <div class="row">
+            <div class="row">
                 <div class="col-md-12 col-xs-12">
                     <table class="table" id="mata_kuliah">
                         <tr>
                             <th class="bordered-header" scope="col" onclick="sortTable(0, 'mata_kuliah')">No</th>
-                            <th class="bordered-header" scope="col" onclick="sortTable(1,'mata_kuliah')">Mata Kuliah</th>
-                            <th class="bordered-header" scope="col" onclick="sortTable(2, 'mata_kuliah')">Jumlah Mahasiswa Tidak Lulus</th>
+                            <th class="bordered-header" scope="col" onclick="sortTable(1,'mata_kuliah')">Mata Kuliah
+                            </th>
+                            <th class="bordered-header" scope="col" onclick="sortTable(2, 'mata_kuliah')">Jumlah
+                                Mahasiswa Tidak Lulus</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php
+                            <?php
                             $query1 = "SELECT subquery.mk AS 'Mata Kuliah', COUNT(subquery.nrp_hash) AS 'Jumlah Mahasiswa Tidak Lulus'
                             FROM (
                                 SELECT mk.mk, kelas_nilaicpmk.nrp_hash, mhsw.tahun AS 'angkatan', periode.tahun, periode.semester AS 'semester'
@@ -219,39 +241,41 @@
                                     GROUP BY mk.mk, kelas_nilaicpmk.nrp_hash
                                     HAVING SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) < 55.5";
 
-                            if ($angkatan !== 'All'){
-                                $query1 .= " AND angkatan = $angkatan";
-                            } if ($periode !== 'All'){
+                            if ($angkatan1 !== 'All') {
+                                $query1 .= " AND angkatan between $angkatan1 and $angkatan2";
+                            }
+                            if ($periode !== 'All') {
                                 $query1 .= " AND semester = $periode";
-                            } if ($tahun !== 'All'){
+                            }
+                            if ($tahun !== 'All') {
                                 $query1 .= " AND tahun = '$tahun'";
-                            } 
+                            }
 
-                            $query1 .=") AS subquery GROUP BY subquery.mk";
+                            $query1 .= ") AS subquery GROUP BY subquery.mk";
                             $query1 = $conn->prepare($query1);
                             $query1->execute();
 
                             $rowNum = 1;
-                            while($row1 = $query1->fetch()) {
-                                    echo '<tr>
-                                        <td class="bordered-cell"scope="row">'.$rowNum.'</td> 
-                                        <td class="bordered-cell">'.$row1['Mata Kuliah'].'</td>
-                                        <td class="bordered-cell">'.$row1['Jumlah Mahasiswa Tidak Lulus'].'</td>
+                            while ($row1 = $query1->fetch()) {
+                                echo '<tr>
+                                        <td class="bordered-cell"scope="row">' . $rowNum . '</td> 
+                                        <td class="bordered-cell">' . $row1['Mata Kuliah'] . '</td>
+                                        <td class="bordered-cell">' . $row1['Jumlah Mahasiswa Tidak Lulus'] . '</td>
                                     </tr>';
 
-                                    $rowNum++; 
-                                }                            
-                            
-                                ?>
-                                
+                                $rowNum++;
+                            }
+
+                            ?>
+
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            
 
-        <div class="row">
+
+            <div class="row">
                 <div class="col-md-12 col-xs-12">
                     <table class="table" id="detail">
                         <tr>
@@ -267,7 +291,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <?php
+                            <?php
                             $sql = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, mk.mk, mhsw.nrp_hash, periode.tahun, mhsw.tahun AS 'angkatan', periode.semester
                             FROM kelas_cpmk
                             JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
@@ -279,47 +303,49 @@
                             JOIN cpl ON ikcpl.id_cpl = cpl.id_cpl
                             GROUP BY mk.mk, kelas_nilaicpmk.nrp_hash
                             HAVING SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) < 55.5";
-                            
-                            if ($angkatan !== 'All'){
-                                $sql .= " AND angkatan = $angkatan";
-                            } if ($periode !== 'All'){
+
+                            if ($angkatan1 !== 'All') {
+                                $sql .= " AND angkatan between $angkatan1 and $angkatan2";
+                            }
+                            if ($periode !== 'All') {
                                 $sql .= " AND semester = $periode";
-                            } if ($tahun !== 'All'){
+                            }
+                            if ($tahun !== 'All') {
                                 $sql .= " AND tahun = '$tahun'";
-                            } 
-                                   
+                            }
+
                             $sql .= ' ORDER BY `mhsw`.`nrp_hash` ASC';
 
                             $query = $conn->prepare($sql);
                             $query->execute();
-                        
+
                             $rowNum = 1;
                             while ($row = $query->fetch()) {
-                                    echo '<tr>
-                                        <td class="bordered-cell" scope="row">'.$rowNum.'</td> 
-                                        <td class="bordered-cell">'.$row['nilai CPL'].'</td>
-                                        <td class="bordered-cell">'.$row['id_ikcpl'].'</td>
-                                        <td class="bordered-cell">'.$row['id_cpl'].'</td>
-                                        <td class="bordered-cell">'.$row['mk'].'</td>
-                                        <td class="bordered-cell">'.$row['nrp_hash'].'</td>
-                                        <td class="bordered-cell">'.$row['tahun'].'</td>
-                                        <td class="bordered-cell">'.$row['angkatan'].'</td>
+                                echo '<tr>
+                                        <td class="bordered-cell" scope="row">' . $rowNum . '</td> 
+                                        <td class="bordered-cell">' . $row['nilai CPL'] . '</td>
+                                        <td class="bordered-cell">' . $row['id_ikcpl'] . '</td>
+                                        <td class="bordered-cell">' . $row['id_cpl'] . '</td>
+                                        <td class="bordered-cell">' . $row['mk'] . '</td>
+                                        <td class="bordered-cell">' . $row['nrp_hash'] . '</td>
+                                        <td class="bordered-cell">' . $row['tahun'] . '</td>
+                                        <td class="bordered-cell">' . $row['angkatan'] . '</td>
                                     </tr>';
-                                    $rowNum++; 
-                                }                            
-                        ?>
-                        
+                                $rowNum++;
+                            }
+                            ?>
+
                         </tbody>
                     </table>
                 </div>
             </div>
-    
-        
-    </div>
-    <script>
 
-    var sort = "ascending";
-            function sortTable(n,id) {
+
+        </div>
+        <script>
+
+            var sort = "ascending";
+            function sortTable(n, id) {
 
                 var table, rows, switching, i, x, y, shouldSwap;
                 table = document.getElementById(id);
@@ -327,10 +353,10 @@
                 rows = table.getElementsByTagName("TR");
                 // console.log(sort);
                 for (i = 1; i < (rows.length - 1); i++) {
-                    if (id == 'detail' && n ==1){
+                    if (id == 'detail' && n == 1) {
                         max = rows[1].getElementsByTagName("TD")[1].textContent.toString();
                         min = "";
-                    }else{
+                    } else {
                         max = 0;
                         min = Infinity;
                     }
@@ -340,42 +366,42 @@
                         x = rows[i].getElementsByTagName("TD")[n];
                         y = rows[j].getElementsByTagName("TD")[n];
 
-                        if (n==0 || n==2){
+                        if (n == 0 || n == 2) {
                             xValue = parseInt(x.textContent.toString());
                             yValue = parseInt(y.textContent.toString());
-                        }else{
+                        } else {
                             xValue = x.textContent.toLowerCase();
                             yValue = y.textContent.toLowerCase();
                         }
-                        
-                        if(sort == "ascending"){
+
+                        if (sort == "ascending") {
                             if (max < yValue) {
                                 max = yValue;
                                 index = j;
                             }
-                        }else if (sort == "descending"){
+                        } else if (sort == "descending") {
                             if (min > yValue) {
                                 min = yValue;
                                 index = j;
                             }
                         }
-                        
+
                     }
                     if (sort == "ascending") {
                         // console.log(max);  
-                        if (xValue <= max){
+                        if (xValue <= max) {
                             rows[i].parentNode.insertBefore(rows[index], rows[i]);
                         }
-                    }else{
+                    } else {
                         // console.log(min);
-                        if (xValue >= min){
+                        if (xValue >= min) {
                             rows[i].parentNode.insertBefore(rows[index], rows[i]);
                         }
                     }
                 }
-                if(sort == "ascending"){
+                if (sort == "ascending") {
                     sort = "descending";
-                }else{
+                } else {
                     sort = "ascending";
                 }
                 // console.log(rows)
@@ -416,6 +442,7 @@
                     }
                 }
             }
-    </script>
+        </script>
 </body>
+
 </html>

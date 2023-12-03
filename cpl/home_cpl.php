@@ -76,8 +76,17 @@
                 <div class="col-md-4 col-xs-4">Angkatan</div>
                 <div class="col-md-2 col-xs-2">:</div>
                 <div class="col-md-6 col-xs-6">
-                    <select name="angkatan" id="angkatan" class="form-control" required>
-                        <option value="All">All</option>
+                    <select name="angkatan1" id="angkatan1" class="form-control" required>
+                        <!-- <option value="All">All</option> -->
+                        <?php
+                        $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `mhsw` ORDER BY tahun");
+                            while ($row = mysqli_fetch_array($query)) {
+                                echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                    <select name="angkatan2" id="angkatan2" class="form-control" required>
+                        <!-- <option value="All">All</option> -->
                         <?php
                         $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `mhsw` ORDER BY tahun");
                             while ($row = mysqli_fetch_array($query)) {

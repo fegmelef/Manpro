@@ -1,10 +1,11 @@
 <?php
     include("../api/connect.php");
 
-    if (isset($_GET["angkatan"])) {
-        $angkatan = $_GET['angkatan'];
+    if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
+        $angkatan1 = min($_GET['angkatan1'], $_GET['angkatan2']);
+        $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
     }
-
+    
     if (isset($_GET["tahun"])) {
         $tahun = $_GET['tahun'];
     }
@@ -62,20 +63,19 @@
 
             // Membuat pernyataan if berdasarkan nilai dropdown
             if ($selectedValue == 'Daftar Mahasiswa Dibawah Rata-rata Nilai') {
-                header("location: ../cpl/reporting.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");                    exit;
-            } 
-            else if ($selectedValue == 'Distribusi Nilai') {
-                header("location: ../cpl/distribusi.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/reporting.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
-            } 
-            else if ($selectedValue == 'Rata-rata Nilai') {
-                header("location: ../cpl/rata_rata.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+            } else if ($selectedValue == 'Distribusi Nilai') {
+                header("location: ../cpl/distribusi.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
-            } 
-            else if ($selectedValue == 'Jumlah Mahasiswa Mengulang MK') {
-                header("location: ../cpl/jumlah.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+            } else if ($selectedValue == 'Rata-rata Nilai') {
+                header("location: ../cpl/rata_rata.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
                 exit;
-            } 
+            } else if ($selectedValue == 'Jumlah Mahasiswa Mengulang MK') {
+                header("location: ../cpl/jumlah.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                exit;
+            }
+            
         }   
     ?>
 
@@ -83,7 +83,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-7 col-xs-7">
-                <p class="semester">Semester <span><?php echo $periode; ?></span> || Angkatan <span><?php echo $angkatan; ?></span> || Tahun <span><?php echo $tahun; ?></span></p>
+                <p class="semester">Semester <span><?php echo $periode; ?></span> || Angkatan <span><?php echo $angkatan1; ?></span>-<span><?php echo $angkatan2; ?></span> || Tahun <span><?php echo $tahun; ?></span></p>
             </div>
 
             <div class="col-md-4 col-xs-4">
@@ -124,8 +124,8 @@
                     <tbody>
                     <?php
                         $sql = "SELECT * FROM mhsw";
-                        if ($angkatan !== 'All'){
-                            $sql .= " WHERE mhsw.tahun = '$angkatan'";
+                        if ($angkatan1 !== 'All'){
+                            $sql .= " WHERE mhsw.tahun between '$angkatan1' and '$angkatan2'";
                         }
 
                         $query = $conn->prepare($sql);
@@ -137,7 +137,7 @@
                                 <td class="bordered-cell" scope="row"><?php echo $rowNum; ?></th>
                                 <td class="bordered-cell"><?php echo $row['nrp_hash'];?></td>
                                 <td class="bordered-cell"><?php echo $row['tahun'];?></td>
-                                <td class="bordered-cell"><form method="post" action="detail_cpl.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
+                                <td class="bordered-cell"><form method="post" action="detail_cpl.php?angkatan=<?php echo $angkatan1; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
                                 <input type="hidden" name="nrp" value="<?php echo $row['nrp_hash'];?>">
                                 <input type="hidden" name="year" value="<?php echo $row['tahun'];?>">
                                 <button type="submit" name="detail" class="btn btn-dark">Detail</button>
