@@ -1,5 +1,5 @@
 <?php
-include("../api/connect.php");
+    include("../api/connect.php");
 
 if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
     $angkatan1 = min($_GET['angkatan1'], $_GET['angkatan2']);
@@ -11,35 +11,34 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
     $tahun2 = max($_GET['tahun'], $_GET['tahun2']);
 }
 
-if (isset($_GET["periode"])) {
-    $periode = $_GET['periode'];
-}
-if (isset($_GET["val"])) {
-    $val = $_GET['val'];
-}
-
+    if (isset($_GET["periode"])) {
+        $periode = $_GET['periode'];
+    }
+    if (isset($_GET["val"])) {
+        $val = $_GET['val'];
+    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <title>Data CPL</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../css.css">
-    <style>
-        th {
+    <head>
+        <title>Data IPK</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../css.css">
+        <style>
+            body {
+                overflow-x: hidden;
+            }
+            th {
             cursor: pointer;
-        }
-
-        ;
-    </style>
-</head>
+            };
+        </style>
+    </head>
 
 <body>
     <!-- navbar -->
@@ -84,49 +83,61 @@ if (isset($_GET["val"])) {
         <!-- isi -->
         <div class="container">
             <div class="row">
-                <div class="col-md-7">
-                    <p class="semester">Semester:
-                        <?php echo $periode; ?><br>Angkatan:
+                <div class="col-md-7 col-xs-7">
+                    <p class="semester">Semester <span>
+                        <?php echo $periode; ?>
+                    </span> || Angkatan <span>
                         <?php echo $angkatan1; ?>
-                        <?php echo '-', $angkatan2; ?><br>Tahun:
-                        <?php echo $tahun; ?>-
+                    </span>-<span>
+                        <?php echo $angkatan2; ?>
+                    </span> || Tahun <span>
+                        <?php echo $tahun; ?>
+                    </span>-<span>
                         <?php echo $tahun2; ?>
-                    </p>
+                    </span></p>
                 </div>
 
-                <div class="col-md-5">
-                    <form action="" method="post">
-                        <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
-                            <option value="selected value">
-                                <?php echo $val; ?>
-                            </option>
-                            <option value="Data List">Data List</option>
-                            <option value="Distribusi">Distribusi</option>
-                            <!-- <option value="Penuruan IPS">Jumlah</option> -->
-                            <option value="Rata-rata IPK">Rata-rata</option>
-                        </select>
-                        <input type="submit" value="Kirim">
-                    </form>
-                    <button id="downloadCSV" onclick="downloadAllTables()">Download CSV</button>
+                    <div class="col-md-4 col-xs-4">
+                        <form action="" method="post">
+                            <div class="col-md-10 col-xs-10">
+                                <select name="filtering" id="filtering" class="form-control" onchange="redirectPage()">
+                                    <option value="selected value"><?php echo $val; ?></option>
+                                    <option value="Data List">Data List</option>
+                                    <option value="Distribusi">Distribusi</option>
+                                    <!-- <option value="Penuruan IPS">Jumlah</option> -->
+                                    <option value="Rata-rata IPK">Rata-rata</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2 col-xs-2">
+                                <input type="submit" value="Kirim" class="btn btn-primary">
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-md-1 col-xs-1">
+                        <div class="col-md-1 col-xs-1">
+                            <svg id="downloadCSV" onclick="downloadCSV()" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="cursor: pointer;">
+                                <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="container">
-                <h2>MK penyebab IPS turun</h2>
+        <div class="container">
+            <h2>MK penyebab IPS turun</h2>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 col-xs-12">
                         <table class="table" id="turun">
-                            <thead>
-                                <tr>
-                                    <th scope="col" onclick="sortTable(0,'turun')">Mata Kuliah</th>
-                                    <th scope="col" onclick="sortTable(1,'turun')">Nilai Rata-rata</th>
-                                    <th scope="col" onclick="sortTable(2,'turun')">Tahun</th>
-                                    <th scope="col" onclick="sortTable(3,'turun')">Semester</th>
-                                    <th scope="col" onclick="sortTable(4,'turun')">Angkatan</th>
+                                <tr> 
+                                    <th class="bordered-header" scope="col" onclick="sortTable(0,'turun')">Mata Kuliah</th>
+                                    <th class="bordered-header" scope="col" onclick="sortTable(1,'turun')">Nilai Rata-rata</th>
+                                    <th class="bordered-header" scope="col"onclick="sortTable(2,'turun')">Tahun</th>
+                                    <th class="bordered-header" scope="col"onclick="sortTable(3,'turun')">Semester</th>
+                                    <th class="bordered-header" scope="col" onclick="sortTable(4,'turun')">Angkatan</th>
                                 </tr>
-                            </thead>
                             <tbody>
-
                                 <?php
                                 $query = "WITH RankedMataKuliah AS (
                                         SELECT
@@ -199,53 +210,50 @@ if (isset($_GET["val"])) {
 
                                 while ($row = $query->fetch()) {
                                     echo '<tr>
-                                            <td>' . $row['mk'] . '</td>
-                                            <td>' . $row['nilai_terendah'] . '</td>
-                                            <td>' . $row['tahun'] . '</td>
-                                            <td>' . $row['semester'] . '</td>
-                                            <td>' . $row['angkatan'] . '</td>
+                                            <td class="bordered-cell">' . $row['mk'] . '</td>
+                                            <td class="bordered-cell">' . $row['nilai_terendah'] . '</td>
+                                            <td class="bordered-cell">' . $row['tahun'] . '</td>
+                                            <td class="bordered-cell">' . $row['semester'] . '</td>
+                                            <td class="bordered-cell">' . $row['angkatan'] . '</td>
                                             </tr>';
                                 }
                                 ?>
-
-                            </tbody>
-                        </table>
+                                </tbody>
+                                </table>
+                        </div>
                     </div>
-                </div>
 
-                <h2>MK penyebab IPS naik</h2>
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table" id="naik">
-                            <thead>
-                                <tr>
-                                    <th scope="col" onclick="sortTable(0,'naik')">Mata Kuliah</th>
-                                    <th scope="col" onclick="sortTable(1,'naik')">Nilai Rata-rata</th>
-                                    <th scope="col" onclick="sortTable(2,'naik')">Tahun</th>
-                                    <th scope="col" onclick="sortTable(3,'naik')">Semester</th>
-                                    <th scope="col" onclick="sortTable(4,'naik')">Angkatan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $query1 = "WITH RankedMataKuliah AS (
-                                        SELECT
-                                            angkatan,
-                                            tahun,
-                                            semester,
-                                            mk,
-                                            MAX(rata) as nilai_tertinggi,
-                                            ROW_NUMBER() OVER (PARTITION BY angkatan ORDER BY MAX(rata) DESC) AS row_num
-                                        FROM
-                                            rata_rata r1
-                                        WHERE NOT EXISTS (
-                                            SELECT 1
-                                            FROM rata_rata r2
-                                            WHERE r1.mk = r2.mk
-                                                AND r2.semester < r1.semester
-                                                AND r2.tahun <= r1.tahun
-                                                AND r2.angkatan = r1.angkatan
-                                        )";
+                    <h2>MK penyebab IPS naik</h2>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <table class="table" id="naik">
+                                    <tr>
+                                        <th class="bordered-header" scope="col" onclick="sortTable(0,'naik')">Mata Kuliah</th>
+                                        <th class="bordered-header" scope="col" onclick="sortTable(1,'naik')">Nilai Rata-rata</th>
+                                        <th class="bordered-header" scope="col" onclick="sortTable(2,'naik')">Tahun</th>
+                                        <th class="bordered-header" scope="col" onclick="sortTable(3,'naik')">Semester</th>
+                                        <th class="bordered-header" scope="col" onclick="sortTable(4,'naik')">Angkatan</th>
+                                    </tr>
+                                <tbody>
+                                    <?php
+                                    $query1 = "WITH RankedMataKuliah AS (
+                                            SELECT
+                                                angkatan,
+                                                tahun,
+                                                semester,
+                                                mk,
+                                                MAX(rata) as nilai_tertinggi,
+                                                ROW_NUMBER() OVER (PARTITION BY angkatan ORDER BY MAX(rata) DESC) AS row_num
+                                            FROM
+                                                rata_rata r1
+                                            WHERE NOT EXISTS (
+                                                SELECT 1
+                                                FROM rata_rata r2
+                                                WHERE r1.mk = r2.mk
+                                                    AND r2.semester < r1.semester
+                                                    AND r2.tahun <= r1.tahun
+                                                    AND r2.angkatan = r1.angkatan
+                                            )";
 
                                 if ($periode !== "All") {
                                     $query1 .= " AND semester = :periode";
@@ -295,23 +303,23 @@ if (isset($_GET["val"])) {
                                 }
                                 $query1->execute();
 
-                                while ($row1 = $query1->fetch()) {
-                                    echo '<tr>
-                                            <td>' . $row1['mk'] . '</td>
-                                            <td>' . $row1['nilai_tertinggi'] . '</td>
-                                            <td>' . $row1['tahun'] . '</td>
-                                            <td>' . $row1['semester'] . '</td>
-                                            <td>' . $row1['angkatan'] . '</td>
-                                            </tr>';
-                                }
-                                ?>
+                                    while ($row1 = $query1->fetch()) {
+                                        echo '<tr>
+                                                <td class="bordered-cell">' . $row1['mk'] . '</td>
+                                                <td class="bordered-cell">' . $row1['nilai_tertinggi'] . '</td>
+                                                <td class="bordered-cell">' . $row1['tahun'] . '</td>
+                                                <td class="bordered-cell">' . $row1['semester'] . '</td>
+                                                <td class="bordered-cell">' . $row1['angkatan'] . '</td>
+                                                </tr>';
+                                    }
+                                    ?>
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <script>
+                <script>
 
                 var sort = "ascending";
                 function sortTable(n, id_tabel) {

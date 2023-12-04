@@ -1,29 +1,29 @@
 <?php
-include("../api/connect.php");
+    include("../api/connect.php");
 
-if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
-    $angkatan1 = min($_GET['angkatan1'], $_GET['angkatan2']);
-    $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
-}
+    if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
+        $angkatan1 = min($_GET['angkatan1'], $_GET['angkatan2']);
+        $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
+    }
 
-if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
-    $tahun = min($_GET['tahun'], $_GET['tahun2']);
-    $tahun2 = max($_GET['tahun'], $_GET['tahun2']);
-}
+    if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
+        $tahun = min($_GET['tahun'], $_GET['tahun2']);
+        $tahun2 = max($_GET['tahun'], $_GET['tahun2']);
+    }
 
-if (isset($_GET["periode"])) {
-    $periode = $_GET['periode'];
-}
-if (isset($_GET["val"])) {
-    $val = $_GET['val'];
-}
+    if (isset($_GET["periode"])) {
+        $periode = $_GET['periode'];
+    }
+    if (isset($_GET["val"])) {
+        $val = $_GET['val'];
+    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Distribusi IPS</title>
+    <title>Data IPK</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -53,17 +53,12 @@ if (isset($_GET["val"])) {
 
     <!-- bread crumbs -->
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-9 col-xs-9">
             <ul id="breadcrumb" class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
-                <li class="breadcrumb-item active">Data</li>
+                <li class="breadcrumb-item active">Distribusi IPS</li>
             </ul>
         </div>
-        <!-- <div class="col-md-3">
-            <input type="text" placeholder="Search" name="search" class="search">
-            <button type="submit" class="search"><i class="fa fa-search"></i></button>
-            </form>
-        </div> -->
     </div>
 
     <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
@@ -86,33 +81,47 @@ if (isset($_GET["val"])) {
         }
     }
     ?>
+
     <!-- isi -->
     <div class="container">
         <div class="row">
             <div class="col-md-7">
-                <p class="semester">Semester:
-                    <?php echo $periode; ?><br>Angkatan:
-                    <?php echo $angkatan1; ?>
-                    <?php echo '-', $angkatan2; ?><br>Tahun:
-                    <?php echo $tahun; ?>-
-                    <?php echo $tahun2; ?>
-                </p>
+                <p class="semester">Semester <span>
+                        <?php echo $periode; ?>
+                    </span> || Angkatan <span>
+                        <?php echo $angkatan1; ?>
+                    </span>-<span>
+                        <?php echo $angkatan2; ?>
+                    </span> || Tahun <span>
+                        <?php echo $tahun; ?>
+                    </span>-<span>
+                        <?php echo $tahun2; ?>
+                    </span></p>
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-4 col-xs-4">
                 <form action="" method="post">
-                    <select name="filtering" id="filtering" class="form-control1" onchange="redirectPage()">
-                        <option value="selected value">
-                            <?php echo $val; ?>
-                        </option>
-                        <option value="Data List">Data List</option>
-                        <option value="Pengaruh MK">Pengaruh MK</option>
-                        <!-- <option value="Penuruan IPS">Jumlah</option> -->
-                        <option value="Rata-rata IPK">Rata-rata</option>
-                    </select>
-                    <input type="submit" value="Kirim">
+                    <div class="col-md-10 col-xs-10">
+                        <select name="filtering" id="filtering" class="form-control" onchange="redirectPage()">
+                            <option value="selected value"><?php echo $val; ?></option>
+                            <option value="Data List">Data List</option>
+                            <option value="Pengaruh MK">Pengaruh MK</option>
+                            <!-- <option value="Penuruan IPS">Jumlah</option> -->
+                            <option value="Rata-rata IPK">Rata-rata</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2 col-xs-2">
+                        <input type="submit" value="Kirim" class="btn btn-primary">
+                    </div>
                 </form>
-                <button id="downloadCSV" onclick="downloadCSV()">Download CSV</button>
+            </div>
+
+            <div class="col-md-1 col-xs-1">
+                    <div class="col-md-1 col-xs-1">
+                        <svg id="downloadCSV" onclick="downloadCSV()" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="cursor: pointer;">
+                    <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
+                </svg>
             </div>
         </div>
 
@@ -123,15 +132,23 @@ if (isset($_GET["val"])) {
                 <canvas id="pieChart"></canvas>
             </div>
         </div>
+        
+
+
+        <!-- Render the pie chart -->
+        <div class="row" style="margin-bottom: 15px">
+            <div style="width: 50%;">
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
         <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 col-xs-12">
                 <table class="table" id="Tabel_dist">
                     <tr>
-                        <th scope="col" onclick="sortTable(0)">Nilai</th>
-                        <th scope="col" onclick="sortTable(1)">Jumlah Mahasiswa</th>
+                        <th class="bordered-header" scope="col" onclick="sortTable(0)">Nilai</th>
+                        <th class="bordered-header" scope="col" onclick="sortTable(1)">Jumlah Mahasiswa</th>
                     </tr>
-                    </thead>
                     <tbody>
                         <?php
                         $sql = "SELECT 
@@ -198,8 +215,8 @@ if (isset($_GET["val"])) {
                         if ($result) {
                             foreach ($result as $row) {
                                 echo '<tr>
-                                    <td>' . $row['hasil'] . '</td>
-                                    <td>' . $row['jumlah_mahasiswa'] . '</td>
+                                    <td class="bordered-cell">' . $row['hasil'] . '</td>
+                                    <td class="bordered-cell">' . $row['jumlah_mahasiswa'] . '</td>
                                 </tr>';
                             }
                         } else {
