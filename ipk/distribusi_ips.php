@@ -1,8 +1,9 @@
 <?php
 include("../api/connect.php");
 
-if (isset($_GET["angkatan"])) {
-    $angkatan = $_GET['angkatan'];
+if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
+    $angkatan1 = min($_GET['angkatan1'], $_GET['angkatan2']);
+    $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
 }
 
 if (isset($_GET["tahun"])) {
@@ -56,11 +57,11 @@ if (isset($_GET["val"])) {
                 <li class="breadcrumb-item active">Data</li>
             </ul>
         </div>
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
             <input type="text" placeholder="Search" name="search" class="search">
             <button type="submit" class="search"><i class="fa fa-search"></i></button>
             </form>
-        </div>
+        </div> -->
     </div>
 
     <!-- HARUS INI DULU SOALNYA NANTI VARIABEL NYA MAU DI POST KE HALAMAN LAIN -->
@@ -71,15 +72,16 @@ if (isset($_GET["val"])) {
 
         // Membuat pernyataan if berdasarkan nilai dropdown
         if ($selectedValue == 'Pengaruh MK') {
-            header("location: ../ipk/pengaruhMK.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+            header("location: ../ipk/pengaruhMK.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
             exit;
         } else if ($selectedValue == 'Rata-rata IPK') {
-            header("location: ../ipk/rata2_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+            header("location: ../ipk/rata2_ipk.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
             exit;
         } else if ($selectedValue == 'Data List') {
-            header("location: ../ipk/data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+            header("location: ../ipk/data_ipk.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
             exit;
-        } 
+        }
+        
     }
     ?>
     <!-- isi -->
@@ -88,7 +90,7 @@ if (isset($_GET["val"])) {
             <div class="col-md-7">
                 <p class="semester">Semester:
                     <?php echo $periode; ?><br>Angkatan:
-                    <?php echo $angkatan; ?><br>Tahun:
+                    <?php echo $angkatan1; ?><?php echo '-', $angkatan2; ?><br>Tahun:
                     <?php echo $tahun; ?>
                 </p>
             </div>
@@ -155,8 +157,8 @@ if (isset($_GET["val"])) {
                             $sql .= " AND semester = :periode";
                         }
 
-                        if ($angkatan !== "All") {
-                            $sql .= " AND angkatan = :angkatan";
+                        if ($angkatan1 !== "All") {
+                            $sql .= " AND angkatan between :angkatan1 and :angkatan2";
                         }
 
                         if ($tahun !== "All") {
@@ -170,8 +172,11 @@ if (isset($_GET["val"])) {
                             $query->bindParam(':periode', $periode, PDO::PARAM_STR);
                         }
 
-                        if ($angkatan !== "All") {
-                            $query->bindParam(':angkatan', $angkatan, PDO::PARAM_STR);
+                        if ($angkatan1 !== "All") {
+                            $query->bindParam(':angkatan1', $angkatan1, PDO::PARAM_STR);
+                        }
+                        if ($angkatan2 !== "All") {
+                            $query->bindParam(':angkatan2', $angkatan2, PDO::PARAM_STR);
                         }
 
                         if ($tahun !== "All") {
