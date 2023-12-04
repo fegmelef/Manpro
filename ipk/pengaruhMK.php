@@ -6,8 +6,9 @@ if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
     $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
 }
 
-if (isset($_GET["tahun"])) {
-    $tahun = $_GET['tahun'];
+if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
+    $tahun = min($_GET['tahun'], $_GET['tahun2']);
+    $tahun2 = max($_GET['tahun'], $_GET['tahun2']);
 }
 
 if (isset($_GET["periode"])) {
@@ -63,15 +64,16 @@ if (isset($_GET["val"])) {
 
             // Membuat pernyataan if berdasarkan nilai dropdown
             if ($selectedValue == 'Distribusi') {
-                header("location: ../ipk/distribusi_ips.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../ipk/distribusi_ips.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
                 exit;
             } else if ($selectedValue == 'Data List') {
-                header("location: ../ipk/data_ipk.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../ipk/data_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
                 exit;
             } else if ($selectedValue == 'Rata-rata IPK') {
-                header("location: ../ipk/rata2_ipk.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../ipk/rata2_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
                 exit;
             }
+
 
             // else if ($selectedValue == 'Jumlah') {
             //     header("location: ../ipk/jumlah_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
@@ -87,7 +89,8 @@ if (isset($_GET["val"])) {
                         <?php echo $periode; ?><br>Angkatan:
                         <?php echo $angkatan1; ?>
                         <?php echo '-', $angkatan2; ?><br>Tahun:
-                        <?php echo $tahun; ?>
+                        <?php echo $tahun; ?>-
+                        <?php echo $tahun2; ?>
                     </p>
                 </div>
 
@@ -150,7 +153,7 @@ if (isset($_GET["val"])) {
                                 }
 
                                 if ($tahun !== "All") {
-                                    $query .= " AND tahun = :tahun";
+                                    $query .= " AND tahun >= :tahun and tahun <=:tahun2";
                                 }
 
                                 if ($angkatan1 !== "All") {
@@ -187,6 +190,9 @@ if (isset($_GET["val"])) {
 
                                 if ($tahun !== "All") {
                                     $query->bindParam(':tahun', $tahun, PDO::PARAM_STR);
+                                }
+                                if ($tahun2 !== "All") {
+                                    $query->bindParam(':tahun2', $tahun2, PDO::PARAM_STR);
                                 }
 
                                 $query->execute();
@@ -246,7 +252,7 @@ if (isset($_GET["val"])) {
                                 }
 
                                 if ($tahun !== "All") {
-                                    $query1 .= " AND tahun = :tahun";
+                                    $query1 .= " AND tahun >= :tahun and tahun <= :tahun2";
                                 }
 
                                 if ($angkatan1 !== "All") {
@@ -284,7 +290,9 @@ if (isset($_GET["val"])) {
                                 if ($tahun !== "All") {
                                     $query1->bindParam(':tahun', $tahun, PDO::PARAM_STR);
                                 }
-
+                                if ($tahun2 !== "All") {
+                                    $query1->bindParam(':tahun2', $tahun2, PDO::PARAM_STR);
+                                }
                                 $query1->execute();
 
                                 while ($row1 = $query1->fetch()) {

@@ -62,14 +62,22 @@ include "../api/connect.php";
                 <div class="col-md-6">
                     <select name="tahun" id="tahun" class="form-control" required>
                         <!-- <option value="none">Pilih tahun</option> -->
-                        <option value="All">All</option>
+                        <!-- <option value="All">All</option> -->
                         <!-- <option value="21">2021</option> -->
                         <?php
                         $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `periode`");
                         while ($row = mysqli_fetch_array($query)) {
                             echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
                         }
-                        
+                        ?>
+                    </select>
+                    <select name="tahun2" id="tahun2" class="form-control" required>
+
+                        <?php
+                        $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `periode`");
+                        while ($row = mysqli_fetch_array($query)) {
+                            echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
+                        }
                         ?>
                     </select>
                 </div>
