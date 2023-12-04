@@ -52,7 +52,7 @@ if (isset($_GET["val"])) {
     <div class="row">
         <div class="col-md-9">
             <ul id="breadcrumb" class="breadcrumb">
-                <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
+                <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
                 <li class="breadcrumb-item active">Data</li>
             </ul>
         </div>
