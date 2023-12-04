@@ -6,10 +6,10 @@ if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
     $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
 }
 
-if (isset($_GET["tahun"])) {
-    $tahun = $_GET['tahun'];
+if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
+    $tahun = min($_GET['tahun'], $_GET['tahun2']);
+    $tahun2 = max($_GET['tahun'], $_GET['tahun2']);
 }
-
 if (isset($_GET["periode"])) {
     $periode = $_GET['periode'];
 }
@@ -67,18 +67,19 @@ if (isset($_GET["val"])) {
 
             // Membuat pernyataan if berdasarkan nilai dropdown
             if ($selectedValue == 'Daftar Mahasiswa Dibawah Rata-rata Nilai') {
-                header("location: ../cpl/reporting.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/reporting.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&tahun2=$tahun2&&periode=$periode&&val=$selectedValue");
                 exit;
             } else if ($selectedValue == 'List Data') {
-                header("location: ../cpl/data_cpl.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/data_cpl.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&tahun2=$tahun2&&periode=$periode&&val=$selectedValue");
                 exit;
             } else if ($selectedValue == 'Rata-rata Nilai') {
-                header("location: ../cpl/rata_rata.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/rata_rata.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&tahun2=$tahun2&&periode=$periode&&val=$selectedValue");
                 exit;
             } else if ($selectedValue == 'Distribusi Nilai') {
-                header("location: ../cpl/distribusi.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/distribusi.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&tahun2=$tahun2&&periode=$periode&&val=$selectedValue");
                 exit;
             }
+
 
         }
         ?>
@@ -95,6 +96,8 @@ if (isset($_GET["val"])) {
                             <?php echo $angkatan2; ?>
                         </span> || Tahun <span>
                             <?php echo $tahun; ?>
+                        </span><span>
+                            <?php echo $tahun2; ?>
                         </span></p>
                 </div>
 
@@ -153,7 +156,7 @@ if (isset($_GET["val"])) {
                 $query1 .= " AND semester = $periode";
             }
             if ($tahun !== 'All') {
-                $query1 .= " AND tahun = '$tahun'";
+                $query1 .= " AND tahun >= '$tahun' and tahun <= '$tahun2'";
             }
 
             $query1 .= ") AS subquery GROUP BY subquery.mk";
@@ -248,7 +251,7 @@ if (isset($_GET["val"])) {
                                 $query1 .= " AND semester = $periode";
                             }
                             if ($tahun !== 'All') {
-                                $query1 .= " AND tahun = '$tahun'";
+                                $query1 .= " AND tahun >= '$tahun' and tahun <= '$tahun2'";
                             }
 
                             $query1 .= ") AS subquery GROUP BY subquery.mk";
@@ -311,7 +314,7 @@ if (isset($_GET["val"])) {
                                 $sql .= " AND semester = $periode";
                             }
                             if ($tahun !== 'All') {
-                                $sql .= " AND tahun = '$tahun'";
+                                $sql .= " AND tahun >= '$tahun' and tahun <= '$tahun2'";
                             }
 
                             $sql .= ' ORDER BY `mhsw`.`nrp_hash` ASC';

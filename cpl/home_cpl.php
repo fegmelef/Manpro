@@ -61,7 +61,16 @@
                 <div class="col-md-2 col-xs-2">:</div>
                 <div class="col-md-6 col-xs-6">
                     <select name="tahun" id="tahun" class="form-control" required>
-                        <option value="All">All</option>
+                        <!-- <option value="All">All</option> -->
+                        <?php
+                        $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `periode`");
+                            while ($row = mysqli_fetch_array($query)) {
+                                echo "<option value='" . $row['tahun'] . "'>" . $row['tahun'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                    <select name="tahun2" id="tahun2" class="form-control" required>
+                        <!-- <option value="All">All</option> -->
                         <?php
                         $query = mysqli_query($con, "SELECT DISTINCT tahun FROM `periode`");
                             while ($row = mysqli_fetch_array($query)) {

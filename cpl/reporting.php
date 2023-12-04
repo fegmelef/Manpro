@@ -7,9 +7,9 @@ if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
     $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
 }
 
-
-if (isset($_GET["tahun"])) {
-    $tahun = $_GET['tahun'];
+if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
+    $tahun = min($_GET['tahun'], $_GET['tahun2']);
+    $tahun2 = max($_GET['tahun'], $_GET['tahun2']);
 }
 
 if (isset($_GET["periode"])) {
@@ -70,18 +70,19 @@ if (isset($_GET["val"])) {
 
             // Membuat pernyataan if berdasarkan nilai dropdown
             if ($selectedValue == 'List Data') {
-                header("location: ../cpl/data_cpl.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode");
+                header("location: ../cpl/data_cpl.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&tahun2=$tahun2&&periode=$periode");
                 exit;
             } else if ($selectedValue == 'Rata-rata Nilai') {
-                header("location: ../cpl/rata_rata.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/rata_rata.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&tahun2=$tahun2&&periode=$periode&&val=$selectedValue");
                 exit;
             } else if ($selectedValue == 'Jumlah Mahasiswa Mengulang MK') {
-                header("location: ../cpl/jumlah.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/jumlah.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&tahun2=$tahun2&&periode=$periode&&val=$selectedValue");
                 exit;
             } else if ($selectedValue == 'Distribusi Nilai') {
-                header("location: ../cpl/distribusi.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
+                header("location: ../cpl/distribusi.php?angkatan1=$angkatan1&&angkatan2=$angkatan2&&tahun=$tahun&&tahun2=$tahun2&&periode=$periode&&val=$selectedValue");
                 exit;
             }
+            
 
         }
     }
@@ -99,6 +100,8 @@ if (isset($_GET["val"])) {
                         <?php echo $angkatan2; ?>
                     </span> || Tahun <span>
                         <?php echo $tahun; ?>
+                    </span>-<span>
+                        <?php echo $tahun2; ?>
                     </span></p>
             </div>
 
@@ -241,7 +244,7 @@ if (isset($_GET["val"])) {
                                     $sql .= " AND periode.semester = $periode";
                                 }
                                 if ($tahun !== 'All') {
-                                    $sql .= " AND periode.tahun = '$tahun'";
+                                    $sql .= " AND periode.tahun >= '$tahun' and periode.tahun <= '$tahun2'";
                                 }
 
                                 $sql .= " GROUP BY ikcpl.id_cpl )";
