@@ -172,8 +172,7 @@
                                         WHEN ips BETWEEN 0 AND 0.99 THEN 'E'
                                     END AS hasil
                                 FROM ips
-                            ) AS subquery
-                            GROUP BY hasil";
+                                WHERE 1=1";
 
 
                         if ($periode !== "All") {
@@ -188,6 +187,8 @@
                             $sql .= " AND tahun >= :tahun and tahun <= :tahun2";
                         }
 
+                        $sql .= ") AS subquery
+                                GROUP BY hasil";
 
                         $query = $conn->prepare($sql);
 
