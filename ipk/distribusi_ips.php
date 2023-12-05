@@ -125,22 +125,15 @@
             </div>
         </div>
 
-
         <!-- Render the pie chart -->
         <div class="row" style="margin-bottom: 15px">
-            <div style="width: 50%;">
-                <canvas id="pieChart"></canvas>
+            <div class="col-md-12 col-xs-12 text-center">
+                <div class="col-md-6 col-md-offset-3 col-xs-12">
+                    <canvas id="pieChart"></canvas>
+                </div>
             </div>
         </div>
-        
 
-
-        <!-- Render the pie chart -->
-        <div class="row" style="margin-bottom: 15px">
-            <div style="width: 50%;">
-                <canvas id="pieChart"></canvas>
-            </div>
-        </div>
         <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
         <div class="row">
             <div class="col-md-12 col-xs-12">
