@@ -142,7 +142,7 @@
                                 <td class="bordered-cell" scope="row"><?php echo $rowNum; ?></td>
                                 <td class="bordered-cell"><?php echo $row['nrp_hash'];?></td>
                                 <td class="bordered-cell"><?php echo $row['tahun'];?></td>
-                                <td class="bordered-cell"><form method="post" action="detail_ipk.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
+                                <td class="bordered-cell"><form method="post" action="detail_ipk.php?angkatan=<?php echo $angkatan1; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
                                 <input type="hidden" name="nrp" value="<?php echo $row['nrp_hash'];?>">
                                 <input type="hidden" name="year" value="<?php echo $row['tahun'];?>">
                                 <button type="submit" name="detail" class="btn btn-dark">Detail</button>
