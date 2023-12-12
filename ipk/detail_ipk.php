@@ -1,7 +1,5 @@
 <?php
 include("../api/connect.php");
-
-
 if (isset($_POST["nrp"])) {
     $nrp = $_POST['nrp'];
 }
@@ -9,15 +7,14 @@ if (isset($_POST["nrp"])) {
 if (isset($_POST["year"])) {
     $year = $_POST['year'];
 }
-
-if (isset($_GET["angkatan"])) {
-    $angkatan1 = $_GET['angkatan'];
-    // echo $angkatan;
+if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
+    $angkatan1 = min($_GET['angkatan1'], $_GET['angkatan2']);
+    $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
 }
 
-if (isset($_GET["tahun"])) {
-    $tahun = $_GET['tahun'];
-    // echo $tahun;
+if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
+    $tahun = min($_GET['tahun'], $_GET['tahun2']);
+    $tahun2 = max($_GET['tahun'], $_GET['tahun2']);
 }
 
 if (isset($_GET["periode"])) {
@@ -60,7 +57,7 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                 <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
                 <!-- <li class="breadcrumb-item active"><a href="data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">Data</a></li> -->
                 <li class="breadcrumb-item active">
-                    <a href="data_ipk.php?angkatan=<?php echo $angkatan1; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
+                    <a href="data_ipk.php?angkatan1=<?php echo $angkatan1;?>&angkatan2=<?php echo $angkatan2;?>&tahun=<?php echo $tahun; ?>&tahun2=<?php echo $tahun2; ?>&periode=<?php echo $periode; ?>">
                         Data
                     </a>
                 </li>
