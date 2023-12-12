@@ -50,7 +50,7 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
         <div class="col-md-9">
             <ul id="breadcrumb" class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
-                <li class="breadcrumb-item active">Data</li>
+                <li class="breadcrumb-item active">Pengaruh MK Terhadap IPS</li>
             </ul>
         </div>
 
@@ -62,13 +62,13 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
             $selectedValue = $_POST['filtering'];
 
             // Membuat pernyataan if berdasarkan nilai dropdown
-            if ($selectedValue == 'Distribusi') {
+            if ($selectedValue == 'Distribusi IPS dan IPK') {
                 header("location: ../ipk/distribusi_ips.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
                 exit;
-            } else if ($selectedValue == 'Data List') {
+            } else if ($selectedValue == 'List Data') {
                 header("location: ../ipk/data_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
                 exit;
-            } else if ($selectedValue == 'Rata-rata IPK') {
+            } else if ($selectedValue == 'Rata-rata IPS dan IPK') {
                 header("location: ../ipk/rata2_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
                 exit;
             }
@@ -102,10 +102,10 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
                             <div class="col-md-10 col-xs-10">
                                 <select name="filtering" id="filtering" class="form-control" onchange="redirectPage()">
                                     <option value="selected value"><?php echo $val; ?></option>
-                                    <option value="Data List">Data List</option>
-                                    <option value="Distribusi">Distribusi</option>
+                                    <option value="List Data">List Data</option>
+                                    <option value="Distribusi IPS dan IPK">Distribusi IPS dan IPK</option>
                                     <!-- <option value="Penuruan IPS">Jumlah</option> -->
-                                    <option value="Rata-rata IPK">Rata-rata</option>
+                                    <option value="Rata-rata IPS dan IPK">Rata-rata IPS dan IPK</option>
                                 </select>
                             </div>
 

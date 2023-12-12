@@ -53,7 +53,7 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
         <div class="col-md-9 col-xs-9">
             <ul id="breadcrumb" class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
-                <li class="breadcrumb-item active">Data</li>
+                <li class="breadcrumb-item active">Rata-rata IPS dan IPK</li>
             </ul>
         </div>
     </div>
@@ -65,13 +65,13 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
         $selectedValue = $_POST['filtering'];
 
         // Membuat pernyataan if berdasarkan nilai dropdown
-        if ($selectedValue == 'Distribusi') {
+        if ($selectedValue == 'Distribusi IPS dan IPK') {
             header("location: ../ipk/distribusi_ips.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
-        } else if ($selectedValue == 'Pengaruh MK') {
+        } else if ($selectedValue == 'Pengaruh MK Terhadap IPS') {
             header("location: ../ipk/pengaruhmk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
-        } else if ($selectedValue == 'Data List') {
+        } else if ($selectedValue == 'List Data') {
             header("location: ../ipk/data_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
         }
@@ -107,11 +107,10 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
                             <option value="selected value">
                                 <?php echo $val; ?>
                             </option>
-                            <option value="Data List">Data List</option>
-                            <option value="Distribusi">Distribusi</option>
-                            <option value="Pengaruh MK">Pengaruh MK</option>
+                            <option value="ListbData">List Data</option>
+                            <option value="Distribusi IPS dan IPK">Distribusi IPS dan IPK</option>
+                            <option value="Pengaruh MK Terhadap IPS">Pengaruh MK Terhadap IPS</option>
                             <!-- <option value="Rata-rata IPK">Rata-rata</option> -->
-                            <!-- <option value="Rata-rata IPS">Rata-rata</option> -->
                         </select>
                     </div>
                     
@@ -205,132 +204,7 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
         </div>
     </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script> -->
-    <div style="width: 100%;height: 100%">
-        <canvas id="chartIPK"></canvas>
-    </div>
     <script>
-        //MUNCUL 4 TAPI GRAFIK SALAH DAN LABEL ADA BANYAK
-    document.addEventListener('DOMContentLoaded', function () {
-    var table = document.getElementById('Tabel_rata2');
-    var datal = {}; // Ubah ke objek untuk mengelompokkan datal
-    var datas = {}; // Ubah ke objek untuk mengelompokkan datal
-    var colorMap = {}; // Menyimpan warna untuk setiap angkatan
-
-    // Loop melalui setiap baris tabel untuk mengambil datal
-    for (var i = 1; i < table.rows.length; i++) {
-        var row = table.rows[i];
-        var year = row.cells[0].innerText;
-        var semester = row.cells[2].innerText;
-        var angkatan = row.cells[1].innerText;
-        var averageIPK = parseFloat(row.cells[3].innerText);
-
-        // Inisialisasi objek jika belum ada
-        if (!datal[year]) {
-            datal[year] = {};
-        }
-        if (!datal[year][semester]) {
-            datal[year][semester] = {};
-        }
-        if (!datal[year][semester][angkatan]) {
-            datal[year][semester][angkatan] = [];
-            // Inisialisasi warna untuk setiap angkatan jika belum ada
-            if (!colorMap[angkatan]) {
-                colorMap[angkatan] = randomColor();
-            }
-        }
-
-        // Masukkan nilai IPK ke dalam array
-        datal[year][semester][angkatan].push(averageIPK);
-        
-        if (!datas[angkatan]) {
-            datas[angkatan] = {};
-        }
-        if (!datas[angkatan][year]) {
-            datas[angkatan][year] = {};
-        }
-        if (!datas[angkatan][year][semester]) {
-            datas[angkatan][year][semester] = [];
-            // Inisialisasi warna untuk setiap angkatan jika belum ada
-            if (!colorMap[angkatan]) {
-                colorMap[angkatan] = randomColor();
-            }
-        }
-
-        // Masukkan nilai IPK ke dalam array
-        datas[angkatan][year][semester].push(averageIPK);
-        // datas[year][semester][angkatan].push(averageIPK);
-    }
-    console.log(datas);
-    var labels = [];
-    var datasets = {};
-
-    for (var angkatan in datas) {
-        semesterData_a=[];
-        for (var year in datal) {
-        
-            for (var semester in datas[angkatan][year]) {
-                
-                // if(datas[angkatan][year][semester]){
-                    var semesterData = datas[angkatan][year][semester];
-                // }else{
-                //     var semesterData = 0;
-                // }
-                
-                semesterData_a.push(semesterData);
-            }
-        }
-        var dataset = {
-                    label: angkatan,
-                    data: semesterData_a,
-                    backgroundColor: colorMap[angkatan],
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                };
-                datasets[angkatan] = dataset; // Menyimpan dataset untuk setiap angkatan
-            
-    console.log(datasets);
-    }
-
-    for (var year in datal) {
-        for (var semester in datal[year]) {
-            var label = year +'-'+semester;
-            labels.push(label);
-        }
-    }
-    
-    var convertedDatasets = Object.values(datasets).map(function (dataset) {
-    return dataset;
-});
-console.log(convertedDatasets);
-console.log(labels);
-
-    var ctx = document.getElementById('chartIPK').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels, //labels sudah benar grouping berdasarkan tahun dan semester
-            datasets: convertedDatasets //kalau mau dipisah arraynya juga dipisah(?) 1. coba pakai cara pisah array
-        },
-        // data: data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-});
-
-function randomColor() {
-    return 'rgba(' +
-        Math.floor(Math.random() * 256) + ',' +
-        Math.floor(Math.random() * 256) + ',' +
-        Math.floor(Math.random() * 256) + ', 0.6)';
-}
-                     
         var sort = "ascending";
         function sortTable(n) {
 

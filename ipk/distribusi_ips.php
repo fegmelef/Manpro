@@ -56,7 +56,7 @@
         <div class="col-md-9 col-xs-9">
             <ul id="breadcrumb" class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
-                <li class="breadcrumb-item active">Distribusi IPS</li>
+                <li class="breadcrumb-item active">Distribusi IPS dan IPK</li>
             </ul>
         </div>
     </div>
@@ -66,15 +66,15 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $selectedValue = $_POST['filtering'];
 
-        if ($selectedValue == 'Pengaruh MK') {
+        if ($selectedValue == 'Pengaruh MK Terhadap IPS') {
             // Pemanggilan header() ada di sini
             header("location: ../ipk/pengaruhMK.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
-        } else if ($selectedValue == 'Rata-rata IPK') {
+        } else if ($selectedValue == 'Rata-rata IPS dan IPK') {
             // Pemanggilan header() ada di sini
             header("location: ../ipk/rata2_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
-        } else if ($selectedValue == 'Data List') {
+        } else if ($selectedValue == 'List Data') {
             // Pemanggilan header() ada di sini
             header("location: ../ipk/data_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
@@ -104,10 +104,10 @@
                     <div class="col-md-10 col-xs-10">
                         <select name="filtering" id="filtering" class="form-control" onchange="redirectPage()">
                             <option value="selected value"><?php echo $val; ?></option>
-                            <option value="Data List">Data List</option>
-                            <option value="Pengaruh MK">Pengaruh MK</option>
+                            <option value="List Data">List Data</option>
+                            <option value="Pengaruh MK Terhadap IPS">Pengaruh MK Terhadap IPS</option>
                             <!-- <option value="Penuruan IPS">Jumlah</option> -->
-                            <option value="Rata-rata IPK">Rata-rata</option>
+                            <option value="Rata-rata IPS dan IPK">Rata-rata IPS dan IPK</option>
                         </select>
                     </div>
                     
@@ -120,11 +120,14 @@
             <div class="col-md-1 col-xs-1">
                     <div class="col-md-1 col-xs-1">
                         <svg id="downloadCSV" onclick="downloadCSV()" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="cursor: pointer;">
-                    <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
-                </svg>
+                            <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
+                        </svg>
+                    </div>
             </div>
         </div>
 
+        <h3 style="margin-top: 20px">Distribusi IPS</h3>
+        
         <!-- Render the pie chart -->
         <div class="row" style="margin-bottom: 15px">
             <div class="col-md-12 col-xs-12 text-center">
@@ -134,7 +137,7 @@
             </div>
         </div>
 
-        <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
+        <!-- RATA-RATA IPS-->
         <div class="row">
             <div class="col-md-12 col-xs-12">
                 <table class="table" id="Tabel_dist">
@@ -221,6 +224,104 @@
                 </table>
             </div>
         </div>
+
+        <h3 style="margin-top: 20px">Distribusi IPK</h3>
+        
+        <!-- Render the pie chart -->
+        <div class="row" style="margin-bottom: 15px">
+            <div class="col-md-12 col-xs-12 text-center">
+                <div class="col-md-6 col-md-offset-3 col-xs-12">
+                    <canvas id="pieChart2"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- RATA-RATA IPK-->
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <table class="table" id="Tabel_dist">
+                    <tr>
+                        <th class="bordered-header" scope="col" onclick="sortTable(0)">Nilai</th>
+                        <th class="bordered-header" scope="col" onclick="sortTable(1)">Jumlah Mahasiswa</th>
+                    </tr>
+                    <tbody>
+                        <?php
+                        $sql2 = "SELECT 
+                                hasil2,
+                                COUNT(nrp_hash) AS jumlah_mahasiswa2
+                            FROM (
+                                SELECT 
+                                    nrp_hash, 
+                                    tahun, 
+                                    semester,
+                                    angkatan,
+                                    ipk,
+                                    CASE 
+                                        WHEN ipk = 4.0 THEN 'A'
+                                        WHEN ipk BETWEEN 3.5 AND 3.9999 THEN 'B+'
+                                        WHEN ipk BETWEEN 3.0 AND 3.4999 THEN 'B'
+                                        WHEN ipk BETWEEN 2.5 AND 2.9999 THEN 'C+'
+                                        WHEN ipk BETWEEN 2.0 AND 2.4999 THEN 'C'
+                                        WHEN ipk BETWEEN 1.0 AND 1.9999 THEN 'D'
+                                        WHEN ipk BETWEEN 0 AND 0.9999 THEN 'E'
+                                    END AS hasil2
+                                FROM ipk
+                                WHERE 1=1";
+
+                        if ($periode !== "All") {
+                            $sql2 .= " AND semester = :periode";
+                        }
+
+                        if ($angkatan1 !== "All") {
+                            $sql2 .= " AND angkatan between :angkatan1 and :angkatan2";
+                        }
+
+                        if ($tahun !== "All") {
+                            $sql2 .= " AND tahun >= :tahun and tahun <= :tahun2";
+                        }
+
+                        $sql2 .= ") AS subquery
+                                GROUP BY hasil2";
+
+                        $query2 = $conn->prepare($sql2);
+
+                        if ($periode !== "All") {
+                            $query2->bindParam(':periode', $periode, PDO::PARAM_STR);
+                        }
+
+                        if ($angkatan1 !== "All") {
+                            $query2->bindParam(':angkatan1', $angkatan1, PDO::PARAM_STR);
+                        }
+                        if ($angkatan2 !== "All") {
+                            $query2->bindParam(':angkatan2', $angkatan2, PDO::PARAM_STR);
+                        }
+
+                        if ($tahun !== "All") {
+                            $query2->bindParam(':tahun', $tahun, PDO::PARAM_STR);
+                        }
+                        if ($tahun2 !== "All") {
+                            $query2->bindParam(':tahun2', $tahun2, PDO::PARAM_STR);
+                        }
+
+                        $query2->execute();
+                        $result2 = $query2->fetchAll();
+
+                        if ($result2) {
+                            foreach ($result2 as $row2) {
+                                echo '<tr>
+                                    <td class="bordered-cell">' . $row2['hasil2'] . '</td>
+                                    <td class="bordered-cell">' . $row2['jumlah_mahasiswa2'] . '</td>
+                                </tr>';
+                            }
+                        } else {
+                            echo "Tidak ada data yang ditemukan.";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
 
@@ -228,17 +329,24 @@
     <script>
         // Your PHP data as JavaScript array
         var data = <?php echo json_encode($result); ?>;
+        var data2 = <?php echo json_encode($result2); ?>;
 
         // Extract labels and values from the data array
         var labels = data.map(item => item.hasil); // Update 'hasil' with the actual field name
         var values = data.map(item => item.jumlah_mahasiswa);
 
+        var labels2 = data2.map(item => item.hasil2); // Update 'hasil' with the actual field name
+        var values2 = data2.map(item => item.jumlah_mahasiswa2);
+
         // Define specific colors for the dataset
         var colors = ['#FFC3A0', '#FFDCB0', '#FFD2D2', '#B0E57C', '#9EDAE2', '#C0C0C0', '#FFD700'];
         console.log(data); // Check the data in the browser's console
+        console.log(data2); // Check the data in the browser's console
 
         // Create the chart using the data and specific colors
         var ctx = document.getElementById('pieChart').getContext('2d');
+        var ctx2 = document.getElementById('pieChart2').getContext('2d');
+
         var myPieChart = new Chart(ctx, {
             type: 'pie',
             data: {
@@ -256,6 +364,32 @@
                             let dataset = ctx.chart.data.datasets[0];
                             let total = dataset.data.reduce((acc, data) => acc + data, 0);
                             let percentage = ((value / total) * 100).toFixed(2) + "%";
+                            return percentage;
+                        },
+                        anchor: 'end',
+                        align: 'start',
+                    },
+                },
+            },
+        });
+
+        var myPieChart2 = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    data: values2,
+                    backgroundColor: colors,
+                }]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        color: '#fff',
+                        formatter: (value2, ctx2) => {
+                            let dataset = ctx2.chart.data.datasets[0];
+                            let total = dataset.data.reduce((acc, data) => acc + data, 0);
+                            let percentage = ((value2 / total) * 100).toFixed(2) + "%";
                             return percentage;
                         },
                         anchor: 'end',

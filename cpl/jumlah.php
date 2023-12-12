@@ -217,6 +217,7 @@ if (isset($_GET["val"])) {
                 </div>
             </div>
 
+            <h3>Jumlah yang Tidak Lulus </h3>
             <div class="row">
                 <div class="col-md-12 col-xs-12">
                     <table class="table" id="mata_kuliah">
@@ -277,7 +278,7 @@ if (isset($_GET["val"])) {
             </div>
 
 
-
+            <h3>Detail Mahasiswa Tidak Lulus</h3>
             <div class="row">
                 <div class="col-md-12 col-xs-12">
                     <table class="table" id="detail">
@@ -287,7 +288,7 @@ if (isset($_GET["val"])) {
                             <th class="bordered-header" scope="col" onclick="sortTable(2, 'detail')">ID ikcpl</th>
                             <th class="bordered-header" scope="col" onclick="sortTable(3, 'detail')">ID CPL</th>
                             <th class="bordered-header" scope="col" onclick="sortTable(4, 'detail')">Mata Kuliah</th>
-                            <th class="bordered-header" scope="col" onclick="sortTable(5, 'detail')">NRPhash</th>
+                            <th class="bordered-header" scope="col" onclick="sortTable(5, 'detail')">NRP</th>
                             <th class="bordered-header" scope="col" onclick="sortTable(6, 'detail')">Tahun</th>
                             <th class="bordered-header" scope="col" onclick="sortTable(7, 'detail')">Angkatan</th>
 
@@ -295,7 +296,7 @@ if (isset($_GET["val"])) {
                         </thead>
                         <tbody>
                             <?php
-                            $sql = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, mk.mk, mhsw.nrp_hash, periode.tahun, mhsw.tahun AS 'angkatan', periode.semester
+                            $sql = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, mk.mk, mhsw.nrp_hash AS 'NRP', periode.tahun, mhsw.tahun AS 'angkatan', periode.semester
                             FROM kelas_cpmk
                             JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
                             JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
@@ -330,7 +331,7 @@ if (isset($_GET["val"])) {
                                         <td class="bordered-cell">' . $row['id_ikcpl'] . '</td>
                                         <td class="bordered-cell">' . $row['id_cpl'] . '</td>
                                         <td class="bordered-cell">' . $row['mk'] . '</td>
-                                        <td class="bordered-cell">' . $row['nrp_hash'] . '</td>
+                                        <td class="bordered-cell">' . $row['NRP'] . '</td>
                                         <td class="bordered-cell">' . $row['tahun'] . '</td>
                                         <td class="bordered-cell">' . $row['angkatan'] . '</td>
                                     </tr>';
