@@ -60,7 +60,7 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                 <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
                 <!-- <li class="breadcrumb-item active"><a href="data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">Data</a></li> -->
                 <li class="breadcrumb-item active">
-                    <a href="data_ipk.php?angkatan=<?php echo $angkatan1; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
+                    <a href="data_ipk.php?angkatan1=<?php echo $angkatan1; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
                         Data
                     </a>
                 </li>
