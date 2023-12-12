@@ -83,19 +83,30 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                     $row_ipk = $sql_ipk->fetch();
                 ?>
                 <div class="col-md-6">
-                    <div class="p-3">ipk: <?php echo $row_ipk['ipk']; ?> </div>
+                    <div class="p-3">IPK: <?php echo $row_ipk['ipk']; ?> </div>
                 </div>
             </div>
 
-            <table border="1" name="content">
-                <thead>
+            <div class="container" name="content">
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+
+            <div style="width: 100%;height: 100%">
+                <canvas id="ipkLineChart"></canvas>
+            </div>
+
+            <div class="container">
+                <h3> Nilai Mata Kuliah </h3>
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+            <table class="table" id="tabel_detail_ipk1">
                     <tr>
-                        <th>Mata Kuliah </th>
-                        <th>Nilai Angka </th>
-                        <th>Nilai Huruf </th>
+                        <th class="bordered-header">Mata Kuliah </th>
+                        <th class="bordered-header">Nilai Angka </th>
+                        <th class="bordered-header">Nilai Huruf </th>
                     </tr>
-                </thead>
-          
+            <tbody>
 
             <?php
                 $nilai_A = 0;
@@ -164,9 +175,9 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                     }
 
                     echo '<tr>
-                            <td>'.$row['mk'].'</td>
-                            <td>'.$nilai_num.'</td>
-                            <td>'.$nilai_huruf.'</td>
+                            <td class="bordered-cell">'.$row['mk'].'</td>
+                            <td class="bordered-cell">'.$nilai_num.'</td>
+                            <td class="bordered-cell">'.$nilai_huruf.'</td>
                         </tr>';
                 }
                 echo $nilai_A;
@@ -185,14 +196,20 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                 );
 
             ?>
+            </tbody>
             </table>
-            <br>
-            <table border="1" name="content">
+            </div>
+            </div>
+            <h3>IPS Tiap Periode</h3>
+            <div class="row">
+            <div class="col-md-12 col-xs-12">
+            <table class="table" id="tabel_detail_ipk2">
                 <tr>
-                    <th>Tahun</th>
-                    <th>Semester</th>
-                    <th>IPS</th>
+                    <th class="bordered-header">Tahun</th>
+                    <th class="bordered-header">Semester</th>
+                    <th class="bordered-header">IPS</th>
                 </tr>
+                <tbody>
                 <?php
                 $labels = [];
                 $values = [];
@@ -217,60 +234,57 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                     $values[] = $row_ips['Total_ips'];
 
                     echo '<tr>
-                            <td>'.$row_ips['tahun'].'</td>
-                            <td>'.$semester.'</td>
-                            <td>'.$row_ips['Total_ips'].'</td>
+                            <td class="bordered-cell">'.$row_ips['tahun'].'</td>
+                            <td class="bordered-cell">'.$semester.'</td>
+                            <td class="bordered-cell">'.$row_ips['Total_ips'].'</td>
                         </tr>';
                  }
                 ?>
+                </tbody>
             </table> 
+                </div>
+                </div>
+                </div>
 
 
-            <div class="container" name="content">
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
-
-                <div style="width: 100%;height: 100%">
-                    <canvas id="ipkLineChart"></canvas>
-                    <canvas id="barChartNilai"></canvas>
-                    <script>
+                <script>
                         
 
     // Data yang diberikan
-    var chart_data_nilai = <?php echo json_encode($chart_data_nilai); ?>;
-    console.log(chart_data_nilai);
-    // Ekstraksi nilai dari data untuk chart
-    var labels = ['nilaiA', 'nilaiB+', 'nilaiB', 'nilaiC+', 'nilaiC', 'nilaiD', 'nilaiE'];
-    console.log(labels);
-    var values = labels.map(function(label) {
-        return chart_data_nilai[label];
-    });
+    // var chart_data_nilai = <?php echo json_encode($chart_data_nilai); ?>;
+    // console.log(chart_data_nilai);
+    // // Ekstraksi nilai dari data untuk chart
+    // var labels = ['nilaiA', 'nilaiB+', 'nilaiB', 'nilaiC+', 'nilaiC', 'nilaiD', 'nilaiE'];
+    // console.log(labels);
+    // var values = labels.map(function(label) {
+    //     return chart_data_nilai[label];
+    // });
 
     // Membuat bar chart
-    var ctxbar = document.getElementById('barChartNilai').getContext('2d');
-    var barChartNilai = new Chart("barChartNilai", {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Jumlah',
-                // data: values,
-                data:<?php echo json_encode($chart_data_nilai); ?>,
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    min:0
-                }
-            }
-        }
-    });
+    // var ctxbar = document.getElementById('barChartNilai').getContext('2d');
+    // var barChartNilai = new Chart("barChartNilai", {
+    //     type: 'bar',
+    //     data: {
+    //         labels: labels,
+    //         datasets: [{
+    //             label: 'Jumlah',
+    //             // data: values,
+    //             data:<?php echo json_encode($chart_data_nilai); ?>,
+    //             backgroundColor: 'rgba(54, 162, 235, 0.5)',
+    //             borderColor: 'rgba(54, 162, 235, 1)',
+    //             borderWidth: 1
+    //         }]
+    //     },
+    //     options: {
+    //         scales: {
+    //             y: {
+    //                 beginAtZero: true,
+    //                 min:0
+    //             }
+    //         }
+    //     }
+    // });
                         var ctxline = document.getElementById("ipkLineChart").getContext('2d');
                         var ipkLineChart = new Chart(ctxline, {
                             type: 'line',
@@ -305,7 +319,6 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                         });
                         
                     </script>
-                </div>
             </div>
             
         </div>
