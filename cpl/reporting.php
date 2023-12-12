@@ -214,7 +214,7 @@ if (isset($_GET["val"])) {
                         <table class="table" id="tabel_reporting_cpl">
                             <tr>
                                 <th class="bordered-header" scope="col" onclick="sortTable(0)">No</th>
-                                <th class="bordered-header" scope="col" onclick="sortTable(1)">NRP hash</th>
+                                <th class="bordered-header" scope="col" onclick="sortTable(1)">NRP</th>
                                 <th class="bordered-header" scope="col" onclick="sortTable(2)">Nilai</th>
                                 <th class="bordered-header" scope="col" onclick="sortTable(3)">CPL</th>
                                 <th class="bordered-header" scope="col" onclick="sortTable(4)">Tahun</th>
