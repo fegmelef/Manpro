@@ -132,7 +132,7 @@ if (isset($_GET["val"])) {
                     </div>
                 </div>
 
-                <canvas id="gradeChart" width="800" height="400"></canvas>
+                <canvas id="gradeChart" width="800" height="400" style="margin-top: 45px; margin-bottom: 45px;"></canvas>
 
                 <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
                 <div class="row">
@@ -336,6 +336,8 @@ if (isset($_GET["val"])) {
                         scales: {
                             y: {
                                 beginAtZero: true,
+                                suggestedMin: 0,  // Set the minimum value for the y-axis
+                                suggestedMax: 100,  // Set the maximum value for the y-axis
                                 ticks: {
                                     stepSize: 5,  // Atur langkah antar angka pada sumbu Y
                                     // maxTicksLimit: 6  // Atur jumlah maksimum label pada sumbu Y
