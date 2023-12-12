@@ -56,7 +56,7 @@
         <div class="col-md-9 col-xs-9">
             <ul id="breadcrumb" class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
-                <li class="breadcrumb-item active">Distribusi IPS</li>
+                <li class="breadcrumb-item active">Distribusi IPS dan IPK</li>
             </ul>
         </div>
     </div>
@@ -66,15 +66,15 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $selectedValue = $_POST['filtering'];
 
-        if ($selectedValue == 'Pengaruh MK') {
+        if ($selectedValue == 'Pengaruh MK Terhadap IPS') {
             // Pemanggilan header() ada di sini
             header("location: ../ipk/pengaruhMK.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
-        } else if ($selectedValue == 'Rata-rata IPK') {
+        } else if ($selectedValue == 'Rata-rata IPS dan IPK') {
             // Pemanggilan header() ada di sini
             header("location: ../ipk/rata2_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
-        } else if ($selectedValue == 'Data List') {
+        } else if ($selectedValue == 'List Data') {
             // Pemanggilan header() ada di sini
             header("location: ../ipk/data_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
@@ -104,10 +104,10 @@
                     <div class="col-md-10 col-xs-10">
                         <select name="filtering" id="filtering" class="form-control" onchange="redirectPage()">
                             <option value="selected value"><?php echo $val; ?></option>
-                            <option value="Data List">Data List</option>
-                            <option value="Pengaruh MK">Pengaruh MK</option>
+                            <option value="Data List">List Data</option>
+                            <option value="Pengaruh MK">Pengaruh MK Terhadap IPS</option>
                             <!-- <option value="Penuruan IPS">Jumlah</option> -->
-                            <option value="Rata-rata IPK">Rata-rata</option>
+                            <option value="Rata-rata IPK">Rata-rata IPS dan IPK</option>
                         </select>
                     </div>
                     

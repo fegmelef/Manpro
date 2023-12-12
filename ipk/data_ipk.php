@@ -60,13 +60,13 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Mengambil nilai dropdown yang dipilih
         $selectedValue = $_POST['filtering'];
-        if ($selectedValue == 'Distribusi') {
+        if ($selectedValue == 'Distribusi IPS dan IPK') {
             header("location: ../ipk/distribusi_ips.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
-        } else if ($selectedValue == 'Pengaruh MK') {
+        } else if ($selectedValue == 'Pengaruh MK Terhadap IPS') {
             header("location: ../ipk/pengaruhMK.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
-        } else if ($selectedValue == 'Rata-rata IPK') {
+        } else if ($selectedValue == 'Rata-rata IPS dan IPK') {
             header("location: ../ipk/rata2_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
         }
@@ -95,10 +95,10 @@
                     <div class="col-md-10 col-xs-10">
                         <select name="filtering" id="filtering" class="form-control" onchange="redirectPage()">
                         
-                        <option value="Data List">Data List</option>
-                        <option value="Distribusi">Distribusi</option>
-                        <option value="Pengaruh MK">Pengaruh MK</option>
-                        <option value="Rata-rata IPK">Rata-rata</option>
+                        <option value="Data List">List Data</option>
+                        <option value="Distribusi">Distribusi IPS dan IPK</option>
+                        <option value="Pengaruh MK">Pengaruh MK Terhadap IPS</option>
+                        <option value="Rata-rata IPK">Rata-rata IPS dan IPK</option>
                     </select>
                     </div>
                     <div class="col-md-2 col-xs-2">
