@@ -247,59 +247,12 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                 </div>
 
 
-
-<<<<<<< HEAD
-
                 <div style="width: 100%;height: 100%">
                     <canvas id="ipkLineChart"></canvas>
                     <!-- <canvas id="barChartNilai"></canvas> -->
                     <script>
-                        
 
-    // // Data yang diberikan
-=======
-                <script>
-                        
-
-    // Data yang diberikan
->>>>>>> 645b2ada0a7d66ee6165714ed1c9032f99862aa5
-    // var chart_data_nilai = <?php echo json_encode($chart_data_nilai); ?>;
-    // console.log(chart_data_nilai);
-    // // Ekstraksi nilai dari data untuk chart
-    // var labels = ['nilaiA', 'nilaiB+', 'nilaiB', 'nilaiC+', 'nilaiC', 'nilaiD', 'nilaiE'];
-    // console.log(labels);
-    // var values = labels.map(function(label) {
-    //     return chart_data_nilai[label];
-    // });
-
-<<<<<<< HEAD
-    // // Membuat bar chart
-=======
-    // Membuat bar chart
->>>>>>> 645b2ada0a7d66ee6165714ed1c9032f99862aa5
-    // var ctxbar = document.getElementById('barChartNilai').getContext('2d');
-    // var barChartNilai = new Chart("barChartNilai", {
-    //     type: 'bar',
-    //     data: {
-    //         labels: labels,
-    //         datasets: [{
-    //             label: 'Jumlah',
-    //             // data: values,
-    //             data:<?php echo json_encode($chart_data_nilai); ?>,
-    //             backgroundColor: 'rgba(54, 162, 235, 0.5)',
-    //             borderColor: 'rgba(54, 162, 235, 1)',
-    //             borderWidth: 1
-    //         }]
-    //     },
-    //     options: {
-    //         scales: {
-    //             y: {
-    //                 beginAtZero: true,
-    //                 min:0
-    //             }
-    //         }
-    //     }
-    // });
+  
                         var ctxline = document.getElementById("ipkLineChart").getContext('2d');
                         var ipkLineChart = new Chart(ctxline, {
                             type: 'line',
@@ -313,16 +266,6 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                                     borderWidth: 1
                                 }]
                             },
-                            // options: {
-                            //     scales: {
-                            //         yAxes: [{
-                            //             ticks: {
-                            //                 beginAtZero:true,
-                            //                 min:0
-                            //             }
-                            //         }]
-                            //     }
-                            // }
                             options: {
             scales: {
                 y: {
