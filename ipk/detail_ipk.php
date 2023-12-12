@@ -228,7 +228,7 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
 
             <div class="container" name="content">
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
 
                 <div style="width: 100%;height: 100%">
