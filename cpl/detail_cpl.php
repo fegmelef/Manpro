@@ -9,12 +9,14 @@
         $year = $_POST['year'];
     }
 
-    if (isset($_GET["angkatan"])) {
-        $angkatan = $_GET['angkatan'];
+    if (isset($_GET["angkatan1"]) && isset($_GET["angkatan2"])) {
+        $angkatan1 = min($_GET['angkatan1'], $_GET['angkatan2']);
+        $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
     }
-
-    if (isset($_GET["tahun"])) {
-        $tahun = $_GET['tahun'];
+    
+    if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
+        $tahun = min($_GET['tahun'], $_GET['tahun2']);
+        $tahun2 = max($_GET['tahun'], $_GET['tahun2']);
     }
 
     if (isset($_GET["periode"])) {
@@ -58,7 +60,7 @@
                     <li class="breadcrumb-item"><a href="home_cpl.php">Home</a></li>
                     <!-- <li class="breadcrumb-item active"><a href="data_cpl.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">Data</a></li> -->
                     <li class="breadcrumb-item active">
-                        <a href="data_cpl.php?angkatan=<?php echo $angkatan; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
+                        <a href="data_cpl.php?angkatan1=<?php echo $angkatan1;?>&angkatan2=<?php echo $angkatan2;?>&tahun=<?php echo $tahun; ?>&tahun2=<?php echo $tahun2; ?>&periode=<?php echo $periode; ?>">
                             List Data
                         </a>
                     </li>

@@ -160,7 +160,7 @@ if (isset($_GET["periode"])) {
                                     </td>
                                     <td class="bordered-cell">
                                         <form method="post"
-                                            action="detail_cpl.php?angkatan=<?php echo $angkatan1; ?>&tahun=<?php echo $tahun; ?>&periode=<?php echo $periode; ?>">
+                                            action="detail_cpl.php?angkatan1=<?php echo $angkatan1;?>&angkatan2=<?php echo $angkatan2;?>&tahun=<?php echo $tahun; ?>&tahun2=<?php echo $tahun2; ?>&periode=<?php echo $periode; ?>">
                                             <input type="hidden" name="nrp" value="<?php echo $row['nrp_hash']; ?>">
                                             <input type="hidden" name="year" value="<?php echo $row['tahun']; ?>">
                                             <button type="submit" name="detail" class="btn btn-dark">Detail</button>
