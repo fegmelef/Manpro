@@ -51,9 +51,9 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
     </head>
     <body>
         <!-- navbar -->
-            <?php include "../navbar/navbar_after_login.php";?>
+        <?php include "../navbar/navbar_after_login.php";?>
         <!-- bread crumbs -->
-            <div class="row">
+        <div class="row">
             <ul id="breadcrumb" class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home_ipk.php">Home</a></li>
                 <!-- <li class="breadcrumb-item active"><a href="data_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue">Data</a></li> -->
@@ -63,27 +63,38 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                     </a>
                 </li>
                 <li class="breadcrumb-item active">Detail IPK</li> 
-                <li><button onclick="downloadAsPDF()" id="download">Download as PDF</button></li>            
             </ul>
-            </div>
+        </div>
+
         <div id="content">
         <!-- isi -->
         <div class="container" name="content">
-            <div class="row g-2" style="margin-bottom:20px;">
-                <div class="col-md-6">
-                    <div class="p-3">NRP: <?php echo $nrp; ?> </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="p-3">Angkatan: <?php echo $year; ?> </div>
-                </div>
-                <?php
-                    $sql_ipk = $conn->prepare($sql_ipk);
-                    $sql_ipk->execute();
-                    $row_ipk = $sql_ipk->fetch();
-                ?>
-                <div class="col-md-6">
-                    <div class="p-3">IPK: <?php echo $row_ipk['ipk']; ?> </div>
-                </div>
+            <div class="row">
+                <div class="col-md-9 col-xs-9">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="p-3">NRP: <?php echo $nrp; ?> </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="p-3">Angkatan: <?php echo $year; ?> </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <?php
+                            $sql_ipk = $conn->prepare($sql_ipk);
+                            $sql_ipk->execute();
+                            $row_ipk = $sql_ipk->fetch();
+                            ?>
+                            <div class="p-3">IPK: <?php echo $row_ipk['ipk']; ?> </div>
+                        </div>
+                    </div>   
+                </div> 
+                <div class="col-md-3 col-xs-3">
+                    <button type="submit" name="detail" class="btn btn-dark" onclick="downloadAsPDF()" id="download">Download as PDF</button>   
+                </div>            
             </div>
 
             <div class="container" name="content">
