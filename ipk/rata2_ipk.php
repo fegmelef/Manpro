@@ -107,9 +107,9 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
                             <option value="selected value">
                                 <?php echo $val; ?>
                             </option>
-                            <option value="Data List">List Data</option>
-                            <option value="Distribusi">Distribusi IPS dan IPK</option>
-                            <option value="Pengaruh MK">Pengaruh MK Terhadap IPS</option>
+                            <option value="ListbData">List Data</option>
+                            <option value="Distribusi IPS dan IPK">Distribusi IPS dan IPK</option>
+                            <option value="Pengaruh MK Terhadap IPS">Pengaruh MK Terhadap IPS</option>
                             <!-- <option value="Rata-rata IPK">Rata-rata</option> -->
                         </select>
                     </div>

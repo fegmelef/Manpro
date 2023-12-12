@@ -104,10 +104,10 @@
                     <div class="col-md-10 col-xs-10">
                         <select name="filtering" id="filtering" class="form-control" onchange="redirectPage()">
                             <option value="selected value"><?php echo $val; ?></option>
-                            <option value="Data List">List Data</option>
-                            <option value="Pengaruh MK">Pengaruh MK Terhadap IPS</option>
+                            <option value="List Data">List Data</option>
+                            <option value="Pengaruh MK Terhadap IPS">Pengaruh MK Terhadap IPS</option>
                             <!-- <option value="Penuruan IPS">Jumlah</option> -->
-                            <option value="Rata-rata IPK">Rata-rata IPS dan IPK</option>
+                            <option value="Rata-rata IPS dan IPK">Rata-rata IPS dan IPK</option>
                         </select>
                     </div>
                     

@@ -94,11 +94,10 @@
                 <form action="" method="post">
                     <div class="col-md-10 col-xs-10">
                         <select name="filtering" id="filtering" class="form-control" onchange="redirectPage()">
-                        
-                        <option value="Data List">List Data</option>
-                        <option value="Distribusi">Distribusi IPS dan IPK</option>
-                        <option value="Pengaruh MK">Pengaruh MK Terhadap IPS</option>
-                        <option value="Rata-rata IPK">Rata-rata IPS dan IPK</option>
+                        <option value="List Data">List Data</option>
+                        <option value="Distribusi IPS dan IPK">Distribusi IPS dan IPK</option>
+                        <option value="Pengaruh MK Terhadap IPS">Pengaruh MK Terhadap IPS</option>
+                        <option value="Rata-rata IPD dan IPK">Rata-rata IPS dan IPK</option>
                     </select>
                     </div>
                     <div class="col-md-2 col-xs-2">

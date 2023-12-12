@@ -64,7 +64,7 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                         Data
                     </a>
                 </li>
-                <li class="breadcrumb-item active">Detail data</li>   
+                <li class="breadcrumb-item active">Detail IPK</li>   
                 <li><button onclick="downloadAsPDF()">Download as PDF</button></li>            
             </ul>
             </div>
