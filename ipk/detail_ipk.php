@@ -38,6 +38,7 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
         <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet" type="text/css" href="../css.css">
         <script type="text/javascript" src="../chartjs/Chart.js"></script>
     
@@ -61,10 +62,11 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                         Data
                     </a>
                 </li>
-                <li class="breadcrumb-item active">Detail IPK</li>   
-                <li><button onclick="downloadAsPDF()">Download as PDF</button></li>            
+                <li class="breadcrumb-item active">Detail IPK</li> 
+                <li><button onclick="downloadAsPDF()" id="download">Download as PDF</button></li>            
             </ul>
             </div>
+        <div id="content">
         <!-- isi -->
         <div class="container" name="content">
             <div class="row g-2" style="margin-bottom:20px;">
@@ -177,11 +179,11 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                             <td class="bordered-cell">'.$nilai_huruf.'</td>
                         </tr>';
                 }
-                echo $nilai_A;
-                echo $nilai_B;
-                echo $nilai_BP;
-                echo $nilai_C;
-                echo $nilai_CP;
+                // echo $nilai_A;
+                // echo $nilai_B;
+                // echo $nilai_BP;
+                // echo $nilai_C;
+                // echo $nilai_CP;
                 $chart_data_nilai[] = array(
                     'nilaiA' =>$nilai_A,
                     'nilaiBP' =>$nilai_B,
@@ -243,13 +245,10 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                 </div>
                 </div>
 
-
                 <div style="width: 100%;height: 100%">
                     <canvas id="ipkLineChart"></canvas>
                     <!-- <canvas id="barChartNilai"></canvas> -->
                     <script>
-
-  
                         var ctxline = document.getElementById("ipkLineChart").getContext('2d');
                         var ipkLineChart = new Chart(ctxline, {
                             type: 'line',
@@ -264,15 +263,28 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                                 }]
                             },
                             options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                   
-                }
-            }
-        }
-                        });
-                        
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                        
+                                        }
+                                    }
+                                }
+                            });
+
+                            function downloadAsPDF(){
+                                const isi = this.document.getElementById("content")
+                                var opt = {
+                                    margin:[5,5,5,5],
+                                    filename: <?php echo json_encode($nrp)?>,
+                                    html2canvas: {width:1250}
+                                }
+                                html2pdf().set({
+                                    pagebreak: { mode: 'avoid-all', before: '#page2el' }
+                                });
+                                html2pdf().set(opt).from(isi).save();
+                            }
+                                                
                     </script>
             </div>
             
