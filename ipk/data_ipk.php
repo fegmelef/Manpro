@@ -97,7 +97,7 @@
                         <option value="List Data">List Data</option>
                         <option value="Distribusi IPS dan IPK">Distribusi IPS dan IPK</option>
                         <option value="Pengaruh MK Terhadap IPS">Pengaruh MK Terhadap IPS</option>
-                        <option value="Rata-rata IPD dan IPK">Rata-rata IPS dan IPK</option>
+                        <option value="Rata-rata IPS dan IPK">Rata-rata IPS dan IPK</option>
                     </select>
                     </div>
                     <div class="col-md-2 col-xs-2">
