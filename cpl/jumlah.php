@@ -197,7 +197,7 @@ if (isset($_GET["val"])) {
                                 data: {
                                     labels: label,
                                     datasets: [{
-                                        label: 'Nilai CPL',
+                                        label: 'Jumlah Mahasiswa Tidak Lulus',
                                         data: value,
                                         backgroundColor: 'rgba(255, 192, 203, 1)',
                                         borderColor: 'rgba(255, 192, 203, 1)',
@@ -285,7 +285,7 @@ if (isset($_GET["val"])) {
                         <tr>
                             <th class="bordered-header" scope="col" onclick="sortTable(0, 'detail')">No</th>
                             <th class="bordered-header" scope="col" onclick="sortTable(1, 'detail')">Nilai CPL</th>
-                            <th class="bordered-header" scope="col" onclick="sortTable(2, 'detail')">ID ikcpl</th>
+                            <th class="bordered-header" scope="col" onclick="sortTable(2, 'detail')">ID IKCPL</th>
                             <th class="bordered-header" scope="col" onclick="sortTable(3, 'detail')">ID CPL</th>
                             <th class="bordered-header" scope="col" onclick="sortTable(4, 'detail')">Mata Kuliah</th>
                             <th class="bordered-header" scope="col" onclick="sortTable(5, 'detail')">NRP</th>

@@ -13,7 +13,7 @@
         $angkatan1 = min($_GET['angkatan1'], $_GET['angkatan2']);
         $angkatan2 = max($_GET['angkatan1'], $_GET['angkatan2']);
     }
-    
+
     if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
         $tahun = min($_GET['tahun'], $_GET['tahun2']);
         $tahun2 = max($_GET['tahun'], $_GET['tahun2']);
@@ -69,26 +69,26 @@
                 </ul>
             </div>
         </div>
-    <div id="content">
+        <div id="content">
         <!-- isi -->
         <div class="container">
             <div class="row">
                 <div class="col-md-9 col-xs-9">
-                    <div class="row">
-                        <div class="col-md-6 col-xs-6">
-                            <div class="p-2">NRP: <?php echo $nrp; ?> </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-xs-6">
-                            <div class="p-2">Angkatan: <?php echo $year; ?> </div>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col-md-6 col-xs-6">
+                    <div class="p-3">NRP: <?php echo $nrp; ?> </div>
                 </div>
-                <div class="col-md-3 col-xs-3">
-                        <button type="submit" name="detail" class="btn btn-dark" onclick="downloadAsPDF()" id="download">Download as PDF</button>   
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-xs-6">
+                    <div class="p-3">Angkatan: <?php echo $year; ?> </div>
                 </div>
-        
+            </div>
+       </div>
+        <div class="col-md-3 col-xs-3">
+            <button type="submit" name="detail" class="btn btn-dark" onclick="downloadAsPDF()" id="download">Download as PDF</button>   
+        </div>
+
             <?php
                 $labels = [];
                 $values = [];
