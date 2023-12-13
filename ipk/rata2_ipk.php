@@ -278,7 +278,7 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
                         var semesterData = datas[angkatan][year][semester];
                     // }
                     // else{
-                        var semesterData = 0;
+                        // var semesterData = 0;
                     // }
                     
                     semesterData_a.push(semesterData);
