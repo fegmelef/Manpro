@@ -38,6 +38,7 @@
         <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet" type="text/css" href="../css.css">
         <script type="text/javascript" src="../chartjs/Chart.js"></script>
     
@@ -68,21 +69,26 @@
                 </ul>
             </div>
         </div>
-        
+    <div id="content">
         <!-- isi -->
         <div class="container">
             <div class="row">
-                <div class="col-md-6 col-xs-6">
-                    <div class="p-2">NRP: <?php echo $nrp; ?> </div>
+                <div class="col-md-9 col-xs-9">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="p-2">NRP: <?php echo $nrp; ?> </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="p-2">Angkatan: <?php echo $year; ?> </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 col-xs-6">
-                    <div class="p-2">Angkatan: <?php echo $year; ?> </div>
+                <div class="col-md-3 col-xs-3">
+                        <button type="submit" name="detail" class="btn btn-dark" onclick="downloadAsPDF()" id="download">Download as PDF</button>   
                 </div>
-            </div>
-
-
+        
             <?php
                 $labels = [];
                 $values = [];
@@ -228,5 +234,20 @@
                 </div>
             </div>
         </div>
+        <script>
+            function downloadAsPDF(){
+                const isi = this.document.getElementById("content")
+                var opt = {
+                    margin:[5,5,5,5],
+                    filename: <?php echo json_encode($nrp)?>,
+                    html2canvas: {width:1250}
+                }
+                html2pdf().set({
+                    pagebreak: { mode: 'avoid-all', before: '#page2el' }
+                });
+                html2pdf().set(opt).from(isi).save();
+            }
+        </script>
+    </div>
     </body>
 </html>
