@@ -212,7 +212,7 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
     </div>
 
     <script>
-        //MUNCUL 4 TAPI GRAFIK SALAH DAN LABEL ADA BANYAK
+
         document.addEventListener('DOMContentLoaded', function () {
         var table = document.getElementById('Tabel_rata2');
         var datal = {}; // Ubah ke objek untuk mengelompokkan datal
@@ -244,7 +244,7 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
             }
 
             // Masukkan nilai IPK ke dalam array
-            datal[year][semester][angkatan].push(averageIPK || 0);
+            // datal[year][semester][angkatan].push(averageIPK || 0);
             
             if (!datas[angkatan]) {
                 datas[angkatan] = {};
@@ -255,9 +255,9 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
             if (!datas[angkatan][year][semester]) {
                 datas[angkatan][year][semester] = [];
                 // Inisialisasi warna untuk setiap angkatan jika belum ada
-                if (!colorMap[angkatan]) {
-                    colorMap[angkatan] = randomColor();
-                }
+                // if (!colorMap[angkatan]) {
+                //     colorMap[angkatan] = randomColor();
+                // }
             }
 
             // Masukkan nilai IPK ke dalam array
@@ -278,7 +278,7 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
                         var semesterData = datas[angkatan][year][semester];
                     // }
                     // else{
-                        var semesterData = 0;
+                        // var semesterData = 0;
                     // }
                     
                     semesterData_a.push(semesterData);
