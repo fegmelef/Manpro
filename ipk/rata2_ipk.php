@@ -75,12 +75,6 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
             header("location: ../ipk/data_ipk.php?angkatan1=$angkatan1&angkatan2=$angkatan2&tahun=$tahun&tahun2=$tahun2&periode=$periode&val=$selectedValue");
             exit;
         }
-
-
-        // else if ($selectedValue == 'Jumlah') {
-        //     header("location: ../ipk/jumlah_ipk.php?angkatan=$angkatan&&tahun=$tahun&&periode=$periode&&val=$selectedValue");
-        //     exit;
-        // } 
     }
     ?>
     <!-- isi -->
@@ -129,10 +123,13 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
             </div>
         </div>
 
+        <h3 style="margin-top: 20px">Rata - Rata IPK</h3>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script> -->
         <div style="width: 100%;height: 100%">
+            <!-- <h2 style="text-align: center;">Average IPK Chart</h2> -->
             <canvas id="chartIPK"></canvas>
+            <!-- <canvas id="chartIPS"></canvas> -->
         </div>
 
         <!-- RATA-RATA CPL, BELOM BERDASARKAN TAHUN, ANGKATAN-->
@@ -213,38 +210,32 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
         var table = document.getElementById('Tabel_rata2');
-        var datal = {}; // Ubah ke objek untuk mengelompokkan datal
-        var datas = {}; // Ubah ke objek untuk mengelompokkan datal
-        var colorMap = {}; // Menyimpan warna untuk setiap angkatan
+        var datal = {}; 
+        var datas = {}; 
+        var datal_ips = {}; 
+        var datas_ips = {}; 
+        var colorMap = {};
 
-
-        // Loop melalui setiap baris tabel untuk mengambil datal
         for (var i = 1; i < table.rows.length; i++) {
             var row = table.rows[i];
             var year = row.cells[0].innerText;
             var semester = row.cells[2].innerText;
             var angkatan = row.cells[1].innerText;
             var averageIPK = parseFloat(row.cells[3].innerText);
+            var averageIPS = parseFloat(row.cells[4].innerText);
 
-            // Inisialisasi objek jika belum ada
             if (!datal[year]) {
                 datal[year] = {};
             }
             if (!datal[year][semester]) {
                 datal[year][semester] = {};
             }
-            if (!datal[year][semester][angkatan]) {
                 datal[year][semester][angkatan] = [];
-                // Inisialisasi warna untuk setiap angkatan jika belum ada
                 if (!colorMap[angkatan]) {
                     colorMap[angkatan] = randomColor();
                 }
-            }
-
-            // Masukkan nilai IPK ke dalam array
-            // datal[year][semester][angkatan].push(averageIPK || 0);
             
             if (!datas[angkatan]) {
                 datas[angkatan] = {};
@@ -252,35 +243,47 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
             if (!datas[angkatan][year]) {
                 datas[angkatan][year] = {};
             }
+            
             if (!datas[angkatan][year][semester]) {
                 datas[angkatan][year][semester] = [];
-                // Inisialisasi warna untuk setiap angkatan jika belum ada
-                // if (!colorMap[angkatan]) {
-                //     colorMap[angkatan] = randomColor();
-                // }
+                datas[angkatan][year][semester].push(averageIPK);
             }
 
-            // Masukkan nilai IPK ke dalam array
-            datas[angkatan][year][semester].push(averageIPK);
-            // datas[year][semester][angkatan].push(averageIPK);
+            //TABEL IPS
+            if (!datal_ips[year]) {
+                datal_ips[year] = {};
+            }
+            if (!datal_ips[year][semester]) {
+                datal_ips[year][semester] = {};
+            }
+                datal_ips[year][semester][angkatan] = [];
+            
+            if (!datal_ips[angkatan]) {
+                datal_ips[angkatan] = {};
+            }
+            if (!datal_ips[angkatan][year]) {
+                datal_ips[angkatan][year] = {};
+            }
+            
+            if (!datal_ips[angkatan][year][semester]) {
+                datal_ips[angkatan][year][semester] = [];
+                datal_ips[angkatan][year][semester].push(averageIPS);
+            }
         }
-        console.log(datas);
+  
         var labels = [];
         var datasets = {};
+        var sms = 1;
 
-        for (var angkatan in datas) {
+        for (angkatan in datas) {
             semesterData_a=[];
-            for (var year in datal) {
-            
-                for (var semester in datas[angkatan][year]) {
-                    
-                    // if(datas[angkatan][year][semester].length > 0){
-                        var semesterData = datas[angkatan][year][semester];
-                    // }
-                    // else{
-                        // var semesterData = 0;
-                    // }
-                    
+            for (var year in datal) {            
+                for (k = sms; k<3; k++) {
+                    if (datas[angkatan] && datas[angkatan][year] && datas[angkatan][year][k] && datas[angkatan][year][k].length > 0) {
+                        var semesterData = datas[angkatan][year][k];
+                    } else {
+                        var semesterData = 0;
+                    }
                     semesterData_a.push(semesterData);
                 }
             }
@@ -292,8 +295,6 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
                         borderWidth: 1
                     };
                     datasets[angkatan] = dataset; // Menyimpan dataset untuk setiap angkatan
-                
-        console.log(datasets);
         }
 
         for (var year in datal) {
@@ -305,27 +306,88 @@ if (isset($_GET["tahun"]) && isset($_GET["tahun2"])) {
         
         var convertedDatasets = Object.values(datasets).map(function (dataset) {
         return dataset;
-    });
-    console.log(convertedDatasets);
-    console.log(labels);
+        });
 
         var ctx = document.getElementById('chartIPK').getContext('2d');
         var chart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: labels, //labels sudah benar grouping berdasarkan tahun dan semester
-                datasets: convertedDatasets //kalau mau dipisah arraynya juga dipisah(?) 1. coba pakai cara pisah array
+                labels: labels, 
+                datasets: convertedDatasets 
             },
-            // data: data,
+            
             options: {
                 scales: {
                     y: {
                         beginAtZero: true
                     }
+                },
+                title: {
+                    display: true,
+                    text: 'AVERAGE IPK'
                 }
             }
         });
+
+        // var labels_ips = [];
+        // var datasets_ips = {};
+        // var sms = 1;
+
+        // for (angkatan in datas_ips) {
+        //     semesterData_a=[];
+        //     for (var year in datal_ips) {            
+        //         for (k = sms; k<3; k++) {
+        //             if (datas_ips[angkatan] && datas_ips[angkatan][year] && datas_ips[angkatan][year][k] && datas_ips[angkatan][year][k].length > 0) {
+        //                 var semesterData = datas_ips[angkatan][year][k];
+        //             } else {
+        //                 var semesterData = 0;
+        //             }
+        //             semesterData_a.push(semesterData);
+        //         }
+        //     }
+        //     var dataset_ips = {
+        //                 label: angkatan,
+        //                 data: semesterData_a,
+        //                 backgroundColor: colorMap[angkatan],
+        //                 borderColor: 'rgba(54, 162, 235, 1)',
+        //                 borderWidth: 1
+        //             };
+        //             datasets_ips[angkatan] = dataset_ips; // Menyimpan dataset untuk setiap angkatan
+        // }
+
+        // for (var year in datal_ips) {
+        //     for (var semester in datal_ips[year]) {
+        //         var label = year +'-'+semester;
+        //         labels_ips.push(label);
+        //     }
+        // }
+        
+        // var convertedDatasets_ips = Object.values(datasets_ips).map(function (dataset_ips) {
+        // return dataset_ips;
+        // });
+
+        // var ctx = document.getElementById('chartIPS').getContext('2d');
+        // var chart = new Chart(ctx, {
+        //     type: 'bar',
+        //     data: {
+        //         labels: labels_ips, 
+        //         datasets: convertedDatasets_ips 
+        //     },
+            
+        //     options: {
+        //         scales: {
+        //             y: {
+        //                 beginAtZero: true
+        //             }
+        //         },
+        //         title: {
+        //             display: true,
+        //             text: 'AVERAGE IPS'
+        //         }
+        //     }
+        // });
     });
+
 
     function randomColor() {
         return 'rgba(' +
