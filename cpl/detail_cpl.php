@@ -169,7 +169,8 @@
                         </tr>
                         <tbody>
                         <?php
-                            $query = "SELECT ROUND(SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai),2) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, kelas_nilaicpmk.nilai, mk.id_mk, mk.mk, mhsw.nrp_hash, periode.tahun
+                            $query = "SELECT ROUND(SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai),2) AS 'nilai CPL', kelas_cpmk.persentase, 
+                            ikcpl.id_ikcpl, ikcpl.id_cpl, kelas_nilaicpmk.nilai, mk.id_mk, mk.mk, mhsw.nrp_hash, periode.tahun
                             FROM kelas_cpmk
                             JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
                             JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl

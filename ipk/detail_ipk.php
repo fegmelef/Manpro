@@ -128,7 +128,9 @@ $sql_ips = "SELECT * FROM ips WHERE nrp_hash = '$nrp'";
                 $nilai_E = 0;
                 // $nrp='$nrp';
                 
-                $query = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, kelas_nilaicpmk.nilai, mk.mk, mhsw.nrp_hash, periode.tahun
+                $query = "SELECT SUM((kelas_cpmk.persentase/100)*kelas_nilaicpmk.nilai) 
+                AS 'nilai CPL', kelas_cpmk.persentase, ikcpl.id_ikcpl, ikcpl.id_cpl, 
+                kelas_nilaicpmk.nilai, mk.mk, mhsw.nrp_hash, periode.tahun
                 FROM kelas_cpmk
                 JOIN kelas_nilaicpmk ON kelas_cpmk.id_cpmk = kelas_nilaicpmk.id_cpmk
                 JOIN ikcpl ON kelas_cpmk.id_ikcpl = ikcpl.id_ikcpl
